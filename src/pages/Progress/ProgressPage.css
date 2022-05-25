@@ -1,0 +1,19 @@
+.progress-card {
+  border-width: 3;
+  font-size: large;
+  text-align: center;
+  border-width: 5px;
+  border-color: black;
+}
+
+.site-card-wrapper {
+  padding-bottom: 2%;
+}
+
+.graph-div {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  justify-content: center;
+  gap: 25%;
+}
