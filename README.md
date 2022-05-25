@@ -1,70 +1,115 @@
-# Getting Started with Create React App
+# Milestone 1 Submission
 
-This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
+## Team Name:
 
-## Available Scripts
+Head in the Clouds
 
-In the project directory, you can run:
+## Proposed Level of Achievement:
 
-### `yarn start`
+Artemis
 
-Runs the app in the development mode.\
-Open [http://localhost:3000](http://localhost:3000) to view it in your browser.
+## Motivation
 
-The page will reload when you make changes.\
-You may also see any lint errors in the console.
+We intend to build a web application titled “STRIKER”. It is a task manager application grounded on the principles of simplicity and intentionality. Inspired by the concept of bullet journaling by Ryder Carroll, we hope to bring to life a virtual, analytically-driven task manager. Our hope is to create an application that is simple to use, while providing as much useful insights and functionality to our users to boost their day-to-day productivity.
 
-### `yarn test`
+## Rationale
 
-Launches the test runner in the interactive watch mode.\
-See the section about [running tests](https://facebook.github.io/create-react-app/docs/running-tests) for more information.
+The rationale for wanting to build such an application is the surplus of unstructured task manager applications with excessive flexibility and superfluous customisations. These are all too confusing and intimidating to new users and people who simply wish to use an online task manager. As such, we hope STRIKER will bridge this gap, by providing the much needed structure and simplicity.
 
-### `yarn build`
+## Overview
 
-Builds the app for production to the `build` folder.\
-It correctly bundles React in production mode and optimizes the build for the best performance.
+The structure of STRIKER is simple - tasks are categorised into 3 levels of priority - high, medium and low. Strike through each task once completed. The intentionality lies not only in planning the to-dos for the day but also in short bullet points. This allows users to pen down only the essentials and strip away the unnecessary. When users write excessively, it might seem like there is so much to accomplish. They become swamped and are overly busy. STRIKER aims to help users become more productive and weed out such distractions by being mindful and by prioritising what is important.
 
-The build is minified and the filenames include the hashes.\
-Your app is ready to be deployed!
+## Features
 
-See the section about [deployment](https://facebook.github.io/create-react-app/docs/deployment) for more information.
+Beyond the simple features of bullet tasking and striking off feature, STRIKER has the ability to filter the task list and show tasks are pending completion and those that are done. This gives users a quick birds eye view of the various types of tasks without having to scroll through the entire list and make mental notes. When creating a task, the user also has the option to choose the urgency of the task, denoted by the colours, as well as the nature of the task ( ie event, todo, reminder) represented by the 3 different shapes. The user can also add a deadline and the striker app will remind the user of this impending deadline.
 
-### `yarn eject`
+In addition, if the user feels like assigning to-dos for the future, they can access the calendar feature and select the date to jot them down. This also opens up a feature of reviewing the users’ history to view completed, uncompleted and deleted tasks. An additional feature of the calendar’s user interface is the ability to drop and drop tasks from one date to another. The home page will always display the to-dos for the current day.
 
-**Note: this is a one-way operation. Once you `eject`, you can't go back!**
+We also have a Monthly Log feature. At the start of each month, Striker will prompt users to pen down tasks that they want to accomplish for the month. They will also be prompted to carry forward any unfinished tasks from the previous month. Every day, users will be able to drag and drop tasks from the monthly log to the current day’s task.
 
-If you aren't satisfied with the build tool and configuration choices, you can `eject` at any time. This command will remove the single build dependency from your project.
+Not forgetting the user analytics page where users can track their progress. A personalised dashboard highlighting the percentage of tasks completed daily, monthly and throughout the span of using STRIKER. This would allow users to track their productivity. For added customization, the user would also be able to select specific date ranges to track his productivity during that period.
 
-Instead, it will copy all the configuration files and the transitive dependencies (webpack, Babel, ESLint, etc) right into your project so you have full control over them. All of the commands except `eject` will still work, but they will point to the copied scripts so you can tweak them. At this point you're on your own.
+Moving forward, we hope to tap into the treasure trove of data collected and provide useful insights to the users. For example, we can compare the number of tasks the user logs daily against the optimal number of tasks logged based on all our users (highest completion rate). This will give us an indication of how well the user fairs and provide suggestions on how to improve the user’s productivity. We believe that our application will be able to collect large amounts of usable data from our users and ideally we can use this data to provide useful insights for our users to be more productive in their day-to-day planning.
 
-You don't have to ever use `eject`. The curated feature set is suitable for small and middle deployments, and you shouldn't feel obligated to use this feature. However we understand that this tool wouldn't be useful if you couldn't customize it when you are ready for it.
+In addition, we will have a plugin feature list that provides more flexibility to the user to use whatever productivity framework he/she would like. Some of the frameworks that we will support are the Eisenhower matrix and the 1-3-5 workflow.
 
-## Learn More
+## Summary of Features
 
-You can learn more in the [Create React App documentation](https://facebook.github.io/create-react-app/docs/getting-started).
+- Colour coding of tasks to indicate urgency
+- Different shapes to indicate nature of task
+- Filter completed/uncompleted tasks on home page
+- Deadline setter for individual tasks with prompted reminders/ push notification
+- Edit option to delete task or change task text
+- Calendar feature to plan for future and review the past
+- Drag and drop feature of tasks in calendar mode
+- Monthly Log feature that allows you to pen down tasks you want to accomplish for each month
+- Progress feature to show user’s productivity analytics
+- Customizability in productivity analytics
+- Framework plugin feature
 
-To learn React, check out the [React documentation](https://reactjs.org/).
+![striker mockup](./public/striker-mockup.png)  
+Striker Mockup
 
-### Code Splitting
+## User Stories
 
-This section has moved here: [https://facebook.github.io/create-react-app/docs/code-splitting](https://facebook.github.io/create-react-app/docs/code-splitting)
+1. User Story in general for STRIKER  
+   As a university student, I want to note down all my tasks for the day, so I can work productively and declutter his mind.
 
-### Analyzing the Bundle Size
+2. User Story for filter view  
+   As a university student, I want to review the tasks I have yet to complete because I want to prepare my tasks for the next day.
 
-This section has moved here: [https://facebook.github.io/create-react-app/docs/analyzing-the-bundle-size](https://facebook.github.io/create-react-app/docs/analyzing-the-bundle-size)
+3. User Story for priority button  
+   As a university student, I want to organise my tasks in order of priority (high, medium, low) so as to keep me focused on the urgent things I need to complete.
 
-### Making a Progressive Web App
+4. User Story for deleted tab  
+   As a university student, I want to recover tasks because I might have deleted them accidentally.
 
-This section has moved here: [https://facebook.github.io/create-react-app/docs/making-a-progressive-web-app](https://facebook.github.io/create-react-app/docs/making-a-progressive-web-app)
+5. User Story for calendar tab  
+   As a university student, I want to pen down tasks for the future because planning for the future keeps me organised.  
+   As a university student, I want to view previously completed and uncompleted tasks because I want to ensure that I am on track to achieve my goals.
 
-### Advanced Configuration
+6. User Story for progress tab (on Task Page)  
+   As a university student, I want a birds eye view of my completed and uncompleted tasks analytics because this feedback will indicate how I should better organise my time.
 
-This section has moved here: [https://facebook.github.io/create-react-app/docs/advanced-configuration](https://facebook.github.io/create-react-app/docs/advanced-configuration)
+7. User Story for progress page  
+   As a university student, I want to know how productive I have been over the past month/ lifetime on Striker because this feedback will allow me to tweak my tasks to improve my overall productivity.  
+   As a university student, some relevant metrics to review my productivity are:
 
-### Deployment
+- Completion rate
+- Weighted Completion rate/ productivity rate
+- Graphical breakdown of tasks completed per month
+- Graphical breakdown of productivity rate per month
+- Breakdown of total number of events, reminders, tasks
 
-This section has moved here: [https://facebook.github.io/create-react-app/docs/deployment](https://facebook.github.io/create-react-app/docs/deployment)
+## User Journey
 
-### `yarn build` fails to minify
+1. Adding tasks for a new day
 
-This section has moved here: [https://facebook.github.io/create-react-app/docs/troubleshooting#npm-run-build-fails-to-minify](https://facebook.github.io/create-react-app/docs/troubleshooting#npm-run-build-fails-to-minify)
+- At the start of a new day, I want to be able to input my tasks I want to accomplish for the day. I will first be prompted with all the unfinished tasks from the previous day and whether I want to bring them into today’s daily log by double-clicking on them.
+- As a user, I also want quick access to the tasks in the monthly log so that I can plan my tasks in the daily log. At the start of the day, I can double-click on the tasks in the “Tasks for the month” list that appears on the right of my daily log to quickly and seamlessly add tasks from my monthly log to my daily log. If I feel my daily log is too cluttered, I can also hide the “Tasks for the month” list.
+- If there are any more tasks I want to add for the day, I can simply click the plus button to manually input any additional tasks.
+
+2. Adding tasks for a new month
+
+- At the start of a new month, I want to be able to input my tasks I want to accomplish for the month. Again, I will be prompted with all the unfinished tasks from the previous month and I can double click them to add it into the new month’s log.
+- Any additional tasks can be inputted by clicking on the plus button.
+
+3. Viewing different dates and deadlines
+
+- To be able to view the daily log of specific dates, and an overall outlook on the upcoming deadlines I have, I can go to the calendar feature.
+- I can double click on specific dates to jump to the daily log for that date.
+
+4. Viewing user’s productivity
+
+- After using the app for a period of time, I want to view my overall productivity and how I am faring in terms of completing tasks. I can get a good sense of this by going to the user statistics feature.
+- In the user statistics page, I will be able to view personal statistics such as the number of completed tasks I had and the weighted completion rate for the month and past months.
+
+5. Having customisability
+
+- To make the app personalised to match my preferred way of using the app, I can toggle many dependencies in the settings menu to include and exclude features of the app however I wish.
+  For example, if I would like to use the Eisenhower framework to pen down my monthly log in a more structured manner, I can simply toggle it on to include “Urgency” and “Importance” in my monthly log.
+
+## Timeline
+
+![timeline](./public/striker-timeline.png)
