@@ -1,39 +1,38 @@
-import { Button, Checkbox, Form, Input, Card, Result } from "antd";
-import { Link, useNavigate } from "react-router-dom";
-import { useUserAuth } from "../../context/UserAuthContext";
+import { Button, Form, Input, Card, Result } from "antd";
 import { useState } from "react";
-
+import { useNavigate, Link } from "react-router-dom";
 import "antd/dist/antd.min.css";
-import "./LoginPage.css";
+import "./SignUpPage.css";
+import { useUserAuth } from "../../context/UserAuthContext";
 
-const LoginPage = () => {
+const SignUpPage = () => {
   const navigate = useNavigate();
 
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
 
-  const { logIn } = useUserAuth();
+  const { signUp } = useUserAuth();
   const [error, setError] = useState("");
   const handleSubmit = async (e) => {
     e.preventDefault();
     setError("");
     try {
-      await logIn(email, password);
-      navigate("/home");
+      await signUp(email, password);
+      navigate("/");
     } catch (err) {
       setError(err.message);
     }
   };
 
   return (
-    <div className="login-div">
+    <div className="signup-div">
       <h1>
-        <i>STRIKER LOGIN</i>
+        <i>STRIKER SIGN UP</i>
       </h1>
 
       <Card>
         {error && (
-          <Result status="error" title="Login failed" subTitle={error} />
+          <Result status="error" title="Sign up failed" subTitle={error} />
         )}
         <Form
           name="basic"
@@ -76,33 +75,22 @@ const LoginPage = () => {
           </Form.Item>
 
           <Form.Item
-            name="remember"
-            valuePropName="checked"
-            wrapperCol={{
-              offset: 8,
-              span: 16,
-            }}
-          >
-            <Checkbox>Remember me</Checkbox>
-          </Form.Item>
-
-          <Form.Item
             wrapperCol={{
               offset: 8,
               span: 16,
             }}
           >
             <Button type="primary" htmlType="submit">
-              Login
+              Sign Up
             </Button>
           </Form.Item>
         </Form>
         <span>
-          No Account? <Link to="/signup">Sign Up Here</Link>
+          Have an Account? <Link to="/">Login Here</Link>
         </span>
       </Card>
     </div>
   );
 };
 
-export default LoginPage;
+export default SignUpPage;
