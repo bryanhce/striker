@@ -5,16 +5,50 @@ import CalendarPage from "./pages/Calendar/CalendarPage";
 import ProgressPage from "./pages/Progress/ProgressPage";
 import SettingsPage from "./pages/Settings/SettingsPage";
 import LoginPage from "./pages/Login/LoginPage";
+import SignUpPage from "./pages/SignUp/SignUpPage";
+import { UserAuthContextProvider } from "./context/UserAuthContext";
+import ProtectedRoute from "./components/AssistantFeatures/ProtectedRoute/ProtectedRoute";
 
 function App() {
   return (
-    <Routes>
-      <Route exact path="/" element={<TaskList />} />
-      <Route path="/calendar" element={<CalendarPage />} />
-      <Route path="/progress" element={<ProgressPage />} />
-      <Route path="/settings" element={<SettingsPage />} />
-      <Route path="/login" element={<LoginPage />} />
-    </Routes>
+    <UserAuthContextProvider>
+      <Routes>
+        <Route exact path="/" element={<LoginPage />} />
+        <Route path="/signup" element={<SignUpPage />} />
+        <Route
+          path="/home"
+          element={
+            <ProtectedRoute>
+              <TaskList />
+            </ProtectedRoute>
+          }
+        />
+        <Route
+          path="/calendar"
+          element={
+            <ProtectedRoute>
+              <CalendarPage />
+            </ProtectedRoute>
+          }
+        />
+        <Route
+          path="/progress"
+          element={
+            <ProtectedRoute>
+              <ProgressPage />
+            </ProtectedRoute>
+          }
+        />
+        <Route
+          path="/settings"
+          element={
+            <ProtectedRoute>
+              <SettingsPage />
+            </ProtectedRoute>
+          }
+        />
+      </Routes>
+    </UserAuthContextProvider>
   );
 }
 

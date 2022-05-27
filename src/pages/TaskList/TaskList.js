@@ -3,6 +3,7 @@ import "./TaskList.css";
 import { Button, List, Divider, Progress } from "antd";
 import StrikerLayout from "../StrikerLayout/StrikerLayout";
 import AddTaskModal from "../../components/AddTaskFeatures/AddTaskModal";
+import { useUserAuth } from "../../context/UserAuthContext";
 
 const data = [
   "Complete cs2030s lab8.",
@@ -13,6 +14,9 @@ const data = [
 ];
 
 const TaskList = () => {
+  //user can be used to do personalised things in the future
+  const { user } = useUserAuth();
+
   const [isPopUpVisible, setPopUpVisible] = useState(false);
 
   const onPopUpVisible = () => {
