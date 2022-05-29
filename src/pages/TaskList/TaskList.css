@@ -16,3 +16,9 @@
 [data-theme="dark"] .editable-row:hover .editable-cell-value-wrap {
   border: 1px solid #434343;
 }
+
+.task-completed {
+  background-color: #90ee90;
+  text-decoration: line-through;
+  font-style: italic;
+}
