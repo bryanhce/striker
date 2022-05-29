@@ -8,6 +8,10 @@ Head in the Clouds
 
 Artemis
 
+## Project Scope
+
+Striker is a task manager application that focuses on seamless design, user analytics and user productivity.
+
 ## Motivation
 
 We intend to build a web application titled “STRIKER”. It is a task manager application grounded on the principles of simplicity and intentionality. Inspired by the concept of bullet journaling by Ryder Carroll, we hope to bring to life a virtual, analytically-driven task manager. Our hope is to create an application that is simple to use, while providing as much useful insights and functionality to our users to boost their day-to-day productivity.
@@ -113,3 +117,31 @@ Striker Mockup
 ## Timeline
 
 ![timeline](./public/striker-timeline.png)
+
+## Technologies
+
+The frontend of the application will be built in React, JavaScript. React provides a very intuitive and smooth framework to build our UI. Furthermore, we believe it is more apt to use React with the design we have in mind for STRIKER. Having experience building websites with HTML, we believe that we can take Orbital as a chance to hone our React development skills too.
+
+The backend of the application will be built in Go. We chose Go because it is simple. It is also more readable which is a great advantage for a new programmer of Go, like ourselves, to pick up the language fast and intuitively. It is also syntactically more similar to Java which we are familiar with.
+
+Secondly, Go is statically typed. This would make debugging easier, especially when it comes to user inputs as errors due to incorrect data types can be easily removed. In addition, statically typed language gels more conveniently with relational databases (which we are using for STRIKER) as columns in tables have specific data types. Thus type mismatch can be caught easily. This is in contrast to other dynamically typed languages like Python and Ruby and lacks such advantages.
+
+Lastly, Golang runs very quickly as it is a compiled language and is insanely fast. Go is also becoming increasingly popular with large tech companies such as Google and Facebook. It would be beneficial to have Go in our arsenal of programming languages.
+
+As our application stores structured data, we felt a relational database was more appropriate over non-SQL ones to store our data. Having experience with Postgres, we felt it was the obvious choice.
+
+We will use Heroku to host the web application. Git and github for version control and to allow for efficient code sharing and teamwork. Github Projects for task management and planning. API testing using Postman.
+
+## Technical Proof of Concept
+
+Link to test the demo of Striker: https://striker-deploy.herokuapp.com/home
+
+As a demo, we used Firebase as the temporary backend. One of the fully working features is the sign up and login pages. You are unable to access the other routes of the application without logging in. Once you have signed up, you will be redirected to the login in page and using the same credentials you have keyed in previously, you would be able to access the application.
+
+Upon logging in, the home page contains the task list with its tentative design. At the moment, there is only one task list that is shared among all users. In the future, each user would have their individual task list. As of now, you are able to delete a task, edit a task, add a task and mark a task as completed. However, the backend logic is not fully functioning for all these features. For example, in order to edit a newly added task, you would need to logout, refresh the page, login again and edit the task for the edits to be registered properly in the database. Of course, these bugs will be fixed for the actual production. Deleting and marking as complete are functioning.
+
+The other working feature in the menu is the progress page, as we have no data, the current page is just a mock up. The rest of the tabs are not working.
+
+## Project Log
+
+Link to Project Log: https://docs.google.com/spreadsheets/d/193u8KVTnpKKGiLda0BbepuY4H8AOFhA2Namgr5fHlS8/edit?usp=sharing
