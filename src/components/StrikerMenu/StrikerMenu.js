@@ -12,6 +12,7 @@ import {
 
 import "./StrikerMenu.css";
 import { useUserAuth } from "../../context/UserAuthContext";
+import { format, addDays } from "date-fns";
 
 const StrikerMenu = () => {
   //logic for logout
@@ -25,21 +26,26 @@ const StrikerMenu = () => {
     }
   };
 
+  //logic for date
+  const today = format(new Date(), "dd.MM.yyyy");
+  const yesterday = format(addDays(new Date(), -1), "dd.MM.yyyy");
+  const tomorrow = format(addDays(new Date(), 1), "dd.MM.yyyy");
+
   return (
     <Menu theme="dark" defaultSelectedKeys={["1"]} mode="inline">
       <Menu.Item key="1">
         <RightOutlined />
-        <span>25.08.22</span>
+        <span>{tomorrow}</span>
         <Link to="/home" />
       </Menu.Item>
       <Menu.Item key="2">
         <RightCircleOutlined />
-        <span>24.08.22</span>
+        <span>{today}</span>
         <Link to="/home" />
       </Menu.Item>
       <Menu.Item key="3">
         <RightOutlined />
-        <span>23.08.22</span>
+        <span>{yesterday}</span>
         <Link to="/home" />
       </Menu.Item>
       <Menu.Item key="4">

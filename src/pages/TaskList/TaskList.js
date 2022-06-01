@@ -19,6 +19,7 @@ import {
   doc,
   updateDoc,
 } from "firebase/firestore";
+import { format } from "date-fns";
 
 //code to connect to firestore database
 const db = getFirestore();
@@ -167,6 +168,9 @@ const EditableCell = ({
   return <td {...restProps}>{childNode}</td>;
 };
 
+const todayDay = format(new Date(), "E");
+//use "EEEE" for full day name
+
 const TaskList = () => {
   //user can be used to do personalised things in the future
   // const { user } = useUserAuth();
@@ -297,7 +301,7 @@ const TaskList = () => {
   return (
     <StrikerLayout>
       <div>
-        <Divider orientation="left">MONDAY</Divider>
+        <Divider orientation="left">{todayDay}</Divider>
         <Button
           type="primary"
           onClick={addHandle}
