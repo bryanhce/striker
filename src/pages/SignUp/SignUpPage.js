@@ -11,28 +11,37 @@ const SignUpPage = () => {
 
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
+  const [error, setError] = useState("");
 
   const { signUp } = useUserAuth();
-  const [error, setError] = useState("");
 
   const handleSubmit = async (e) => {
     e.preventDefault();
     setError("");
     try {
       await signUp(email, password);
+      successNotification();
       navigate("/");
     } catch (err) {
       setError(err.message);
+      errorNotification();
     }
   };
 
-  const triggerErrorNotification = () => {
-    if (error) {
-      notification["error"]({
-        message: "Sign Up Failed",
-        description: error,
-      });
-    }
+  const errorNotification = () => {
+    notification["error"]({
+      message: "Sign Up Failed",
+      description: error,
+    });
+  };
+
+  const successNotification = () => {
+    notification["success"]({
+      message: "Sign Up Successful",
+      description:
+        "You are now redicted to the login page. Login with the same credentials!",
+      duration: 6.0,
+    });
   };
 
   return (
@@ -138,7 +147,6 @@ const SignUpPage = () => {
                     shape="round"
                     size="large"
                     style={{ marginRight: "5%" }}
-                    onClickCapture={triggerErrorNotification}
                   >
                     Sign Up
                   </Button>

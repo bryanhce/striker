@@ -6,6 +6,7 @@ import ProgressPage from "./pages/Progress/ProgressPage";
 import SettingsPage from "./pages/Settings/SettingsPage";
 import LoginPage from "./pages/Login/LoginPage";
 import SignUpPage from "./pages/SignUp/SignUpPage";
+import ResetPasswordPage from "./pages/ResetPassword/ResetPasswordPage";
 import { UserAuthContextProvider } from "./context/UserAuthContext";
 import ProtectedRoute from "./components/AssistantFeatures/ProtectedRoute/ProtectedRoute";
 
@@ -15,6 +16,7 @@ function App() {
       <Routes>
         <Route exact path="/" element={<LoginPage />} />
         <Route path="/signup" element={<SignUpPage />} />
+        <Route path="/reset-password" element={<ResetPasswordPage />} />
         <Route
           path="/home"
           element={
