@@ -1,27 +1,23 @@
 import { Button, Form, Input, Card, Layout, notification } from "antd";
-
-import { Link, useNavigate } from "react-router-dom";
-import { useUserAuth } from "../../context/UserAuthContext";
 import { useState } from "react";
-
+import { Link } from "react-router-dom";
 import "antd/dist/antd.min.css";
+import { useUserAuth } from "../../context/UserAuthContext";
 
 const { Content, Footer } = Layout;
 
-const LoginPage = () => {
-  const navigate = useNavigate();
-
+const ResetPasswordPage = () => {
   const [email, setEmail] = useState("");
-  const [password, setPassword] = useState("");
   const [error, setError] = useState("");
 
-  const { logIn } = useUserAuth();
+  const { resetPassword } = useUserAuth();
+
   const handleSubmit = async (e) => {
     e.preventDefault();
     setError("");
     try {
-      await logIn(email, password);
-      navigate("/home");
+      await resetPassword(email);
+      successNotification();
     } catch (err) {
       setError(err.message);
       errorNotification();
@@ -30,8 +26,16 @@ const LoginPage = () => {
 
   const errorNotification = () => {
     notification["error"]({
-      message: "Login Failed",
+      message: "Password Reset Failed",
       description: error,
+    });
+  };
+
+  const successNotification = () => {
+    notification["success"]({
+      message: "Password Reset Successful",
+      description:
+        "Please follow the instructions sent to your email to reset your password! It might have been sent to your junk!",
     });
   };
 
@@ -96,7 +100,7 @@ const LoginPage = () => {
                       fontSize: "4vh",
                     }}
                   >
-                    LOGIN
+                    PASSWORD RESET
                   </span>
                 </Form.Item>
                 <Form.Item
@@ -111,29 +115,6 @@ const LoginPage = () => {
                 >
                   <Input onChange={(e) => setEmail(e.target.value)} />
                 </Form.Item>
-
-                <Form.Item
-                  label="Password"
-                  name="password"
-                  rules={[
-                    {
-                      required: true,
-                      message: "Please input your password!",
-                    },
-                  ]}
-                >
-                  <Input.Password
-                    onChange={(e) => setPassword(e.target.value)}
-                  />
-                </Form.Item>
-                <Form.Item
-                  wrapperCol={{
-                    offset: 2,
-                    span: 16,
-                  }}
-                >
-                  <Link to="/reset-password">Forgot Password?</Link>
-                </Form.Item>
                 <Form.Item
                   wrapperCol={{
                     offset: 1,
@@ -147,16 +128,16 @@ const LoginPage = () => {
                     size="large"
                     style={{ marginRight: "5%" }}
                   >
-                    Login
+                    Reset
                   </Button>
                 </Form.Item>
                 <br />
                 <br />
               </Form>
               <div style={{ display: "flex", flexDirection: "column" }}>
-                <span>No Account?</span>
-                <Link to="/signup" style={{ fontSize: "20px" }}>
-                  Create Account
+                <span>Recalled your password?</span>
+                <Link to="/" style={{ fontSize: "20px" }}>
+                  Login here
                 </Link>
               </div>
               <Footer
@@ -175,4 +156,4 @@ const LoginPage = () => {
   );
 };
 
-export default LoginPage;
+export default ResetPasswordPage;
