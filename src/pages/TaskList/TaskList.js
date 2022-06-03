@@ -168,7 +168,7 @@ const EditableCell = ({
   return <td {...restProps}>{childNode}</td>;
 };
 
-const todayDay = format(new Date(), "E");
+const todayDay = format(new Date(), "E").toUpperCase();
 //use "EEEE" for full day name
 
 const TaskList = () => {
