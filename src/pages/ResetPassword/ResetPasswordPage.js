@@ -20,6 +20,7 @@ const ResetPasswordPage = () => {
       successNotification();
     } catch (err) {
       setError(err.message);
+      console.log(error);
       errorNotification();
     }
   };
@@ -27,7 +28,8 @@ const ResetPasswordPage = () => {
   const errorNotification = () => {
     notification["error"]({
       message: "Password Reset Failed",
-      description: error,
+      description:
+        "Please ensure that the email is the same as the one you signed up with previously.",
     });
   };
 

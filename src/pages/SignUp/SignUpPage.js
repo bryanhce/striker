@@ -24,6 +24,7 @@ const SignUpPage = () => {
       navigate("/");
     } catch (err) {
       setError(err.message);
+      console.log(error);
       errorNotification();
     }
   };
@@ -31,7 +32,6 @@ const SignUpPage = () => {
   const errorNotification = () => {
     notification["error"]({
       message: "Sign Up Failed",
-      description: error,
     });
   };
 
