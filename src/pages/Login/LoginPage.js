@@ -24,6 +24,7 @@ const LoginPage = () => {
       navigate("/home");
     } catch (err) {
       setError(err.message);
+      console.log(error);
       errorNotification();
     }
   };
@@ -31,7 +32,6 @@ const LoginPage = () => {
   const errorNotification = () => {
     notification["error"]({
       message: "Login Failed",
-      description: error,
     });
   };
 
