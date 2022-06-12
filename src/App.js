@@ -18,7 +18,7 @@ function App() {
         <Route path="/signup" element={<SignUpPage />} />
         <Route path="/reset-password" element={<ResetPasswordPage />} />
         <Route
-          path="/home"
+          path="/task-list"
           element={
             <ProtectedRoute>
               <TaskList />
@@ -34,7 +34,7 @@ function App() {
           }
         />
         <Route
-          path="/progress"
+          path="/analytics"
           element={
             <ProtectedRoute>
               <ProgressPage />

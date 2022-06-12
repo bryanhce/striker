@@ -65,13 +65,12 @@ const StrikerMenu = () => {
       </Menu.Item>
       <Menu.Item key="7">
         <BarChartOutlined />
-        <span>Progress</span>
-        <Link to="/progress" />
+        <span>Analytics</span>
+        <Link to="/analytics" />
       </Menu.Item>
       <Menu.Item key="8" onClickCapture={handleLogOut}>
         <UserOutlined />
         <span>Sign Out</span>
-        {/* <Link to="/" /> */}
       </Menu.Item>
     </Menu>
   );
