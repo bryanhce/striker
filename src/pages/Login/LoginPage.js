@@ -21,7 +21,7 @@ const LoginPage = () => {
     setError("");
     try {
       await logIn(email, password);
-      navigate("/home");
+      navigate("/task-list");
     } catch (err) {
       setError(err.message);
       console.log(error);
