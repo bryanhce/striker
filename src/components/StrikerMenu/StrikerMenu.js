@@ -36,27 +36,27 @@ const StrikerMenu = () => {
       <Menu.Item key="1">
         <RightOutlined />
         <span>{tomorrow}</span>
-        <Link to="/home" />
+        <Link to="/task-list" />
       </Menu.Item>
       <Menu.Item key="2">
         <RightCircleOutlined />
         <span>{today}</span>
-        <Link to="/home" />
+        <Link to="/task-list" />
       </Menu.Item>
       <Menu.Item key="3">
         <RightOutlined />
         <span>{yesterday}</span>
-        <Link to="/home" />
+        <Link to="/task-list" />
       </Menu.Item>
       <Menu.Item key="4">
         <HomeOutlined />
         <span>Home</span>
-        <Link to="/home" />
+        <Link to="/task-list" />
       </Menu.Item>
       <Menu.Item key="5">
         <DesktopOutlined />
         <span>Monthly</span>
-        <Link to="/home" />
+        <Link to="/task-list" />
       </Menu.Item>
       <Menu.Item key="6">
         <CalendarOutlined />

@@ -1,7 +1,7 @@
 import StrikerLayout from "../StrikerLayout/StrikerLayout";
 import { Card, Col, Row, Progress } from "antd";
-import "./ProgressPage.css";
-import ProgressGraph from "../../components/ProgressGraphs/ProgressGraph";
+import "./AnalyticsPage.css";
+import AnalyticsGraph from "../../components/AnalyticsGraphs/AnalyticsGraph";
 
 const productivityData = [
   { month: 1, productivity: 60 },
@@ -29,7 +29,7 @@ const CompletionLabelArr = CompletionData.map(
   (obj) => obj.productivity.toString() + "%"
 );
 
-const ProgressPage = () => {
+const AnalyticsPage = () => {
   return (
     <StrikerLayout>
       <div className="site-card-wrapper">
@@ -76,12 +76,12 @@ const ProgressPage = () => {
         </Row>
       </div>
       <div className="graph-div">
-        <ProgressGraph
+        <AnalyticsGraph
           title="Graph of Productivity Per Month"
           data={productivityData}
           labelArr={productivityLabelArr}
         />
-        <ProgressGraph
+        <AnalyticsGraph
           title="Graph of Completion Per Month"
           data={CompletionData}
           labelArr={CompletionLabelArr}
@@ -91,4 +91,4 @@ const ProgressPage = () => {
   );
 };
 
-export default ProgressPage;
+export default AnalyticsPage;

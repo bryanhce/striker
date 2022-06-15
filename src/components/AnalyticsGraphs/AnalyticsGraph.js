@@ -5,11 +5,11 @@ import {
   VictoryTheme,
   VictoryLabel,
 } from "victory";
-import "./ProgressGraph.css";
+import "./AnalyticsGraph.css";
 
-const ProgressGraph = (props) => {
+const AnalyticsGraph = (props) => {
   return (
-    <div className="progress-graph">
+    <div className="analytics-graph">
       <h2>{props.title}</h2>
       <VictoryChart
         domainPadding={20}
@@ -35,4 +35,4 @@ const ProgressGraph = (props) => {
   );
 };
 
-export default ProgressGraph;
+export default AnalyticsGraph;

@@ -2,7 +2,7 @@ import "./App.css";
 import { Route, Routes } from "react-router-dom";
 import TaskList from "./pages/TaskList/TaskList";
 import CalendarPage from "./pages/Calendar/CalendarPage";
-import ProgressPage from "./pages/Progress/ProgressPage";
+import AnalyticsPage from "./pages/Analytics/AnalyticsPage";
 import SettingsPage from "./pages/Settings/SettingsPage";
 import LoginPage from "./pages/Login/LoginPage";
 import SignUpPage from "./pages/SignUp/SignUpPage";
@@ -37,7 +37,7 @@ function App() {
           path="/analytics"
           element={
             <ProtectedRoute>
-              <ProgressPage />
+              <AnalyticsPage />
             </ProtectedRoute>
           }
         />
