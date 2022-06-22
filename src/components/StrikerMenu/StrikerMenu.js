@@ -32,21 +32,21 @@ const StrikerMenu = () => {
   const tomorrow = format(addDays(new Date(), 1), "dd.MM.yyyy");
 
   return (
-    <Menu theme="dark" defaultSelectedKeys={["1"]} mode="inline">
+    <Menu theme="dark" mode="inline">
       <Menu.Item key="1">
         <RightOutlined />
         <span>{tomorrow}</span>
-        <Link to="/task-list" />
+        <Link to="/daily-task-list" />
       </Menu.Item>
       <Menu.Item key="2">
         <RightCircleOutlined />
         <span>{today}</span>
-        <Link to="/task-list" />
+        <Link to="/daily-task-list" />
       </Menu.Item>
       <Menu.Item key="3">
         <RightOutlined />
         <span>{yesterday}</span>
-        <Link to="/task-list" />
+        <Link to="/daily-task-list" />
       </Menu.Item>
       <Menu.Item key="4">
         <HomeOutlined />
@@ -56,7 +56,7 @@ const StrikerMenu = () => {
       <Menu.Item key="5">
         <DesktopOutlined />
         <span>Monthly</span>
-        <Link to="/task-list" />
+        <Link to="/monthly-task-list" />
       </Menu.Item>
       <Menu.Item key="6">
         <CalendarOutlined />

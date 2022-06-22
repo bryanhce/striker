@@ -1,6 +1,8 @@
 import "./App.css";
 import { Route, Routes } from "react-router-dom";
 import TaskList from "./pages/TaskList/TaskList";
+import DailyTasklist from "./pages/DailyTasklist/DailyTasklist";
+import MonthlyTasklist from "./pages/MonthlyTasklist/MonthlyTasklist";
 import CalendarPage from "./pages/Calendar/CalendarPage";
 import AnalyticsPage from "./pages/Analytics/AnalyticsPage";
 import SettingsPage from "./pages/Settings/SettingsPage";
@@ -18,14 +20,21 @@ function App() {
         <Route path="/signup" element={<SignUpPage />} />
         <Route path="/reset-password" element={<ResetPasswordPage />} />
         <Route
-          path="/task-list"
+          path="/daily-task-list"
           element={
             <ProtectedRoute>
-              <TaskList />
+              <DailyTasklist />
             </ProtectedRoute>
           }
         />
         <Route
+          path="/monthly-task-list"
+          element={
+            <ProtectedRoute>
+              <MonthlyTasklist />
+            </ProtectedRoute>
+          }
+        />        <Route
           path="/calendar"
           element={
             <ProtectedRoute>
