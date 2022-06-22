@@ -51,7 +51,7 @@ const StrikerMenu = () => {
       <Menu.Item key="4">
         <HomeOutlined />
         <span>Home</span>
-        <Link to="/task-list" />
+        <Link to="/daily-task-list" />
       </Menu.Item>
       <Menu.Item key="5">
         <DesktopOutlined />
