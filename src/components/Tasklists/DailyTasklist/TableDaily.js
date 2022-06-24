@@ -1,5 +1,6 @@
 import React from 'react';
 import { useState } from "react";
+import { notification } from 'antd';
 import { EyeOutlined, EyeInvisibleOutlined, DeleteOutlined, CaretDownOutlined, CaretUpOutlined } from "@ant-design/icons";
 
 function TableDaily({ tasks, strikeTask, deleteTask, filterPriority, filterEffort, filters, updateTaskText, updateTaskEffort, changeTaskType, changeTaskPriority }) {
@@ -7,16 +8,23 @@ function TableDaily({ tasks, strikeTask, deleteTask, filterPriority, filterEffor
     const [filtered, setFiltered] = useState([
         0
     ])
+
+    //Sends Error
+    const error = (message) => {
+        notification["error"]({
+            message: message,
+        });
+    }
     
     const onlyNumbers = (e) => {
-        if (e.shiftKey) {
+
+        if (!(e.keyCode === 8 || e.keyCode === 46
+            || e.keyCode === 37 || e.keyCode === 39
+            || (e.keyCode >= 48 && e.keyCode <= 57)) || e.shiftKey) {
+            error("Only input numbers into the Effort field!");
             e.preventDefault();
-        }
-        if (e.keyCode === 8 || e.keyCode === 46
-            || e.keyCode === 37 || e.keyCode === 39) {
+        } else {
             return true;
-        } else if ( e.keyCode < 48 || e.keyCode > 57 ) {
-            e.preventDefault();
         }
     }
 
