@@ -123,6 +123,11 @@ function MonthlyTasklist() {
   const initialShownSubtasksState = tasks.map((task) => false);
   const [shownSubtasksState, setShownSubtasksState] = useState(initialShownSubtasksState);
 
+  //State for Number of Added Tasks
+  const [addedTasks, setAddedTasks] = useState([0]);
+
+  //State for Last Subtask Added Parent
+  const [lastParent, setLastParent] = useState([null]);
 
   //Strike Task Event
   const strikeTask = (id) => {
@@ -162,8 +167,19 @@ function MonthlyTasklist() {
     const newTask = {id: tasks.length + 1, type: 0, text: "", deadline: "", progress: 0, striked: false, parent: null, hasChildren: false};
     setTasks(sortTasks([...tasks, newTask]));
     setSubtasksBtnState([...subtasksBtnState, false]);
-    setShownSubtasksState([...shownSubtasksState, false]);  
+    setShownSubtasksState([...shownSubtasksState, false]);
+
+    const newAddedTasks = addedTasks[0] + 1;
+    setAddedTasks([newAddedTasks]);
   }
+  //Callback for Add Task Event
+  useEffect(() => {
+    console.log(addedTasks);
+    if (addedTasks[0] > 0) {
+      const newTaskElement = document.getElementsByClassName("task")[document.getElementsByClassName("task").length - 1];
+      newTaskElement.scrollIntoView({ behavior: "smooth" });
+    }
+  }, [addedTasks])
 
   //Change Task Text Event
   const updateTaskTextState = (id) => {
@@ -175,29 +191,34 @@ function MonthlyTasklist() {
   }
 
   //Change Task Type Event
-  const changeTaskType = (id, keypressed) => {
-    console.log("Changing task type of task " + id + ", key pressed: " + keypressed);
-    if (keypressed == 1) {
+  const changeTaskType = (id, e) => {
+    e.preventDefault();
+    if (e.keyCode == 40) {
       setTasks(tasks.map((task) => task.id == id ? {id: task.id, type: task.type + 1 <= 2 ? task.type + 1 : 0, text: task.text, deadline: task.deadline, progress: task.progress, striked: task.striked, parent: task.parent, hasChildren: task.hasChildren} : task))
-    } else if (keypressed == 0) {
+    } else if (e.keyCode == 38) {
       setTasks(tasks.map((task) => task.id == id ? {id: task.id, type: task.type - 1 >= 0 ? task.type - 1 : 2, text: task.text, deadline: task.deadline, progress: task.progress, striked: task.striked, parent: task.parent, hasChildren: task.hasChildren} : task))
+    } else {
+      alert("Use the up or down arrows to swap through task types!");
     }
   }
 
   //Change Task Progress Event
-  const changeTaskProgress = (id, keypressed) => {
+  const changeTaskProgress = (id, e) => {
     let taskClicked;
     const targetTasks = [];
     let newProgress;
     let newStriked;
+    e.preventDefault();
     for (let i = 0; i < tasks.length; i++) {
       if (tasks[i].id == id) {
         taskClicked = tasks[i];
         targetTasks.push(taskClicked);
-        if (keypressed == 0) {
+        if (e.keyCode == 40) {
           newProgress = tasks[i].progress - 1 >= 0 ? tasks[i].progress - 1 : 2;
-        } else {
+        } else if (e.keyCode == 38){
           newProgress = tasks[i].progress + 1 <= 2 ? tasks[i].progress + 1 : 0;
+        } else {
+          alert("Use the up or down arrows to swap through task progress!");
         }
       } else if (tasks[i].parent == id) {
         targetTasks.push(tasks[i]);
@@ -273,29 +294,42 @@ function MonthlyTasklist() {
 
   //Add Subtask Event
   const addSubtask = (parentId) => {
+    const oldLength = tasks.length;
+    const oldParentIndex = tasks.indexOf(tasks.filter((task) => task.id == parentId)[0]);
     const newTask = {id: tasks.length + 1, type: 0, text: "", deadline: "", progress: 0, striked: false, parent: parentId, hasChildren: false};
     const newTasks = tasks.map((task) => task.id == parentId ? {id: task.id, type: task.type, text: task.text, deadline: task.deadline, progress: task.progress, striked: task.striked, parent: task.parent, hasChildren: true} : task);
-    setTasks(sortTasks([...newTasks, newTask]));
+    const newSortedTasks = sortTasks([...newTasks, newTask]);
+    setTasks(newSortedTasks);
 
     const newSubtasksBtnState = [];
     const newShownSubtasksState = [];
     let counter = 0;
 
-    for (let i = 0; i < tasks.length; i++) {
+    console.log(oldParentIndex);
+    const booleanValue = subtasksBtnState[oldParentIndex];
+    console.log(booleanValue);
+    for (let i = 0; i < oldLength; i++) {
       newSubtasksBtnState.push(subtasksBtnState[counter]);
       newShownSubtasksState.push(shownSubtasksState[counter]);
       counter++;
       if (tasks[i].id == parentId) {
         newSubtasksBtnState.push(false);
-        newShownSubtasksState.push(false);
+        newShownSubtasksState.push(booleanValue);
       }
     }
 
     setSubtasksBtnState(newSubtasksBtnState);
-    console.log("1");
     setShownSubtasksState(newShownSubtasksState);
-    console.log("2");
+    if (!booleanValue) {
+      setLastParent([parentId]);
+    }
   }
+  //Callback for addSubtask
+  useEffect(() => {
+    if (lastParent[0]) {
+      showSubtasks(lastParent[0]);
+    }
+  }, [lastParent])
   
   return (
     <StrikerLayout>

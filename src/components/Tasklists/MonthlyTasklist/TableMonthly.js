@@ -15,11 +15,11 @@ function TableMonthly({ tasks, setTasks, strikeTask, deleteTask, filterPriority,
     //Task type buttons
     const taskType = (type, id) => {
         if (type == 0) {
-            return <input type="image" className="strikeBtn" onDoubleClick={() => strikeTask(id)} src={require("../../../images/event.png")} onKeyDown={(e) => e.keyCode == 38 ? changeTaskType(id, 0) : (e.keyCode == 40 ? changeTaskType(id, 1) : alert("Press up or down to swap through task types!"))} />
+            return <input type="image" className="strikeBtn" onDoubleClick={() => strikeTask(id)} src={require("../../../images/event.png")} onKeyDown={(e) => changeTaskType(id, e)} />
         } else if (type == 1) {
-            return <input type="image" className="strikeBtn" onDoubleClick={() => strikeTask(id)} src={require("../../../images/assignment.png")} onKeyDown={(e) => e.keyCode == 38 ? changeTaskType(id, 0) : (e.keyCode == 40 ? changeTaskType(id, 1) : alert("Press up or down to swap through task types!"))} />
+            return <input type="image" className="strikeBtn" onDoubleClick={() => strikeTask(id)} src={require("../../../images/assignment.png")} onKeyDown={(e) => changeTaskType(id, e)} />
         } else if (type == 2) {
-            return <input type="image" className="strikeBtn" onDoubleClick={() => strikeTask(id)} src={require("../../../images/note.png")} onKeyDown={(e) => e.keyCode == 38 ? changeTaskType(id, 0) : (e.keyCode == 40 ? changeTaskType(id, 1) : alert("Press up or down to swap through task types!"))} />
+            return <input type="image" className="strikeBtn" onDoubleClick={() => strikeTask(id)} src={require("../../../images/note.png")} onKeyDown={(e) => changeTaskType(id, e)} />
         }
     }
 
@@ -137,7 +137,7 @@ function TableMonthly({ tasks, setTasks, strikeTask, deleteTask, filterPriority,
                             rowClass = "task";
                         }
 
-                        return <tr key={task.id} className={task.striked ? rowClass + " striked" : rowClass}>
+                        return <tr key={task.id} className={task.striked ? rowClass + " striked" : rowClass} id={task.id + "ID"}>
                             <td className={task.parent !== null ? "subtaskTypeBtnContainer" : "btnContainer"}>
                                 {taskType(task.type, task.id)}
                             </td>
@@ -158,7 +158,7 @@ function TableMonthly({ tasks, setTasks, strikeTask, deleteTask, filterPriority,
                                 <input className={"row_info deadline " + task.id + "deadline"} onFocus={() => deadlineOnFocus(task.id)} onBlur={() => deadlineOnBlur(task.id)} placeholder={task.deadline} />
                             </td>
                             <td>
-                                <div tabIndex="0" className={"taskProgress " + progressColours[task.progress]} onKeyDown={(e) => e.keyCode == 38 ? changeTaskProgress(task.id, 0) : (e.keyCode == 40 ? changeTaskProgress(task.id, 1) : alert("Press up or down to swap through task types!"))}>{progress[task.progress]}</div>
+                                <div tabIndex="0" className={"taskProgress " + progressColours[task.progress]} onKeyDown={(e) => changeTaskProgress(task.id, e)}>{progress[task.progress]}</div>
                             </td>
                             <td className="btnContainer">
                                 <DeleteOutlined className="deleteTask" onClick={() => deleteTask(task.id)} />

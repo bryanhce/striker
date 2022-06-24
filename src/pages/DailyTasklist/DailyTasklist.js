@@ -1,5 +1,5 @@
 import './DailyTasklist.css';
-import { useState } from "react"
+import { useState, useEffect } from "react"
 import { ContainerDaily } from '../../components/Tasklists/DailyTasklist/ContainerDaily';
 import StrikerLayout from '../StrikerLayout/StrikerLayout';
 
@@ -45,6 +45,9 @@ function DailyTasklist() {
     [0, 1], [0, 1]
   ]);
 
+  //State for Number of Added Tasks
+  const [addedTasks, setAddedTasks] = useState([0]);
+
   //Strike Task Event
   const strikeTask = (id) => {
     setTasks(tasks.map((task) => task.id == id ? {id: task.id, type: task.type, text: task.text, priority: task.priority, effort: task.effort, striked: !task.striked} : task))
@@ -59,15 +62,28 @@ function DailyTasklist() {
   const addTask = () => {
     const newTask = {id: tasks.length + 1, type: 0, text: "", priority: 0, effort: 0, striked: false};
     setTasks([...tasks, newTask]);
+
+    const newAddedTasks = addedTasks[0] + 1;
+    setAddedTasks([newAddedTasks]);
   }
+  //Callback for Add Task Event
+  useEffect(() => {
+    console.log(addedTasks);
+    if (addedTasks[0] > 0) {
+      const newTaskElement = document.getElementsByClassName("task")[document.getElementsByClassName("task").length - 1];
+      newTaskElement.scrollIntoView({ behavior: "smooth" });
+    }
+  }, [addedTasks])
 
   //Change Task Type Event
-  const changeTaskType = (id, keypressed) => {
-    console.log("Changing task type of task " + id + ", key pressed: " + keypressed);
-    if (keypressed == 1) {
+  const changeTaskType = (id, e) => {
+    e.preventDefault();
+    if (e.keyCode == 40) {
       setTasks(tasks.map((task) => task.id == id ? {id: task.id, type: task.type + 1 <= 2 ? task.type + 1 : 0, text: task.text, priority: task.priority, effort: task.effort, striked: task.striked} : task))
-    } else if (keypressed == 0) {
+    } else if (e.keyCode == 38) {
       setTasks(tasks.map((task) => task.id == id ? {id: task.id, type: task.type - 1 >= 0 ? task.type - 1 : 2, text: task.text, priority: task.priority, effort: task.effort, striked: task.striked} : task))
+    } else {
+      alert("Use the up or down arrows to swap through task types!");
     }
   }
 
@@ -81,12 +97,15 @@ function DailyTasklist() {
   }
 
   //Change Task Priority Event
-  const changeTaskPriority = (id, keypressed) => {
-    if (keypressed == 1) {
+  const changeTaskPriority = (id, e) => {
+    e.preventDefault();
+    if (e.keyCode == 40) {
       setTasks(tasks.map((task) => task.id == id ? {id: task.id, type: task.type, text: task.text, priority: task.priority + 1 <= 2 ? task.priority + 1 : 0, effort: task.effort, striked: task.striked} : task))
-    } else if (keypressed == 0) {
+    } else if (e.keyCode == 38) {
       setTasks(tasks.map((task) => task.id == id ? {id: task.id, type: task.type, text: task.text, priority: task.priority - 1 >= 0 ? task.priority - 1 : 2, effort: task.effort, striked: task.striked} : task))
-    }    
+    } else {
+      alert("Use the up or down arrows to swap through task priorities!");
+    }
   }
 
   //Change Task Effort Event

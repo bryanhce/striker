@@ -64,6 +64,7 @@
 thead {
   position: sticky;
   top: 0px;
+  z-index: 1;
 }
 
 table {
@@ -110,6 +111,10 @@ td {
   padding: 20px;
   border-left: 0px;
   border-right: 0px;
+}
+
+.subtask {
+  z-index: 0;
 }
 
 .strikeBtnHeader {
@@ -239,16 +244,12 @@ td {
 .subtaskTypeBtnContainer {
   position: relative;
   left: 40px;
-  z-index: 1;
+  z-index: 0;
 }
 
 [contenteditable]:focus {
   outline: 1px solid #808080;
   border-radius: 10px;
-}
-
-.deadlineContainer {
-  height: 100%;
 }
 
 .taskProgress {
@@ -267,8 +268,13 @@ td {
   color: red;
 }
 
+.deadlineContainer {
+  height: 100%;
+}
 
 .deadline {
+  display: flex;
+  margin: auto;
   font-size: 1.2em;
   border: 0px;
   text-align: center;

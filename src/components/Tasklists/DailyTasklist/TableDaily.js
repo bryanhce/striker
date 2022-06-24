@@ -25,11 +25,11 @@ function TableDaily({ tasks, strikeTask, deleteTask, filterPriority, filterEffor
     //Task type buttons
     const taskType = (type, id) => {
         if (type == 0) {
-            return <input type="image" className="strikeBtn" onDoubleClick={() => strikeTask(id)} src={require("../../../images/event.png")} onKeyDown={(e) => e.keyCode == 38 ? changeTaskType(id, 0) : (e.keyCode == 40 ? changeTaskType(id, 1) : alert("Press up or down to swap through task types!"))} />
+            return <input type="image" className="strikeBtn" onDoubleClick={() => strikeTask(id)} src={require("../../../images/event.png")} onKeyDown={(e) => changeTaskType(id, e)} />
         } else if (type == 1) {
-            return <input type="image" className="strikeBtn" onDoubleClick={() => strikeTask(id)} src={require("../../../images/assignment.png")} onKeyDown={(e) => e.keyCode == 38 ? changeTaskType(id, 0) : (e.keyCode == 40 ? changeTaskType(id, 1) : alert("Press up or down to swap through task types!"))} />
+            return <input type="image" className="strikeBtn" onDoubleClick={() => strikeTask(id)} src={require("../../../images/assignment.png")} onKeyDown={(e) => changeTaskType(id, e)} />
         } else if (type == 2) {
-            return <input type="image" className="strikeBtn" onDoubleClick={() => strikeTask(id)} src={require("../../../images/note.png")} onKeyDown={(e) => e.keyCode == 38 ? changeTaskType(id, 0) : (e.keyCode == 40 ? changeTaskType(id, 1) : alert("Press up or down to swap through task types!"))} />
+            return <input type="image" className="strikeBtn" onDoubleClick={() => strikeTask(id)} src={require("../../../images/note.png")} onKeyDown={(e) => changeTaskType(id, e)} />
         }
     }
 
@@ -86,19 +86,21 @@ function TableDaily({ tasks, strikeTask, deleteTask, filterPriority, filterEffor
                             <div className="priorityHeaderText">Priority</div>
                             {filters[0][1] > 0
                                     ? <CaretDownOutlined className={filters[0][0] !== 0 ? "filterIcon" : "filterIcon hidden"} />
-                                    : <CaretUpOutlined className={filters[0][0] !== 0 ? "filterIcon" : "filterIcon hidden"}/>}                        </div>
+                                    : <CaretUpOutlined className={filters[0][0] !== 0 ? "filterIcon" : "filterIcon hidden"}/>}
+                        </div>
                     </th>
                     <th className="effortHeader filterableHeader" onClick={filterEffort}>
                         <div className="headerContainer">
                             <div className="effortHeaderText">Effort</div>
                             {filters[1][1] > 0
                                     ? <CaretDownOutlined className={filters[1][0] !== 0 ? "filterIcon" : "filterIcon hidden"} />
-                                    : <CaretUpOutlined className={filters[1][0] !== 0 ? "filterIcon" : "filterIcon hidden"}/>}                        </div>
+                                    : <CaretUpOutlined className={filters[1][0] !== 0 ? "filterIcon" : "filterIcon hidden"}/>}
+                        </div>
                     </th>
                     <th className="deleteBtnHeader"></th>
                 </tr>
                 {tasks.map((task) => {
-                    return <tr key={task.id} className={task.striked ? "task striked" : "task"}>
+                    return <tr key={task.id} className={task.striked ? "task striked" : "task"} id={task.id + "ID"}>
                         <td className="btnContainer">
                             {taskType(task.type, task.id)}
                         </td>
@@ -106,7 +108,7 @@ function TableDaily({ tasks, strikeTask, deleteTask, filterPriority, filterEffor
                             <div className={"taskText " + task.id + "text"} contentEditable="true" onBlur={() => updateTaskText(task.id)}>{task.text}</div>
                         </td>
                         <td className="priorityContainer">
-                            <div tabindex="0" className={"row_info priority " + priorities[task.priority]} onKeyDown={(e) => e.keyCode == 38 ? changeTaskPriority(task.id, 0) : (e.keyCode == 40 ? changeTaskPriority(task.id, 1) : alert("Press up or down to swap through task types!"))}></div>
+                            <div tabindex="0" className={"row_info priority " + priorities[task.priority]} onKeyDown={(e) => changeTaskPriority(task.id, e)}></div>
                         </td>
                         <td>
                             <div className={"taskEffort " + task.id + "effort"} contentEditable="true" onKeyDown={onlyNumbers} onBlur={() => updateTaskEffort(task.id)}>{task.effort}</div>
