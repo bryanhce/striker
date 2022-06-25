@@ -1,5 +1,5 @@
 import { Menu } from "antd";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import {
   DesktopOutlined,
   BarChartOutlined,
@@ -17,10 +17,12 @@ import { format, addDays } from "date-fns";
 const StrikerMenu = () => {
   //logic for logout
   const { logOut } = useUserAuth();
+  const navigate = useNavigate();
 
   const handleLogOut = async () => {
     try {
       await logOut();
+      navigate("/");
     } catch (err) {
       console.log(err.message);
     }

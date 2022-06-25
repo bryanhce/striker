@@ -11,7 +11,7 @@ import { auth } from "../firebase";
 const UserAuthContext = createContext();
 
 export function UserAuthContextProvider({ children }) {
-  const [user, setUser] = useState("");
+  const [user] = useState("");
 
   function signUp(email, password) {
     return createUserWithEmailAndPassword(auth, email, password);
@@ -31,8 +31,11 @@ export function UserAuthContextProvider({ children }) {
 
   useEffect(() => {
     const unsubscribe = onAuthStateChanged(auth, (currentUser) => {
-      setUser(currentUser);
+      currentUser
+        ? localStorage.setItem("currentUser", JSON.stringify(currentUser))
+        : localStorage.removeItem("currentUser");
     });
+
     return () => {
       unsubscribe();
     };

@@ -127,7 +127,7 @@ const SignUpPage = () => {
                   rules={[
                     {
                       required: true,
-                      message: "Please input your password!",
+                      message: "Password should be at least 6 characters long",
                     },
                   ]}
                 >
