@@ -1,6 +1,5 @@
 import "./App.css";
 import { Route, Routes } from "react-router-dom";
-import TaskList from "./pages/TaskList/TaskList";
 import DailyTasklist from "./pages/DailyTasklist/DailyTasklist";
 import MonthlyTasklist from "./pages/MonthlyTasklist/MonthlyTasklist";
 import CalendarPage from "./pages/Calendar/CalendarPage";
@@ -10,7 +9,7 @@ import LoginPage from "./pages/Login/LoginPage";
 import SignUpPage from "./pages/SignUp/SignUpPage";
 import ResetPasswordPage from "./pages/ResetPassword/ResetPasswordPage";
 import { UserAuthContextProvider } from "./context/UserAuthContext";
-import ProtectedRoute from "./components/AssistantFeatures/ProtectedRoute/ProtectedRoute";
+import ProtectedRoute from "./components/ProtectedRoute/ProtectedRoute";
 
 function App() {
   return (
@@ -34,7 +33,8 @@ function App() {
               <MonthlyTasklist />
             </ProtectedRoute>
           }
-        />        <Route
+        />{" "}
+        <Route
           path="/calendar"
           element={
             <ProtectedRoute>
