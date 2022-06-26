@@ -35,17 +35,29 @@ const AnalyticsPage = () => {
       <div className="site-card-wrapper">
         <Row gutter={16}>
           <Col span={8}>
-            <Card title="Productivity/ Effort Rate" className="progress-card">
+            <Card
+              title="Productivity/ Effort Rate"
+              className="progress-card"
+              data-testid="productivity-rate"
+            >
               <Progress type="circle" percent={89} strokeColor={"#a0d911"} />
             </Card>
           </Col>
           <Col span={8}>
-            <Card title="Completion Rate" className="progress-card">
+            <Card
+              title="Completion Rate"
+              className="progress-card"
+              data-testid="completion-rate"
+            >
               <Progress type="circle" percent={77} />
             </Card>
           </Col>
           <Col span={8}>
-            <Card title="Productive Days Per Year" className="progress-card">
+            <Card
+              title="Productive Days Per Year"
+              className="progress-card"
+              data-testid="productive-days"
+            >
               <Progress
                 type="dashboard"
                 format={() => "37 Days"}
@@ -59,17 +71,29 @@ const AnalyticsPage = () => {
       <div className="site-card-wrapper">
         <Row gutter={16}>
           <Col span={8}>
-            <Card title="Total Tasks Completed" className="progress-card">
+            <Card
+              title="Total Tasks Completed"
+              className="progress-card"
+              data-testid="tasks-completed"
+            >
               109 Tasks
             </Card>
           </Col>
           <Col span={8}>
-            <Card title="Total Reminders" className="progress-card">
+            <Card
+              title="Total Reminders"
+              className="progress-card"
+              data-testid="total-reminders"
+            >
               77 Reminders
             </Card>
           </Col>
           <Col span={8}>
-            <Card title="Total Events" className="progress-card">
+            <Card
+              title="Total Events"
+              className="progress-card"
+              data-testid="total-events"
+            >
               42 Events
             </Card>
           </Col>
