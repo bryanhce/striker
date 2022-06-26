@@ -1,3 +1,7 @@
-.site-layout .site-layout-background {
-  background: #fff;
+.site-layout-background {
+  background: #fff !important;
+}
+
+.striker-title {
+  margin-top: -1%;
 }

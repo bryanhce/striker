@@ -67,7 +67,10 @@ const LoginPage = () => {
                   fontSize: "9vh",
                 }}
               >
-                <i>STRIKER</i>
+                <img
+                  src={require("../../images/striker-title.png")}
+                  alt="striker title"
+                />
               </span>
               <Form
                 name="basic"
