@@ -19,27 +19,31 @@ const StrikerLayout = (props) => {
         minHeight: "100vh",
       }}
     >
-      <Sider
-        collapsible
-        collapsed={isCollapse}
-        onCollapse={onCollapse}
-        data-testid="slider"
+      <Header
+        className="site-layout-background"
+        style={{
+          padding: 0,
+          fontWeight: "bold",
+          textAlign: "center",
+          fontSize: "9vh",
+        }}
       >
-        <div className="logo" />
-        <StrikerMenu />
-      </Sider>
+        <img
+          src={require("../../images/striker-title.png")}
+          className="striker-title"
+          alt="striker title"
+        />
+      </Header>
       <Layout className="site-layout">
-        <Header
-          className="site-layout-background"
-          style={{
-            padding: 0,
-            fontWeight: "bold",
-            textAlign: "center",
-            fontSize: "9vh",
-          }}
+        <Sider
+          collapsible
+          collapsed={isCollapse}
+          onCollapse={onCollapse}
+          data-testid="slider"
         >
-          <i>STRIKER</i>
-        </Header>
+          <div className="logo" />
+          <StrikerMenu />
+        </Sider>
         <Content
           style={{
             margin: "0 16px",
@@ -59,15 +63,15 @@ const StrikerLayout = (props) => {
           >
             {props.children}
           </div>
+          <Footer
+            style={{
+              textAlign: "center",
+            }}
+            data-testid="footer"
+          >
+            Striker ©2022 Created by Head in the Clouds
+          </Footer>
         </Content>
-        <Footer
-          style={{
-            textAlign: "center",
-          }}
-          data-testid="footer"
-        >
-          Striker ©2022 Created by Head in the Clouds
-        </Footer>
       </Layout>
     </Layout>
   );
