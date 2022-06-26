@@ -19,7 +19,12 @@ const StrikerLayout = (props) => {
         minHeight: "100vh",
       }}
     >
-      <Sider collapsible collapsed={isCollapse} onCollapse={onCollapse}>
+      <Sider
+        collapsible
+        collapsed={isCollapse}
+        onCollapse={onCollapse}
+        data-testid="slider"
+      >
         <div className="logo" />
         <StrikerMenu />
       </Sider>
@@ -59,6 +64,7 @@ const StrikerLayout = (props) => {
           style={{
             textAlign: "center",
           }}
+          data-testid="footer"
         >
           Striker ©2022 Created by Head in the Clouds
         </Footer>

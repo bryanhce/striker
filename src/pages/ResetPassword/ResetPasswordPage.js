@@ -101,6 +101,7 @@ const ResetPasswordPage = () => {
                       textAlign: "center",
                       fontSize: "4vh",
                     }}
+                    data-testid="subheader"
                   >
                     PASSWORD RESET
                   </span>
@@ -114,6 +115,7 @@ const ResetPasswordPage = () => {
                       type: "email",
                     },
                   ]}
+                  data-testid="email"
                 >
                   <Input onChange={(e) => setEmail(e.target.value)} />
                 </Form.Item>

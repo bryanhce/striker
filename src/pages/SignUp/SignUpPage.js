@@ -104,6 +104,7 @@ const SignUpPage = () => {
                       textAlign: "center",
                       fontSize: "4vh",
                     }}
+                    data-testid="subheader"
                   >
                     SIGN UP
                   </span>
@@ -117,6 +118,7 @@ const SignUpPage = () => {
                       type: "email",
                     },
                   ]}
+                  data-testid="email"
                 >
                   <Input onChange={(e) => setEmail(e.target.value)} />
                 </Form.Item>
@@ -130,6 +132,7 @@ const SignUpPage = () => {
                       message: "Password should be at least 6 characters long",
                     },
                   ]}
+                  data-testid="password"
                 >
                   <Input.Password
                     onChange={(e) => setPassword(e.target.value)}

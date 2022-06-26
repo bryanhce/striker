@@ -95,6 +95,7 @@ const LoginPage = () => {
                       textAlign: "center",
                       fontSize: "4vh",
                     }}
+                    data-testid="subheader"
                   >
                     LOGIN
                   </span>
@@ -108,6 +109,7 @@ const LoginPage = () => {
                       type: "email",
                     },
                   ]}
+                  data-testid="email"
                 >
                   <Input onChange={(e) => setEmail(e.target.value)} />
                 </Form.Item>
@@ -121,6 +123,7 @@ const LoginPage = () => {
                       message: "Please input your password!",
                     },
                   ]}
+                  data-testid="password"
                 >
                   <Input.Password
                     onChange={(e) => setPassword(e.target.value)}
@@ -132,7 +135,9 @@ const LoginPage = () => {
                     span: 16,
                   }}
                 >
-                  <Link to="/reset-password">Forgot Password?</Link>
+                  <Link to="/reset-password" data-testid="forgot-password">
+                    Forgot Password?
+                  </Link>
                 </Form.Item>
                 <Form.Item
                   wrapperCol={{
