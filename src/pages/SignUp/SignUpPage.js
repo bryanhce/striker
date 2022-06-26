@@ -18,9 +18,19 @@ const SignUpPage = () => {
   const handleSubmit = async (e) => {
     e.preventDefault();
     setError("");
+    let userId = "";
     try {
-      await signUp(email, password);
+      await signUp(email, password).then((data) => (userId = data.user.uid));
       successNotification();
+      const requestOptions = {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ userId: userId }),
+      };
+      fetch(
+        "https://striker-backend.herokuapp.com/new-user",
+        requestOptions
+      ).then((response) => console.log(response.json()));
       navigate("/");
     } catch (err) {
       setError(err.message);
