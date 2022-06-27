@@ -18,7 +18,8 @@ function DailyTasklist() {
   let user = JSON.parse(localStorage.getItem("currentUser"));
   console.log("User:");
   console.log(user);
-  const userId = user.uid;
+  //const userId = user.uid;
+  const userId = "dVxGQxT8uKepfQLJxqnhBRWx6Dz1";
 
   //State for Task list
   const [tasks, setTasks] = useState([]);
