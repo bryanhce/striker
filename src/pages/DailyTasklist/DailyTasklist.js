@@ -69,7 +69,8 @@ function DailyTasklist() {
   useEffect(() => {
     if (addedTasks[0] > 0) {
       const newTaskElement = document.getElementsByClassName("task")[document.getElementsByClassName("task").length - 1];
-      newTaskElement.scrollIntoView({ behavior: "smooth" });
+      const newDivPosition = newTaskElement.offsetTop;
+      document.getElementsByClassName("tableContainer")[0].scrollTop = newDivPosition;
     }
   }, [addedTasks])
 
