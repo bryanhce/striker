@@ -4,95 +4,32 @@ import { Container } from '../../components/Tasklists/MonthlyTasklist/ContainerM
 import StrikerLayout from '../StrikerLayout/StrikerLayout';
 
 function MonthlyTasklist() {
-  //Example Tasklist from API:
-  const apiTasklist = [
-    {
-        id: 1,
-        type: 0,
-        text: "Bryan Orbital Meeting",
-        deadline: "23-05-2022",
-        progress: 0,
-        striked: false,
-        parent: null,
-        hasChildren: true
-    },
-    {
-        id: 2,
-        type: 1,
-        text: "Temasek Hall engagement camp props",
-        deadline: "27-05-2022",
-        progress: 1,
-        striked: false,
-        parent: null,
-        hasChildren: true
-    },
-    {
-        id: 3,
-        type: 1,
-        text: "CS2040S Tutorial 1",
-        deadline: "21-05-2022",
-        progress: 0,
-        striked: false,
-        parent: null,
-        hasChildren: true
-    },
-    {
-      id: 4,
-      type: 2,
-      text: "LSM1301 Lab 2",
-      deadline: "30-05-2022",
-      progress: 2,
-      striked: false,
-      parent: null,
-      hasChildren: false
-    },
-    {
-      id: 5,
-      type: 1,
-      text: "CS2040S T1 Q5",
-      deadline: "18-05-2022",
-      progress: 1,
-      striked: false,
-      parent: 3,
-      hasChildren: false
-    },
-    {
-      id: 6,
-      type: 1,
-      text: "CS2040S T1 Q7",
-      deadline: "19-05-2022",
-      progress: 1,
-      striked: false,
-      parent: 3,
-      hasChildren: false
-    },
-    {
-      id: 7,
-      type: 1,
-      text: "Develop Front-End",
-      deadline: "19-05-2022",
-      progress: 1,
-      striked: false,
-      parent: 1,
-      hasChildren: false
-    },
-    {
-      id: 8,
-      type: 1,
-      text: "Finish Proposals",
-      deadline: "19-05-2022",
-      progress: 1,
-      striked: false,
-      parent: 2,
-      hasChildren: false
-    }
-  ];
+
+  //Get User Data:
+  let user = JSON.parse(localStorage.getItem("currentUser"));
+  console.log("User:");
+  console.log(user);
+  //const userId = user.uid;
+  const userId = "dVxGQxT8uKepfQLJxqnhBRWx6Dz1";
+
+  //Today's date:
+  let today = new Date();
+  const monthString = today.getFullYear() + "-" + String(today.getMonth() + 1).padStart(2, '0');
+  console.log("Loading data for month: " + monthString);
+
+  //State for Task list
+  const [tasks, setTasks] = useState([]);
+
+  //State for Subtasks Buttons
+  const [subtasksBtnState, setSubtasksBtnState] = useState([]);
+  
+  //State for Shown Subtasks
+  const [shownSubtasksState, setShownSubtasksState] = useState([]);
 
   //Sort Tasks and Subtasks
   function sortTasks(tasks) {
-    const parentTasks = tasks.filter((task) => task.parent == null);
-
-    const subtasks = tasks.filter((task) => task.parent !== null);
+    const parentTasks = tasks.filter((task) => task.parent == "");
+    const subtasks = tasks.filter((task) => task.parent !== "");
 
     let sortedTasks = [];
     for (let i = 0; i < parentTasks.length; i++) {
@@ -107,21 +44,34 @@ function MonthlyTasklist() {
     return sortedTasks;
   }
 
-  //State for Task list
-  const [tasks, setTasks] = useState(sortTasks(apiTasklist));
+  //Initial update of tasks state, subtask button state and shown subtasks state
+  useEffect(() => {
+    fetch(`https://striker-backend.herokuapp.com/calendar/${userId}?year-month=${monthString}`)
+    .then((response) => response.json())
+    .then((data) => data.filter((task) => task.deadline.Valid))
+    .then((dailyData) => dailyData.map((task) => {
+      return {id: task.id, type: task.taskType, text: task.description, deadline: task.deadline.String, progress: task.progress.Int64, striked: task.isCompleted.Valid, parent: task.parentId.String, hasChildren: task.hasChildren};
+    }))
+    .then((log) => {
+      console.log("Data: ");
+      console.log(log);
+      return log;
+    })
+    .then((filteredData) => {
+      setTasks(sortTasks(filteredData));
+      return filteredData;
+    })
+    .then((filteredData) => {
+      setSubtasksBtnState(filteredData.map((task) => false));
+      return filteredData;
+    })
+    .then((filteredData) => setShownSubtasksState(filteredData.map((task) => false)));
+  }, []);
 
   // State for filters, first value is if filter is clicked, second is up or down
   const [filters, setFilters] = useState([
     [0, 1], [0, 1]
   ]);
-   
-  //State for Subtasks Buttons
-  const initialSubtasksBtnState = tasks.map((task) => false);
-  const [subtasksBtnState, setSubtasksBtnState] = useState(initialSubtasksBtnState);
-  
-  //State for Shown Subtasks
-  const initialShownSubtasksState = tasks.map((task) => false);
-  const [shownSubtasksState, setShownSubtasksState] = useState(initialShownSubtasksState);
 
   //State for Number of Added Tasks
   const [addedTasks, setAddedTasks] = useState([0]);
@@ -164,7 +114,7 @@ function MonthlyTasklist() {
 
   //Add Task Event
   const addTask = () => {
-    const newTask = {id: tasks.length + 1, type: 0, text: "", deadline: "", progress: 0, striked: false, parent: null, hasChildren: false};
+    const newTask = {id: "", type: 0, text: "", deadline: "", progress: 0, striked: false, parent: "", hasChildren: false};
     setTasks(sortTasks([...tasks, newTask]));
     setSubtasksBtnState([...subtasksBtnState, false]);
     setShownSubtasksState([...shownSubtasksState, false]);
@@ -174,10 +124,10 @@ function MonthlyTasklist() {
   }
   //Callback for Add Task Event
   useEffect(() => {
-    console.log(addedTasks);
     if (addedTasks[0] > 0) {
       const newTaskElement = document.getElementsByClassName("task")[document.getElementsByClassName("task").length - 1];
-      newTaskElement.scrollIntoView({ behavior: "smooth" });
+      const newDivPosition = newTaskElement.offsetTop;
+      document.getElementsByClassName("tableContainer")[0].scrollTop = newDivPosition;
     }
   }, [addedTasks])
 

@@ -22,18 +22,6 @@ function TableMonthly({ tasks, setTasks, strikeTask, deleteTask, filterPriority,
             return <input type="image" className="strikeBtn" onDoubleClick={() => strikeTask(id)} src={require("../../../images/note.png")} onKeyDown={(e) => changeTaskType(id, e)} />
         }
     }
-
-    const onlyNumbers = (e) => {
-        if (e.shiftKey) {
-            e.preventDefault();
-        }
-        if (e.keyCode === 8 || e.keyCode === 46
-            || e.keyCode === 37 || e.keyCode === 39) {
-            return true;
-        } else if ( e.keyCode < 48 || e.keyCode > 57 ) {
-            e.preventDefault();
-        }
-    }
   
     //Filter Tasks Show All
     const filterTasksAll = () => {
@@ -127,7 +115,7 @@ function TableMonthly({ tasks, setTasks, strikeTask, deleteTask, filterPriority,
                 <tbody>
                     {tasks.map((task) => {
                         let rowClass;
-                        if (task.parent !== null) {
+                        if (task.parent != "") {
                             if (shownSubtasksState[tasks.indexOf(task)] && !(filtered == 1 && task.striked)) {
                                 rowClass = "subtask";
                             } else {
@@ -138,15 +126,15 @@ function TableMonthly({ tasks, setTasks, strikeTask, deleteTask, filterPriority,
                         }
 
                         return <tr key={task.id} className={task.striked ? rowClass + " striked" : rowClass} id={task.id + "ID"}>
-                            <td className={task.parent !== null ? "subtaskTypeBtnContainer" : "btnContainer"}>
+                            <td className={task.parent !== "" ? "subtaskTypeBtnContainer" : "btnContainer"}>
                                 {taskType(task.type, task.id)}
                             </td>
                             <td>
                                 <div className="taskTextContainer">
-                                    <div className={task.parent !== null ? "subtaskText " + task.id + "text" : "taskText " + task.id + "text"} contentEditable="true" onBlur={() => updateTaskText(task.id)}>{task.text}</div>
+                                    <div className={task.parent !== "" ? "subtaskText " + task.id + "text" : "taskText " + task.id + "text"} contentEditable="true" onBlur={() => updateTaskText(task.id)}>{task.text}</div>
                                     <div className="subtaskBtnContainers">
                                         <div className="addSubtaskBtnContainer">
-                                            <PlusSquareOutlined className={task.parent !== null ? "addSubtaskBtn hidden" : "addSubtaskBtn"} onClick={() => addSubtask(task.id)}/>
+                                            <PlusSquareOutlined className={task.parent !== "" ? "addSubtaskBtn hidden" : "addSubtaskBtn"} onClick={() => addSubtask(task.id)}/>
                                         </div>
                                         {subtasksBtnState[tasks.indexOf(task)]
                                             ? <DownOutlined className={task.hasChildren ? "subtaskBtn" : "subtaskBtn hidden"} onClick={() => showSubtasks(task.id)}/>

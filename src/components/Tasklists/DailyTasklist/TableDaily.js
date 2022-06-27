@@ -3,7 +3,9 @@ import { useState } from "react";
 import { notification } from 'antd';
 import { EyeOutlined, EyeInvisibleOutlined, DeleteOutlined, CaretDownOutlined, CaretUpOutlined } from "@ant-design/icons";
 
+
 function TableDaily({ tasks, strikeTask, deleteTask, filterPriority, filterEffort, filters, updateTaskText, updateTaskEffort, changeTaskType, changeTaskPriority }) {
+
     //State for shown and hidden tasks (0 is show all, 1 is uncompleted tasks, 2 is completed tasks)
     const [filtered, setFiltered] = useState([
         0
@@ -17,7 +19,6 @@ function TableDaily({ tasks, strikeTask, deleteTask, filterPriority, filterEffor
     }
     
     const onlyNumbers = (e) => {
-
         if (!(e.keyCode === 8 || e.keyCode === 46
             || e.keyCode === 37 || e.keyCode === 39
             || (e.keyCode >= 48 && e.keyCode <= 57)) || e.shiftKey) {
@@ -108,7 +109,7 @@ function TableDaily({ tasks, strikeTask, deleteTask, filterPriority, filterEffor
                     <th className="deleteBtnHeader"></th>
                 </tr>
                 {tasks.map((task) => {
-                    return <tr key={task.id} className={task.striked ? "task striked" : "task"} id={task.id + "ID"}>
+                    return <tr key={tasks.indexOf(task)} className={task.striked ? "task striked" : "task"} id={task.id + "ID"}>
                         <td className="btnContainer">
                             {taskType(task.type, task.id)}
                         </td>
