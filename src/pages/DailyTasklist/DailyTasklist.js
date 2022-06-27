@@ -2,43 +2,42 @@ import './DailyTasklist.css';
 import { useState, useEffect } from "react"
 import { ContainerDaily } from '../../components/Tasklists/DailyTasklist/ContainerDaily';
 import StrikerLayout from '../StrikerLayout/StrikerLayout';
+import { useUserAuth } from "../../context/UserAuthContext";
+
+//getTasklist API: https://striker-backend.herokuapp.com/task-list/dVxGQxT8uKepfQLJxqnhBRWx6Dz1?date=2022-06-12
 
 function DailyTasklist() {
+
+  //Today's date:
+  let today = new Date();
+  //const dateString = today.getFullYear() + "-" + String(today.getMonth() + 1).padStart(2, '0') + "-" + String(today.getDate()).padStart(2, '0');
+  const dateString = "2022-06-12";
+  console.log("Loading data for date: " + dateString);
+  
+  //Get User Data:
+  let user = JSON.parse(localStorage.getItem("currentUser"));
+  console.log("User:");
+  console.log(user);
+  const userId = user.uid;
+
   //State for Task list
-  const [tasks, setTasks] = useState([
-    {
-        id: 1,
-        type: 0,
-        text: "Bryan Orbital Meeting",
-        priority: 2,
-        effort: 90,
-        striked: false
-    },
-    {
-        id: 2,
-        type: 1,
-        text: "Temasek Hall engagement camp props",
-        priority: 1,
-        effort: 10,
-        striked: false
-    },
-    {
-        id: 3,
-        type: 1,
-        text: "CS2040S Tutorial 1",
-        priority: 0,
-        effort: 75,
-        striked: true
-    },
-    {
-      id: 4,
-      type: 2,
-      text: "LSM1301 Lab 2",
-      priority: 1,
-      effort: 40,
-      striked: false
-    }
-  ]);
+  const [tasks, setTasks] = useState([]);
+
+  //Initial update of tasks
+  useEffect(() => {
+    console.log("Data: ");
+    fetch(`https://striker-backend.herokuapp.com/task-list/${userId}?date=${dateString}`)
+    .then((response) => response.json())
+    .then((data) => data.filter((task) => !task.deadline.Valid))
+    .then((dailyData) => dailyData.map((task) => {
+      return {id: task.id, type: task.taskType, text: task.description, priority: task.priority.Int64, effort: task.effort.Int64, striked: task.isCompleted.Valid};
+    }))
+    .then((log) => {
+      console.log(log);
+      return log;
+    })
+    .then((filteredData) => setTasks(filteredData));
+  }, []);
 
   // State for filters, first value is if filter is clicked, second is up or down
   const [filters, setFilters] = useState([
@@ -68,7 +67,6 @@ function DailyTasklist() {
   }
   //Callback for Add Task Event
   useEffect(() => {
-    console.log(addedTasks);
     if (addedTasks[0] > 0) {
       const newTaskElement = document.getElementsByClassName("task")[document.getElementsByClassName("task").length - 1];
       newTaskElement.scrollIntoView({ behavior: "smooth" });
@@ -91,8 +89,6 @@ function DailyTasklist() {
   const updateTaskTextState = (id) => {
     const targetText = document.getElementsByClassName(id + "text")[0];
     const updatedText = targetText.textContent;
-    console.log("Updated Text:");
-    console.log(updatedText);
     setTasks(tasks.map((task) => task.id == id ? {id: task.id, type: task.type, text: updatedText, priority: task.priority, effort: task.effort, striked: task.striked} : task))
   }
 
@@ -114,7 +110,7 @@ function DailyTasklist() {
     const updatedEffort = parseInt(targetEffort.textContent);
     console.log("Updated Effort:");
     console.log(updatedEffort);
-    setTasks(tasks.map((task) => task.id == id ? {id: task.id, type: task.type, text: task.text, priority: task.priority, effort: updatedEffort, striked: task.striked} : task))
+    setTasks(tasks.map((task) => task.id == id ? {id: task.id, type: task.type, text: task.text, priority: task.priority, effort: updatedEffort ? updatedEffort : 0, striked: task.striked} : task))
   }
 
   //Filter Priority Event
