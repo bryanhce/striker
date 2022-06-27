@@ -134,7 +134,7 @@ We will use Heroku to host the web application. Git and github for version contr
 
 ## Technical Proof of Concept
 
-Link to test the demo of Striker: https://striker-deploy.herokuapp.com/home
+Link to test the demo of Striker: https://striker-frontend.herokuapp.com/home
 
 As a demo, we used Firebase as the temporary backend. One of the fully working features is the sign up and login pages. You are unable to access the other routes of the application without logging in. Once you have signed up, you will be redirected to the login in page and using the same credentials you have keyed in previously, you would be able to access the application.
 
