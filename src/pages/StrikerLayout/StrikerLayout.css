@@ -2,6 +2,15 @@
   background: #fff !important;
 }
 
+.ant-layout-header {
+  background-color: #3b3b3b !important;
+  height: 100px !important;
+}
+
+.striker-title {
+  margin: 20px !important;
+}
+
 .striker-title {
   margin-top: -1%;
 }
