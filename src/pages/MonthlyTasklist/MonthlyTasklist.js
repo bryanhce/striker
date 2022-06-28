@@ -9,8 +9,8 @@ function MonthlyTasklist() {
   let user = JSON.parse(localStorage.getItem("currentUser"));
   console.log("User:");
   console.log(user);
-  //const userId = user.uid;
-  const userId = "dVxGQxT8uKepfQLJxqnhBRWx6Dz1";
+  const userId = user.uid;
+  //const userId = "dVxGQxT8uKepfQLJxqnhBRWx6Dz1";
 
   //Today's date:
   let today = new Date();

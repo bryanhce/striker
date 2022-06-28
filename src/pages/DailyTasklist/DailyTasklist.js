@@ -8,18 +8,20 @@ import { useUserAuth } from "../../context/UserAuthContext";
 
 function DailyTasklist() {
 
-  //Today's date:
-  let today = new Date();
-  //const dateString = today.getFullYear() + "-" + String(today.getMonth() + 1).padStart(2, '0') + "-" + String(today.getDate()).padStart(2, '0');
-  const dateString = "2022-06-12";
-  console.log("Loading data for date: " + dateString);
-  
   //Get User Data:
   let user = JSON.parse(localStorage.getItem("currentUser"));
   console.log("User:");
   console.log(user);
-  //const userId = user.uid;
-  const userId = "dVxGQxT8uKepfQLJxqnhBRWx6Dz1";
+  const userId = user.uid;
+  //const userId = "dVxGQxT8uKepfQLJxqnhBRWx6Dz1";
+
+  //Today's date:
+  let today = new Date();
+  const dateString = userId == "dVxGQxT8uKepfQLJxqnhBRWx6Dz1"
+    ? "2022-06-12"
+    : today.getFullYear() + "-" + String(today.getMonth() + 1).padStart(2, '0') + "-" + String(today.getDate()).padStart(2, '0');
+  //const dateString = "2022-06-12";
+  console.log("Loading data for date: " + dateString);
 
   //State for Task list
   const [tasks, setTasks] = useState([]);
