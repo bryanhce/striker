@@ -13,14 +13,10 @@ function DailyTasklist() {
   console.log("User:");
   console.log(user);
   const userId = user.uid;
-  //const userId = "dVxGQxT8uKepfQLJxqnhBRWx6Dz1";
 
   //Today's date:
   let today = new Date();
-  const dateString = userId == "dVxGQxT8uKepfQLJxqnhBRWx6Dz1"
-    ? "2022-06-12"
-    : today.getFullYear() + "-" + String(today.getMonth() + 1).padStart(2, '0') + "-" + String(today.getDate()).padStart(2, '0');
-  //const dateString = "2022-06-12";
+  const dateString = today.getFullYear() + "-" + String(today.getMonth() + 1).padStart(2, '0') + "-" + String(today.getDate()).padStart(2, '0');
   console.log("Loading data for date: " + dateString);
 
   //State for Task list
@@ -57,7 +53,8 @@ function DailyTasklist() {
 
   //Delete Task Event
   const deleteTask = (id) => {
-    setTasks(tasks.filter((task) => task.id !== id))
+    setTasks(tasks.filter((task) => task.id !== id));
+    fetch(`https://striker-backend.herokuapp.com/task-list/single-task/${id}`).then((response) => console.log(response));
   }
 
   //Add Task Event
@@ -67,7 +64,26 @@ function DailyTasklist() {
 
     const newAddedTasks = addedTasks[0] + 1;
     setAddedTasks([newAddedTasks]);
+
+    //Send to Backend:
+    const requestOptions = {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({ 
+        taskType: 0,
+        description: "",
+        effort: 0,
+        priority: 0,
+        userId: userId,
+        hasChildren: false
+      }),
+    };
+    fetch(
+      `https://striker-backend.herokuapp.com/task-list/single-task?date=${dateString}`,
+      requestOptions
+    ).then((response) => console.log(response.json()));
   }
+
   //Callback for Add Task Event
   useEffect(() => {
     if (addedTasks[0] > 0) {
@@ -89,11 +105,44 @@ function DailyTasklist() {
     }
   }
 
+  //Update Task Type Event
+  const updateTaskType = (taskType, id) => {
+        //Send to Backend:
+        const requestOptions = {
+          method: "PUT",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({ 
+            taskType: taskType
+          }),
+        };
+        fetch(
+          `https://striker-backend.herokuapp.com/task-list/single-task/${id}`,
+          requestOptions
+        ).then((response) => console.log(response.json()));
+  }
+
   //Change Task Text Event
   const updateTaskTextState = (id) => {
     const targetText = document.getElementsByClassName(id + "text")[0];
     const updatedText = targetText.textContent;
     setTasks(tasks.map((task) => task.id == id ? {id: task.id, type: task.type, text: updatedText, priority: task.priority, effort: task.effort, striked: task.striked} : task))
+    updateTaskText(updatedText, id);
+  }
+
+  //Update Task Type Event
+  const updateTaskText = (taskText, id) => {
+    //Send to Backend:
+    const requestOptions = {
+      method: "PUT",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({ 
+        description: taskText
+      }),
+    };
+    fetch(
+      `https://striker-backend.herokuapp.com/task-list/single-task/${id}`,
+      requestOptions
+    ).then((response) => console.log(response.json()));
   }
 
   //Change Task Priority Event
@@ -108,6 +157,22 @@ function DailyTasklist() {
     }
   }
 
+  //Update Task Priority Event
+  const updateTaskPriority = (taskPriority, id) => {
+    //Send to Backend:
+    const requestOptions = {
+      method: "PUT",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({ 
+        priority: taskPriority
+      }),
+    };
+    fetch(
+      `https://striker-backend.herokuapp.com/task-list/single-task/${id}`,
+      requestOptions
+    ).then((response) => console.log(response.json()));
+  }
+
   //Change Task Effort Event
   const updateTaskEffortState = (id) => {
     const targetEffort = document.getElementsByClassName(id + "effort")[0];
@@ -115,6 +180,23 @@ function DailyTasklist() {
     console.log("Updated Effort:");
     console.log(updatedEffort);
     setTasks(tasks.map((task) => task.id == id ? {id: task.id, type: task.type, text: task.text, priority: task.priority, effort: updatedEffort ? updatedEffort : 0, striked: task.striked} : task))
+    updateTaskEffort(updatedEffort, id);
+  }
+
+  //Update Task Effort Event
+  const updateTaskEffort = (taskEffort, id) => {
+    //Send to Backend:
+    const requestOptions = {
+      method: "PUT",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({ 
+        effort: 1
+      }),
+    };
+    fetch(
+      `https://striker-backend.herokuapp.com/task-list/single-task/${id}`,
+      requestOptions
+    ).then((response) => console.log(response.json()));
   }
 
   //Filter Priority Event
@@ -153,7 +235,8 @@ function DailyTasklist() {
     <StrikerLayout>
       <ContainerDaily tasks={tasks} strikeTask={strikeTask} deleteTask={deleteTask} addTask={addTask}
       filterPriority={filterPriority} filterEffort={filterEffort} filters={filters}
-      updateTaskText={updateTaskTextState} updateTaskEffort={updateTaskEffortState} changeTaskType={changeTaskType} changeTaskPriority={changeTaskPriority}/>
+      updateTaskTextState={updateTaskTextState} updateTaskEffortState={updateTaskEffortState} changeTaskType={changeTaskType} changeTaskPriority={changeTaskPriority}
+      updateTaskTypeEvent={updateTaskType} updateTaskTextEvent={updateTaskText} updateTaskPriorityEvent={updateTaskPriority} updateTaskEffortEvent={updateTaskEffort} />
     </StrikerLayout>
   );
 }

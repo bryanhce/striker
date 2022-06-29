@@ -10,8 +10,10 @@ import SignUpPage from "./pages/SignUp/SignUpPage";
 import ResetPasswordPage from "./pages/ResetPassword/ResetPasswordPage";
 import { UserAuthContextProvider } from "./context/UserAuthContext";
 import ProtectedRoute from "./components/ProtectedRoute/ProtectedRoute";
+import app from "./firebase";
 
 function App() {
+
   return (
     <UserAuthContextProvider>
       <Routes>

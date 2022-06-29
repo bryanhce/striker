@@ -3,7 +3,7 @@ import AddTask from '../AddTask';
 import Progress from '../Progress';
 import TableDaily from './TableDaily';
 
-export const ContainerDaily = ({ tasks, strikeTask, deleteTask, addTask, filterPriority, filterEffort, filters, updateTaskText, updateTaskEffort, changeTaskType, changeTaskPriority }) => {
+export const ContainerDaily = ({ tasks, strikeTask, deleteTask, addTask, filterPriority, filterEffort, filters, updateTaskTextState, updateTaskEffortState, changeTaskType, changeTaskPriority, updateTaskTypeEvent, updateTaskTextEvent, updateTaskPriorityEvent, updateTaskEffortEvent }) => {
     const daysOfWeek = ["monday", "tuesday", "wednesday", "thursday", "friday", "saturday", "sunday"];
     var today = new Date();
     return (
@@ -14,7 +14,8 @@ export const ContainerDaily = ({ tasks, strikeTask, deleteTask, addTask, filterP
             </div>
             <TableDaily tasks={tasks} strikeTask={strikeTask} deleteTask={deleteTask} 
             filterPriority={filterPriority} filterEffort={filterEffort} filters={filters}
-            updateTaskText={updateTaskText} updateTaskEffort={updateTaskEffort} changeTaskType={changeTaskType} changeTaskPriority={changeTaskPriority}/>
+            updateTaskTextState={updateTaskTextState} updateTaskEffortState={updateTaskEffortState} changeTaskType={changeTaskType} changeTaskPriority={changeTaskPriority}
+            updateTaskTypeEvent={updateTaskTypeEvent} updateTaskTextEvent={updateTaskTextEvent} updateTaskPriorityEvent={updateTaskPriorityEvent} updateTaskEffortEvent={updateTaskEffortEvent}/>
             <AddTask addTask={addTask} />
             <Progress tasks={tasks}/>
         </div>

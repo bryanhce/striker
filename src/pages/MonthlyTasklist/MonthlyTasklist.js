@@ -14,6 +14,7 @@ function MonthlyTasklist() {
 
   //Today's date:
   let today = new Date();
+  const dateString = today.getFullYear() + "-" + String(today.getMonth() + 1).padStart(2, '0') + "-" + String(today.getDate()).padStart(2, '0');
   const monthString = today.getFullYear() + "-" + String(today.getMonth() + 1).padStart(2, '0');
   console.log("Loading data for month: " + monthString);
 
@@ -48,7 +49,7 @@ function MonthlyTasklist() {
   useEffect(() => {
     fetch(`https://striker-backend.herokuapp.com/calendar/${userId}?year-month=${monthString}`)
     .then((response) => response.json())
-    .then((data) => data.filter((task) => task.deadline.Valid))
+    .then((data) => data.filter((task) => task.progress.Valid))
     .then((dailyData) => dailyData.map((task) => {
       return {id: task.id, type: task.taskType, text: task.description, deadline: task.deadline.String, progress: task.progress.Int64, striked: task.isCompleted.Valid, parent: task.parentId.String, hasChildren: task.hasChildren};
     }))
@@ -121,6 +122,23 @@ function MonthlyTasklist() {
 
     const newAddedTasks = addedTasks[0] + 1;
     setAddedTasks([newAddedTasks]);
+
+    //Send to Backend:
+    const requestOptions = {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({ 
+        taskType: 0,
+        description: "",
+        progress: 0,
+        userId: userId,
+        hasChildren: false
+      }),
+    };
+    fetch(
+      `https://striker-backend.herokuapp.com/task-list/single-task?date=${dateString}`,
+      requestOptions
+    ).then((response) => console.log(response.json()));
   }
   //Callback for Add Task Event
   useEffect(() => {
