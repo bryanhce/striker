@@ -29,26 +29,30 @@ const StrikerMenu = () => {
   };
 
   //logic for date
-  const today = format(new Date(), "dd.MM.yyyy");
-  const yesterday = format(addDays(new Date(), -1), "dd.MM.yyyy");
-  const tomorrow = format(addDays(new Date(), 1), "dd.MM.yyyy");
+  const todayDisplay = format(new Date(), "dd.MM.yyyy");
+  const yesterdayDisplay = format(addDays(new Date(), -1), "dd.MM.yyyy");
+  const tomorrowDisplay = format(addDays(new Date(), 1), "dd.MM.yyyy");
+
+  const todayProp = format(new Date(), "yyyy-MM-dd");
+  const yesterdayProp = format(addDays(new Date(), -1), "yyyy-MM-dd");
+  const tomorrowProp = format(addDays(new Date(), 1), "yyyy-MM-dd");
 
   return (
     <Menu theme="dark" mode="inline">
       <Menu.Item key="1">
         <RightOutlined />
-        <span>{tomorrow}</span>
-        <Link to="/daily-task-list" />
+        <span>{tomorrowDisplay}</span>
+        <Link to="/daily-task-list" state={tomorrowProp} />
       </Menu.Item>
       <Menu.Item key="2">
         <RightCircleOutlined />
-        <span>{today}</span>
-        <Link to="/daily-task-list" />
+        <span>{todayDisplay}</span>
+        <Link to="/daily-task-list" state={todayProp} />
       </Menu.Item>
       <Menu.Item key="3">
         <RightOutlined />
-        <span>{yesterday}</span>
-        <Link to="/daily-task-list" />
+        <span>{yesterdayDisplay}</span>
+        <Link to="/daily-task-list" state={yesterdayProp} />
       </Menu.Item>
       <Menu.Item key="4">
         <HomeOutlined />

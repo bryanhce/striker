@@ -27,10 +27,9 @@ const SignUpPage = () => {
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({ userId: userId }),
       };
-      fetch(
-        "https://striker-backend.herokuapp.com/new-user",
-        requestOptions
-      ).then((response) => console.log(response.json()));
+      fetch("https://striker-backend.herokuapp.com/new-user", requestOptions)
+        .then((response) => console.log(response.json()))
+        .catch((r) => console.log(r.json()));
       navigate("/");
     } catch (err) {
       setError(err.message);

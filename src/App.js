@@ -10,10 +10,9 @@ import SignUpPage from "./pages/SignUp/SignUpPage";
 import ResetPasswordPage from "./pages/ResetPassword/ResetPasswordPage";
 import { UserAuthContextProvider } from "./context/UserAuthContext";
 import ProtectedRoute from "./components/ProtectedRoute/ProtectedRoute";
-import app from "./firebase";
+import StrikerLayout from "./pages/StrikerLayout/StrikerLayout";
 
 function App() {
-
   return (
     <UserAuthContextProvider>
       <Routes>
@@ -21,45 +20,61 @@ function App() {
         <Route path="/signup" element={<SignUpPage />} />
         <Route path="/reset-password" element={<ResetPasswordPage />} />
         <Route
-          path="/daily-task-list"
+          path="/"
           element={
             <ProtectedRoute>
-              <DailyTasklist />
+              <StrikerLayout />
             </ProtectedRoute>
           }
-        />
-        <Route
-          path="/monthly-task-list"
-          element={
-            <ProtectedRoute>
-              <MonthlyTasklist />
-            </ProtectedRoute>
-          }
-        />{" "}
-        <Route
-          path="/calendar"
-          element={
-            <ProtectedRoute>
-              <CalendarPage />
-            </ProtectedRoute>
-          }
-        />
-        <Route
-          path="/analytics"
-          element={
-            <ProtectedRoute>
-              <AnalyticsPage />
-            </ProtectedRoute>
-          }
-        />
-        <Route
-          path="/settings"
-          element={
-            <ProtectedRoute>
-              <SettingsPage />
-            </ProtectedRoute>
-          }
-        />
+        >
+          {/* nested routes */}
+          <Route
+            exact
+            path="daily-task-list"
+            element={
+              <ProtectedRoute>
+                <DailyTasklist />
+              </ProtectedRoute>
+            }
+          />
+          <Route
+            exact
+            path="monthly-task-list"
+            element={
+              <ProtectedRoute>
+                <MonthlyTasklist />
+              </ProtectedRoute>
+            }
+          />
+          <Route
+            exact
+            path="calendar"
+            element={
+              <ProtectedRoute>
+                <CalendarPage />
+              </ProtectedRoute>
+            }
+          />
+          <Route
+            exact
+            path="analytics"
+            element={
+              <ProtectedRoute>
+                <AnalyticsPage />
+              </ProtectedRoute>
+            }
+          />
+          <Route
+            exact
+            path="settings"
+            element={
+              <ProtectedRoute>
+                <SettingsPage />
+              </ProtectedRoute>
+            }
+          />
+        </Route>
+        <Route path="*" element={<LoginPage />} /> {/* page not found */}
       </Routes>
     </UserAuthContextProvider>
   );

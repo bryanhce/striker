@@ -65,12 +65,10 @@ function monthCellRender(value) {
 
 const CalendarPage = () => {
   return (
-    <StrikerLayout>
-      <Calendar
-        dateCellRender={dateCellRender}
-        monthCellRender={monthCellRender}
-      />
-    </StrikerLayout>
+    <Calendar
+      dateCellRender={dateCellRender}
+      monthCellRender={monthCellRender}
+    />
   );
 };
 
