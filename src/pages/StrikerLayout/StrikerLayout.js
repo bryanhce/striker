@@ -4,9 +4,10 @@ import "antd/dist/antd.min.css";
 import StrikerMenu from "../../components/StrikerMenu/StrikerMenu";
 
 import { Layout, Breadcrumb } from "antd";
+import { Outlet } from "react-router-dom";
 const { Header, Content, Footer, Sider } = Layout;
 
-const StrikerLayout = (props) => {
+const StrikerLayout = () => {
   const [isCollapse, setCollapse] = useState(false);
 
   const onCollapse = () => {
@@ -61,7 +62,7 @@ const StrikerLayout = (props) => {
               minHeight: 360,
             }}
           >
-            {props.children}
+            <Outlet />
           </div>
           <Footer
             style={{

@@ -2,6 +2,7 @@ import StrikerLayout from "../StrikerLayout/StrikerLayout";
 import { Card, Col, Row, Progress } from "antd";
 import "./AnalyticsPage.css";
 import AnalyticsGraph from "../../components/AnalyticsGraphs/AnalyticsGraph";
+import { Fragment } from "react";
 
 const productivityData = [
   { month: 1, productivity: 60 },
@@ -31,7 +32,7 @@ const CompletionLabelArr = CompletionData.map(
 
 const AnalyticsPage = () => {
   return (
-    <StrikerLayout>
+    <Fragment>
       <div className="site-card-wrapper">
         <Row gutter={16}>
           <Col span={8}>
@@ -111,7 +112,7 @@ const AnalyticsPage = () => {
           labelArr={CompletionLabelArr}
         />
       </div>
-    </StrikerLayout>
+    </Fragment>
   );
 };
 
