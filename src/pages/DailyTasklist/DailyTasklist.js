@@ -118,7 +118,8 @@ function DailyTasklist() {
         fetch(
           `https://striker-backend.herokuapp.com/task-list/single-task/${id}`,
           requestOptions
-        ).then((response) => console.log(response.json()));
+        ).then((response) => console.log(response.json()))
+        .catch((e) => console.log(e));
   }
 
   //Change Task Text Event
@@ -142,7 +143,9 @@ function DailyTasklist() {
     fetch(
       `https://striker-backend.herokuapp.com/task-list/single-task/${id}`,
       requestOptions
-    ).then((response) => console.log(response.json()));
+    ).then((response) => console.log(response.json()))    
+    .catch((e) => console.log(e));
+
   }
 
   //Change Task Priority Event
@@ -170,7 +173,8 @@ function DailyTasklist() {
     fetch(
       `https://striker-backend.herokuapp.com/task-list/single-task/${id}`,
       requestOptions
-    ).then((response) => console.log(response.json()));
+    ).then((response) => console.log(response.json()))
+    .catch((e) => console.log(e));
   }
 
   //Change Task Effort Event
@@ -196,7 +200,8 @@ function DailyTasklist() {
     fetch(
       `https://striker-backend.herokuapp.com/task-list/single-task/${id}`,
       requestOptions
-    ).then((response) => console.log(response.json()));
+    ).then((response) => console.log(response.json()))
+    .catch((e) => console.log(e));
   }
 
   //Filter Priority Event
