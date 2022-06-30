@@ -82,7 +82,9 @@ function DailyTasklist() {
   const deleteTask = (id) => {
     setTasks(tasks.filter((task) => task.id !== id));
     fetch(
-      `https://striker-backend.herokuapp.com/task-list/single-task/${id}`
+      `https://striker-backend.herokuapp.com/task-list/single-task/${id}`, {
+      method: 'DELETE'
+      }
     ).then((response) => console.log(response));
   };
 

@@ -164,6 +164,12 @@ function MonthlyTasklist() {
     setTasks(newTasks);
     setSubtasksBtnState(newSubtasksBtnState);
     setShownSubtasksState(newShownSubtasksState);
+
+    fetch(
+      `https://striker-backend.herokuapp.com/task-list/single-task/${id}`, {
+      method: 'DELETE'
+      }
+    ).then((response) => console.log(response));
   };
 
   //Add Task Event
