@@ -1,6 +1,8 @@
 import "./DailyTasklist.css";
-import { useState, useEffect } from "react";
+import { useState, useEffect, Fragment } from "react";
 import { ContainerDaily } from "../../components/Tasklists/DailyTasklist/ContainerDaily";
+import "../../components/YesterdayModal/YesterdayModal";
+import YesterdayModal from "../../components/YesterdayModal/YesterdayModal";
 
 //getTasklist API: https://striker-backend.herokuapp.com/task-list/dVxGQxT8uKepfQLJxqnhBRWx6Dz1?date=2022-06-12
 
@@ -363,24 +365,37 @@ function DailyTasklist() {
     ]);
   };
 
+  //Modal popup for yesterday's task upon login
+  //need to implement w api  last login login
+  const [isYesterdayModalVisible, setIsVisible] = useState(true);
+
+  const closeYesterdayModal = () => {
+    setIsVisible(!isYesterdayModalVisible);
+  };
+
   return (
-    <ContainerDaily
-      tasks={tasks}
-      strikeTask={strikeTask}
-      deleteTask={deleteTask}
-      addTask={addTask}
-      filterPriority={filterPriority}
-      filterEffort={filterEffort}
-      filters={filters}
-      updateTaskTextState={updateTaskTextState}
-      updateTaskEffortState={updateTaskEffortState}
-      changeTaskType={changeTaskType}
-      changeTaskPriority={changeTaskPriority}
-      updateTaskTypeEvent={updateTaskType}
-      updateTaskTextEvent={updateTaskText}
-      updateTaskPriorityEvent={updateTaskPriority}
-      updateTaskEffortEvent={updateTaskEffort}
-    />
+    <Fragment>
+      {isYesterdayModalVisible && (
+        <YesterdayModal closeYesterdayModal={closeYesterdayModal} />
+      )}
+      <ContainerDaily
+        tasks={tasks}
+        strikeTask={strikeTask}
+        deleteTask={deleteTask}
+        addTask={addTask}
+        filterPriority={filterPriority}
+        filterEffort={filterEffort}
+        filters={filters}
+        updateTaskTextState={updateTaskTextState}
+        updateTaskEffortState={updateTaskEffortState}
+        changeTaskType={changeTaskType}
+        changeTaskPriority={changeTaskPriority}
+        updateTaskTypeEvent={updateTaskType}
+        updateTaskTextEvent={updateTaskText}
+        updateTaskPriorityEvent={updateTaskPriority}
+        updateTaskEffortEvent={updateTaskEffort}
+      />
+    </Fragment>
   );
 }
 

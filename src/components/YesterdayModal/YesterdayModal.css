@@ -1,0 +1,42 @@
+.yesterday-popup {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  text-align: center;
+
+  position: fixed;
+  top: 30vh;
+  left: 18%;
+  width: 70%;
+  height: 45%;
+  z-index: 100;
+  overflow: hidden;
+}
+
+.yesterday-close-modal {
+  font-size: 2.5rem;
+  position: absolute;
+  right: 5%;
+}
+
+.yesterday-popup hr {
+  width: 60%;
+  margin-top: 0;
+}
+
+.yesterday-tasklist {
+  text-align: left;
+  size: 100% !important;
+}
+
+.low-green {
+  background-color: #b7eb8f;
+}
+
+.med-orange {
+  background-color: #ffd591;
+}
+
+.high-red {
+  background-color: #ffa39e;
+}
