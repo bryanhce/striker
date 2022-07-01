@@ -8,6 +8,7 @@ import {
   RightOutlined,
   RightCircleOutlined,
   UserOutlined,
+  SettingOutlined,
 } from "@ant-design/icons";
 
 import "./StrikerMenu.css";
@@ -74,7 +75,12 @@ const StrikerMenu = () => {
         <span>Analytics</span>
         <Link to="/analytics" />
       </Menu.Item>
-      <Menu.Item key="8" onClickCapture={handleLogOut}>
+      <Menu.Item key="8">
+        <SettingOutlined />
+        <span>Settings</span>
+        <Link to="/settings" />
+      </Menu.Item>
+      <Menu.Item key="9" onClickCapture={handleLogOut}>
         <UserOutlined />
         <span>Sign Out</span>
       </Menu.Item>

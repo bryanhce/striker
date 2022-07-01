@@ -25,7 +25,10 @@ const SignUpPage = () => {
       const requestOptions = {
         method: "POST",
         headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ userId: userId }),
+        body: JSON.stringify({
+          userId: userId,
+          email: email,
+        }),
       };
       fetch("https://striker-backend.herokuapp.com/new-user", requestOptions)
         .then((response) => console.log(response.json()))
