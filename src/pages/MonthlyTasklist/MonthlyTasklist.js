@@ -65,7 +65,7 @@ function MonthlyTasklist() {
             text: task.description,
             deadline: task.deadline.String,
             progress: task.progress.Int64,
-            striked: task.isCompleted.Valid,
+            striked: task.isCompleted.Bool,
             parent: task.parentId.String,
             hasChildren: task.hasChildren,
           };
@@ -144,8 +144,23 @@ function MonthlyTasklist() {
         }
       }
     }
+    const element = document.getElementById(id + "ID");
+    const isCompleted = !element.classList.contains("striked");
+    //Send to Backend:
+    const requestOptions = {
+      method: "PUT",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({
+        isCompleted: isCompleted,
+      }),
+    };
+    fetch(
+      `https://striker-backend.herokuapp.com/task-list/single-task/${id}`,
+      requestOptions
+    )
+      .then((response) => console.log(response.json()))
+      .catch((e) => console.log(e));
   };
-
   //Delete Task Event
   const deleteTask = (id) => {
     const newTasks = sortTasks(tasks);
@@ -221,6 +236,24 @@ function MonthlyTasklist() {
     }
   }, [addedTasks]);
 
+  //Update Task Text Event (Backend)
+  const updateTaskText = (taskText, id) => {
+    //Send to Backend:
+    const requestOptions = {
+      method: "PUT",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({
+        description: taskText,
+      }),
+    };
+    fetch(
+      `https://striker-backend.herokuapp.com/task-list/single-task/${id}`,
+      requestOptions
+    )
+      .then((response) => console.log(response.json()))
+      .catch((e) => console.log(e));
+  };
+
   //Change Task Text Event
   const updateTaskTextState = (id) => {
     const targetText = document.getElementsByClassName(id + "text")[0];
@@ -243,6 +276,7 @@ function MonthlyTasklist() {
           : task
       )
     );
+    updateTaskText(updatedText, id);
   };
 
   //Change Task Type Event
@@ -287,6 +321,49 @@ function MonthlyTasklist() {
     }
   };
 
+  //Update Task Type Event
+  const updateTaskType = (taskType, id) => {
+    //Send to Backend:
+    const requestOptions = {
+      method: "PUT",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({
+        taskType: taskType,
+      }),
+    };
+    fetch(
+      `https://striker-backend.herokuapp.com/task-list/single-task/${id}`,
+      requestOptions
+    )
+      .then((response) => console.log(response.json()))
+      .catch((e) => console.log(e));
+  };
+
+  //Update Task Progress Event
+  const updateTaskProgress = (taskProgress, id) => {
+    //Send to Backend:
+    const bodyJson = taskProgress == 2
+      ? {
+        progress: taskProgress,
+        isCompleted: true
+      }
+      : {
+        progress: taskProgress,
+        isCompleted: false
+      }
+    const requestOptions = {
+      method: "PUT",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify(bodyJson),
+    };
+    fetch(
+      `https://striker-backend.herokuapp.com/task-list/single-task/${id}`,
+      requestOptions
+    )
+      .then((response) => console.log(response.json()))
+      .catch((e) => console.log(e));
+  };
+
   //Change Task Progress Event
   const changeTaskProgress = (id, e) => {
     let taskClicked;
@@ -325,6 +402,24 @@ function MonthlyTasklist() {
     }
 
     setTasks(sortTasks(tasks));
+  };
+
+  //Update Task Type Event
+  const updateTaskDeadline = (taskDeadline, id) => {
+    //Send to Backend:
+    const requestOptions = {
+      method: "PUT",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({
+        deadline: taskDeadline,
+      }),
+    };
+    fetch(
+      `https://striker-backend.herokuapp.com/task-list/single-task/${id}`,
+      requestOptions
+    )
+      .then((response) => console.log(response.json()))
+      .catch((e) => console.log(e));
   };
 
   //Filter Deadline Event
@@ -459,7 +554,10 @@ function MonthlyTasklist() {
         filters={filters}
         updateTaskText={updateTaskTextState}
         changeTaskType={changeTaskType}
+        updateTaskTypeEvent={updateTaskType}
         changeTaskProgress={changeTaskProgress}
+        updateTaskProgressEvent={updateTaskProgress}
+        updateTaskDeadlineEvent={updateTaskDeadline}
         subtasksBtnState={subtasksBtnState}
         shownSubtasksState={shownSubtasksState}
         showSubtasks={showSubtasks}
