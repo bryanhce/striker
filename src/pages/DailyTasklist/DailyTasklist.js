@@ -42,7 +42,7 @@ function DailyTasklist() {
             text: task.description,
             priority: task.priority.Int64,
             effort: task.effort.Int64,
-            striked: task.isCompleted.Valid,
+            striked: task.isCompleted.Bool,
           };
         })
       )
@@ -78,13 +78,37 @@ function DailyTasklist() {
           : task
       )
     );
+    updateTaskStriked(id);
+  };
+
+  //Update Task Striked Event
+  const updateTaskStriked = (id) => {
+    const element = document.getElementById(id + "ID");
+    const isCompleted = !element.classList.contains("striked");
+    console.log(isCompleted);
+    //Send to Backend:
+    const requestOptions = {
+      method: "PUT",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({
+        isCompleted: isCompleted,
+      }),
+    };
+    fetch(
+      `https://striker-backend.herokuapp.com/task-list/single-task/${id}`,
+      requestOptions
+    )
+      .then((response) => console.log(response.json()))
+      .catch((e) => console.log(e));
   };
 
   //Delete Task Event
   const deleteTask = (id) => {
     setTasks(tasks.filter((task) => task.id !== id));
     fetch(
-      `https://striker-backend.herokuapp.com/task-list/single-task/${id}`
+      `https://striker-backend.herokuapp.com/task-list/single-task/${id}`, {
+      method: 'DELETE'
+      }
     ).then((response) => console.log(response));
   };
 
@@ -212,7 +236,7 @@ function DailyTasklist() {
     updateTaskText(updatedText, id);
   };
 
-  //Update Task Type Event
+  //Update Task Text Event (Backend)
   const updateTaskText = (taskText, id) => {
     //Send to Backend:
     const requestOptions = {
@@ -316,7 +340,7 @@ function DailyTasklist() {
       method: "PUT",
       headers: { "Content-Type": "application/json" },
       body: JSON.stringify({
-        effort: 1,
+        effort: taskEffort,
       }),
     };
     fetch(

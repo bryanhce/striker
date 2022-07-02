@@ -3,7 +3,7 @@ import { useState } from "react";
 import { PlusSquareOutlined, RightOutlined, DownOutlined, CaretUpOutlined, CaretDownOutlined, DeleteOutlined, EyeInvisibleOutlined, EyeOutlined } from "@ant-design/icons"; 
 import AddTask from '../AddTask';
 
-function TableMonthly({ tasks, setTasks, strikeTask, deleteTask, filterPriority, filterEffort, filters, updateTaskText, changeTaskType, changeTaskProgress, subtasksBtnState, shownSubtasksState, showSubtasks, addSubtask }) {
+function TableMonthly({ tasks, setTasks, strikeTask, deleteTask, filterPriority, filterEffort, filters, updateTaskText, changeTaskType, updateTaskTypeEvent, changeTaskProgress, updateTaskProgressEvent, updateTaskDeadlineEvent, subtasksBtnState, shownSubtasksState, showSubtasks, addSubtask }) {
     const progress = ["Haven't Started", "In Progress", "Completed"];
     const progressColours = ["redMonth", "yellowMonth", "greenMonth"];
 
@@ -15,11 +15,11 @@ function TableMonthly({ tasks, setTasks, strikeTask, deleteTask, filterPriority,
     //Task type buttons
     const taskType = (type, id) => {
         if (type == 0) {
-            return <input type="image" className="strikeBtn" onDoubleClick={() => strikeTask(id)} src={require("../../../images/event.png")} onKeyDown={(e) => changeTaskType(id, e)} />
+            return <input type="image" className="strikeBtn" onDoubleClick={() => strikeTask(id)} src={require("../../../images/event.png")} onKeyDown={(e) => changeTaskType(id, e)} onBlur={() => updateTaskTypeEvent(0, id)} />
         } else if (type == 1) {
-            return <input type="image" className="strikeBtn" onDoubleClick={() => strikeTask(id)} src={require("../../../images/assignment.png")} onKeyDown={(e) => changeTaskType(id, e)} />
+            return <input type="image" className="strikeBtn" onDoubleClick={() => strikeTask(id)} src={require("../../../images/assignment.png")} onKeyDown={(e) => changeTaskType(id, e)} onBlur={() => updateTaskTypeEvent(1, id)} />
         } else if (type == 2) {
-            return <input type="image" className="strikeBtn" onDoubleClick={() => strikeTask(id)} src={require("../../../images/note.png")} onKeyDown={(e) => changeTaskType(id, e)} />
+            return <input type="image" className="strikeBtn" onDoubleClick={() => strikeTask(id)} src={require("../../../images/note.png")} onKeyDown={(e) => changeTaskType(id, e)} onBlur={() => updateTaskTypeEvent(2, id)} />
         }
     }
   
@@ -71,6 +71,7 @@ function TableMonthly({ tasks, setTasks, strikeTask, deleteTask, filterPriority,
     //Deadline onBlur (Text)
     const deadlineOnBlur = (id) => {
         const taskDeadline = document.getElementsByClassName(id+"deadline")[0];
+        const taskDeadlineRaw = taskDeadline.value;
         const dateString = taskDeadline.value.substring(8);
         const monthString = taskDeadline.value.substring(5, 7);
         const yearString = taskDeadline.value.substring(0, 4);
@@ -78,7 +79,10 @@ function TableMonthly({ tasks, setTasks, strikeTask, deleteTask, filterPriority,
         taskDeadline.placeholder = finalString;
         taskDeadline.value = finalString;
         taskDeadline.type = "text";
-        setTasks(tasks.map((task) => task.id == id ? {id: task.id, type: task.type, text: task.text, deadline: finalString, progress: task.progress, striked: task.striked, parent: task.parent, hasChildren: task.hasChildren} : task))
+        setTasks(tasks.map((task) => task.id == id ? {id: task.id, type: task.type, text: task.text, deadline: taskDeadlineRaw, progress: task.progress, striked: task.striked, parent: task.parent, hasChildren: task.hasChildren} : task));
+        console.log("HELLO!");
+        console.log(taskDeadlineRaw);
+        updateTaskDeadlineEvent(taskDeadlineRaw, id);
     }
 
     return (
@@ -143,10 +147,10 @@ function TableMonthly({ tasks, setTasks, strikeTask, deleteTask, filterPriority,
                                 </div>
                             </td>
                             <td className="deadlineContainer">
-                                <input className={"row_info deadline " + task.id + "deadline"} onFocus={() => deadlineOnFocus(task.id)} onBlur={() => deadlineOnBlur(task.id)} placeholder={task.deadline} />
+                                <input className={"row_info deadline " + task.id + "deadline"} onFocus={() => deadlineOnFocus(task.id)} onBlur={() => deadlineOnBlur(task.id)} placeholder={task.deadline.substring(8) + "-" + task.deadline.substring(5, 7) + "-" + task.deadline.substring(0, 4)} />
                             </td>
                             <td>
-                                <div tabIndex="0" className={"taskProgress " + progressColours[task.progress]} onKeyDown={(e) => changeTaskProgress(task.id, e)}>{progress[task.progress]}</div>
+                                <div tabIndex="0" className={"taskProgress " + progressColours[task.progress]} onKeyDown={(e) => changeTaskProgress(task.id, e)} onBlur={updateTaskProgressEvent(task.progress, task.id)}>{progress[task.progress]}</div>
                             </td>
                             <td className="btnContainer">
                                 <DeleteOutlined className="deleteTask" onClick={() => deleteTask(task.id)} />

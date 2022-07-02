@@ -38,7 +38,7 @@ function TableDaily({ tasks, strikeTask, deleteTask, filterPriority, filterEffor
         } else if (type == 1) {
             return <input type="image" className="strikeBtn" onDoubleClick={() => strikeTask(id)} src={require("../../../images/assignment.png")} onKeyDown={(e) => changeTaskType(id, e)} onBlur={() => updateTaskTypeEvent(1, id)} />
         } else if (type == 2) {
-            return <input type="image" className="strikeBtn" onDoubleClick={() => strikeTask(id)} src={require("../../../images/note.png")} onKeyDown={(e) => changeTaskType(id, e)} onBlur={() => updateTaskTypeEvent(0, id)} />
+            return <input type="image" className="strikeBtn" onDoubleClick={() => strikeTask(id)} src={require("../../../images/note.png")} onKeyDown={(e) => changeTaskType(id, e)} onBlur={() => updateTaskTypeEvent(2, id)} />
         }
     }
 
