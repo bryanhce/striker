@@ -105,11 +105,9 @@ function DailyTasklist() {
   //Delete Task Event
   const deleteTask = (id) => {
     setTasks(tasks.filter((task) => task.id !== id));
-    fetch(
-      `https://striker-backend.herokuapp.com/task-list/single-task/${id}`, {
-      method: 'DELETE'
-      }
-    ).then((response) => console.log(response));
+    fetch(`https://striker-backend.herokuapp.com/task-list/single-task/${id}`, {
+      method: "DELETE",
+    }).then((response) => console.log(response));
   };
 
   //Add Task Event
@@ -399,9 +397,9 @@ function DailyTasklist() {
 
   return (
     <Fragment>
-      {isYesterdayModalVisible && (
+      {/* {isYesterdayModalVisible && (
         <YesterdayModal closeYesterdayModal={closeYesterdayModal} />
-      )}
+      )} */}
       <ContainerDaily
         tasks={tasks}
         strikeTask={strikeTask}
