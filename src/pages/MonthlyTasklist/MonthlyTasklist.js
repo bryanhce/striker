@@ -533,7 +533,41 @@ function MonthlyTasklist() {
     if (!booleanValue) {
       setLastParent([parentId]);
     }
+
+    //Send to Backend:
+    const requestOptionsSubtask = {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({
+        taskType: 0,
+        description: "",
+        progress: 0,
+        userId: userId,
+        parentId: parentId,
+        hasChildren: false,
+      }),
+    };
+    fetch(
+      `https://striker-backend.herokuapp.com/task-list/single-task?date=${dateString}`,
+      requestOptionsSubtask
+    ).then((response) => console.log(response.json()));
+
+    //Send to Backend:
+    const requestOptionsParent = {
+      method: "PUT",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({
+        hasChildren: true,
+      }),
+    };
+    fetch(
+      `https://striker-backend.herokuapp.com/task-list/single-task/${parentId}`,
+      requestOptionsParent
+    )
+      .then((response) => console.log(response.json()))
+      .catch((e) => console.log(e));
   };
+
   //Callback for addSubtask
   useEffect(() => {
     if (lastParent[0]) {
