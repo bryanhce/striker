@@ -9,9 +9,9 @@ import {
   RightCircleOutlined,
   UserOutlined,
   SettingOutlined,
+  BookOutlined,
 } from "@ant-design/icons";
 
-import "./StrikerMenu.css";
 import { useUserAuth } from "../../context/UserAuthContext";
 import { format, addDays } from "date-fns";
 
@@ -34,26 +34,22 @@ const StrikerMenu = () => {
   const yesterdayDisplay = format(addDays(new Date(), -1), "dd.MM.yyyy");
   const tomorrowDisplay = format(addDays(new Date(), 1), "dd.MM.yyyy");
 
-  const todayProp = format(new Date(), "yyyy-MM-dd");
-  const yesterdayProp = format(addDays(new Date(), -1), "yyyy-MM-dd");
-  const tomorrowProp = format(addDays(new Date(), 1), "yyyy-MM-dd");
-
   return (
-    <Menu theme="dark" mode="inline">
+    <Menu theme="dark" mode="inline" defaultSelectedKeys={["4"]}>
       <Menu.Item key="1">
         <RightOutlined />
         <span>{tomorrowDisplay}</span>
-        <Link to="/daily-task-list" state={tomorrowProp} />
+        <Link to="/daily-task-list" />
       </Menu.Item>
       <Menu.Item key="2">
         <RightCircleOutlined />
         <span>{todayDisplay}</span>
-        <Link to="/daily-task-list" state={todayProp} />
+        <Link to="/daily-task-list" />
       </Menu.Item>
       <Menu.Item key="3">
         <RightOutlined />
         <span>{yesterdayDisplay}</span>
-        <Link to="/daily-task-list" state={yesterdayProp} />
+        <Link to="/daily-task-list" />
       </Menu.Item>
       <Menu.Item key="4">
         <HomeOutlined />
@@ -76,11 +72,16 @@ const StrikerMenu = () => {
         <Link to="/analytics" />
       </Menu.Item>
       <Menu.Item key="8">
+        <BookOutlined />
+        <span>User Guide</span>
+        <Link to="/user-guide" />
+      </Menu.Item>
+      <Menu.Item key="9">
         <SettingOutlined />
         <span>Settings</span>
         <Link to="/settings" />
       </Menu.Item>
-      <Menu.Item key="9" onClickCapture={handleLogOut}>
+      <Menu.Item key="10" onClickCapture={handleLogOut}>
         <UserOutlined />
         <span>Sign Out</span>
       </Menu.Item>
