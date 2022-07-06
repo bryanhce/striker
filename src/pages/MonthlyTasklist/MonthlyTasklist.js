@@ -190,7 +190,6 @@ function MonthlyTasklist() {
   //Add Task Event
   const addTask = () => {
     const newTask = {
-      id: "",
       type: 0,
       text: "",
       deadline: "",

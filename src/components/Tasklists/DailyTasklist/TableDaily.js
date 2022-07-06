@@ -31,14 +31,37 @@ function TableDaily({ tasks, strikeTask, deleteTask, filterPriority, filterEffor
 
     const priorities = ["green", "yellow", "red"];
 
+    //Select field Event:
+    const onSelect = (className, id) => {
+        const task = document.getElementById(id +"ID");
+        const element = task.getElementsByClassName(className)[0];
+        element.classList.add("bordered");
+    }
+
+    //Unselect field Event:
+    const onUnselect = (className, id) => {
+        const task = document.getElementById(id +"ID");
+        const element = task.getElementsByClassName(className)[0];
+        element.classList.remove("bordered");    
+    }
+
     //Task type buttons
     const taskType = (type, id) => {
         if (type == 0) {
-            return <input type="image" className="strikeBtn" onDoubleClick={() => strikeTask(id)} src={require("../../../images/event.png")} onKeyDown={(e) => changeTaskType(id, e)} onBlur={() => updateTaskTypeEvent(0, id)} />
+            return <input type="image" className="strikeBtn" onDoubleClick={() => strikeTask(id)} src={require("../../../images/event.png")} onKeyDown={(e) => changeTaskType(id, e)} onBlur={() => {
+                updateTaskTypeEvent(0, id);
+                onUnselect("strikeBtn", id);
+            }} onClick={() => onSelect("strikeBtn", id)} />
         } else if (type == 1) {
-            return <input type="image" className="strikeBtn" onDoubleClick={() => strikeTask(id)} src={require("../../../images/assignment.png")} onKeyDown={(e) => changeTaskType(id, e)} onBlur={() => updateTaskTypeEvent(1, id)} />
+            return <input type="image" className="strikeBtn" onDoubleClick={() => strikeTask(id)} src={require("../../../images/assignment.png")} onKeyDown={(e) => changeTaskType(id, e)} onBlur={() => {
+                updateTaskTypeEvent(0, id);
+                onUnselect("strikeBtn", id);
+            }} onClick={() => onSelect("strikeBtn", id)} />        
         } else if (type == 2) {
-            return <input type="image" className="strikeBtn" onDoubleClick={() => strikeTask(id)} src={require("../../../images/note.png")} onKeyDown={(e) => changeTaskType(id, e)} onBlur={() => updateTaskTypeEvent(2, id)} />
+            return <input type="image" className="strikeBtn" onDoubleClick={() => strikeTask(id)} src={require("../../../images/note.png")} onKeyDown={(e) => changeTaskType(id, e)} onBlur={() => {
+                updateTaskTypeEvent(0, id);
+                onUnselect("strikeBtn", id);
+            }} onClick={() => onSelect("strikeBtn", id)} />        
         }
     }
 
@@ -117,7 +140,10 @@ function TableDaily({ tasks, strikeTask, deleteTask, filterPriority, filterEffor
                             <div className={"taskText " + task.id + "text"} contentEditable="true" onBlur={() => updateTaskTextState(task.id)}>{task.text}</div>
                         </td>
                         <td className="priorityContainer">
-                            <div tabindex="0" className={"row_info priority " + priorities[task.priority]} onKeyDown={(e) => changeTaskPriority(task.id, e)} onBlur={() => updateTaskPriorityEvent(task.priority, task.id)}></div>
+                            <div tabindex="0" className={"row_info priority " + priorities[task.priority]} onKeyDown={(e) => changeTaskPriority(task.id, e)} onBlur={() => {
+                                updateTaskPriorityEvent(task.priority, task.id);
+                                onUnselect("priority", task.id);
+                                }} onClick={() => onSelect("priority", task.id)}></div>
                         </td>
                         <td>
                             <div className={"taskEffort " + task.id + "effort"} contentEditable="true" onKeyDown={onlyNumbers} onBlur={() => updateTaskEffortState(task.id)}>{task.effort}</div>
