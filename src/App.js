@@ -8,6 +8,7 @@ import SettingsPage from "./pages/Settings/SettingsPage";
 import LoginPage from "./pages/Login/LoginPage";
 import SignUpPage from "./pages/SignUp/SignUpPage";
 import ResetPasswordPage from "./pages/ResetPassword/ResetPasswordPage";
+import UserGuidePage from "./pages/UserGuide/UserGuidePage";
 import { UserAuthContextProvider } from "./context/UserAuthContext";
 import ProtectedRoute from "./components/ProtectedRoute/ProtectedRoute";
 import StrikerLayout from "./pages/StrikerLayout/StrikerLayout";
@@ -61,6 +62,15 @@ function App() {
             element={
               <ProtectedRoute>
                 <AnalyticsPage />
+              </ProtectedRoute>
+            }
+          />
+          <Route
+            exact
+            path="user-guide"
+            element={
+              <ProtectedRoute>
+                <UserGuidePage />
               </ProtectedRoute>
             }
           />

@@ -1,8 +1,10 @@
-import StrikerLayout from "../StrikerLayout/StrikerLayout";
-import { Card, Col, Row, Progress } from "antd";
+import { Card, Col, Row, Progress, Spin } from "antd";
 import "./AnalyticsPage.css";
 import AnalyticsGraph from "../../components/AnalyticsGraphs/AnalyticsGraph";
-import { Fragment } from "react";
+import { Fragment, useEffect, useState } from "react";
+import { LoadingOutlined } from "@ant-design/icons";
+
+const spinner = <LoadingOutlined style={{ fontSize: 24 }} spin />;
 
 const productivityData = [
   { month: 1, productivity: 60 },
@@ -30,7 +32,25 @@ const CompletionLabelArr = CompletionData.map(
   (obj) => obj.productivity.toString() + "%"
 );
 
+let userId = JSON.parse(localStorage.getItem("currentUser")).uid;
+
 const AnalyticsPage = () => {
+  const [allData, setAllData] = useState(null);
+
+  const getAllAnalytics = async () => {
+    await fetch(`https://striker-backend.herokuapp.com/analytics/all/${userId}`)
+      .then((response) => response.json())
+      .then((data) => {
+        setAllData(data);
+        console.log(allData.totalCompletedEffort);
+      })
+      .catch((err) => console.log(err));
+  };
+
+  useEffect(() => {
+    getAllAnalytics();
+  }, []);
+
   return (
     <Fragment>
       <div className="site-card-wrapper">
@@ -41,7 +61,17 @@ const AnalyticsPage = () => {
               className="progress-card"
               data-testid="productivity-rate"
             >
-              <Progress type="circle" percent={89} strokeColor={"#a0d911"} />
+              {allData === null ? (
+                <Spin indicator={spinner} />
+              ) : (
+                <Progress
+                  type="circle"
+                  percent={Math.round(
+                    (allData.totalCompletedEffort / allData.totalEffort) * 100
+                  )}
+                  strokeColor={"#a0d911"}
+                />
+              )}
             </Card>
           </Col>
           <Col span={8}>
@@ -50,7 +80,18 @@ const AnalyticsPage = () => {
               className="progress-card"
               data-testid="completion-rate"
             >
-              <Progress type="circle" percent={77} />
+              {allData === null ? (
+                <Spin indicator={spinner} />
+              ) : (
+                <Progress
+                  type="circle"
+                  percent={Math.round(
+                    (allData.totalCompletedEvents /
+                      (allData.assignments + allData.events + allData.notes)) *
+                      100
+                  )}
+                />
+              )}
             </Card>
           </Col>
           <Col span={8}>
@@ -77,16 +118,24 @@ const AnalyticsPage = () => {
               className="progress-card"
               data-testid="tasks-completed"
             >
-              109 Tasks
+              {allData === null ? (
+                <Spin indicator={spinner} />
+              ) : (
+                <div>{allData.assignments} Tasks</div>
+              )}
             </Card>
           </Col>
           <Col span={8}>
             <Card
-              title="Total Reminders"
+              title="Total Notes"
               className="progress-card"
               data-testid="total-reminders"
             >
-              77 Reminders
+              {allData === null ? (
+                <Spin indicator={spinner} />
+              ) : (
+                <div>{allData.notes} Notes</div>
+              )}
             </Card>
           </Col>
           <Col span={8}>
@@ -95,7 +144,11 @@ const AnalyticsPage = () => {
               className="progress-card"
               data-testid="total-events"
             >
-              42 Events
+              {allData === null ? (
+                <Spin indicator={spinner} />
+              ) : (
+                <div>{allData.events} Events</div>
+              )}
             </Card>
           </Col>
         </Row>
