@@ -1,4 +1,4 @@
-@import url('https://fonts.googleapis.com/css2?family=Poppins:wght@300&display=swap');
+@import url("https://fonts.googleapis.com/css2?family=Poppins:wght@300&display=swap");
 
 .App {
   text-align: center;
@@ -41,7 +41,7 @@
 
 .border {
   border: 10px solid gray;
-  font-family: 'Poppins', sans-serif;
+  font-family: "Poppins", sans-serif;
   margin: 10px;
   padding: 20px 40px;
 }
@@ -53,12 +53,12 @@
   justify-content: space-between;
   text-transform: uppercase;
   font-size: 20px;
-  font-family: 'Poppins', sans-serif;
+  font-family: "Poppins", sans-serif;
 }
 
 .tableContainer {
   overflow-y: auto;
-  height: 500px;  
+  height: 500px;
 }
 
 thead {
@@ -77,7 +77,7 @@ table {
 
 th {
   text-align: start;
-  background-color: #A6A6A6;
+  background-color: #a6a6a6;
   font-size: 1.2em;
   padding: 10px 10px;
 }
@@ -104,7 +104,7 @@ th {
 }
 
 .filterableHeader:hover {
-  background-color: #C8C8C8;
+  background-color: #c8c8c8;
 }
 
 td {
@@ -161,7 +161,7 @@ td {
   position: relative;
 }
 
-.striked td:before{
+.striked td:before {
   content: " ";
   position: absolute;
   top: 50%;
@@ -173,7 +173,7 @@ td {
 
 .header {
   padding: 10px;
-  background-color: #A6A6A6;
+  background-color: #a6a6a6;
   font-weight: 900px;
   border-bottom: 0;
 }
@@ -286,15 +286,27 @@ td {
 }
 
 .redMonth {
-  color: #FF6B6B;
+  color: #ff6b6b;
 }
 
 .yellowMonth {
-  color: #FFD93D;
+  color: #ffd93d;
 }
 
 .greenMonth {
-  color: #6BCB77;
+  color: #6bcb77;
+}
+
+.cb-greenMonth {
+  color: #f5793a;
+}
+
+.cb-yellowMonth {
+  color: #a95aa1;
+}
+
+.cb-redMonth {
+  color: #0f2080;
 }
 
 .addTaskContainer {

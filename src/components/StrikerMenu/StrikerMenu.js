@@ -34,8 +34,33 @@ const StrikerMenu = () => {
   const yesterdayDisplay = format(addDays(new Date(), -1), "dd.MM.yyyy");
   const tomorrowDisplay = format(addDays(new Date(), 1), "dd.MM.yyyy");
 
+  //function to default select key based on url
+  const highlightDefaultKey = () => {
+    var path = window.location.pathname;
+    switch (path) {
+      case "/daily-task-list":
+        return "4";
+      case "/monthly-task-list":
+        return "5";
+      case "/calendar":
+        return "6";
+      case "/analytics":
+        return "7";
+      case "/user-guide":
+        return "8";
+      case "/settings":
+        return "9";
+      default:
+        return "4";
+    }
+  };
+
   return (
-    <Menu theme="dark" mode="inline" defaultSelectedKeys={["4"]}>
+    <Menu
+      theme="dark"
+      mode="inline"
+      defaultSelectedKeys={highlightDefaultKey()}
+    >
       <Menu.Item key="1">
         <RightOutlined />
         <span>{tomorrowDisplay}</span>

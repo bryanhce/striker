@@ -68,6 +68,24 @@ const MonthlyGuide = () => {
             arrow.
           </p>
         </Panel>
+        <Panel header="Filter Task" key="7">
+          <p>
+            Click on the header "Task" of the task list table. On first click,
+            the task list will filter to show only the uncompleted task. On a
+            subsequent click, the task list will filter to show only completed
+            task. And finally on the last click, the task list will return to
+            its original state.
+          </p>
+        </Panel>
+        <Panel header="Sort Task" key="8">
+          <p>
+            Click on the headers "Deadline" or "Progress" of the task list
+            table. On first click, the task list will be sorted by earliest to
+            latest deadline and "completed" to "haven't started" order of
+            progress respectively. On second click, the previously sorted order
+            will be reversed.
+          </p>
+        </Panel>
       </Collapse>
     </Fragment>
   );

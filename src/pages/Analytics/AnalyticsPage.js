@@ -42,7 +42,7 @@ const AnalyticsPage = () => {
       .then((response) => response.json())
       .then((data) => {
         setAllData(data);
-        console.log(allData.totalCompletedEffort);
+        console.log("analytics page " + allData.totalCompletedEffort);
       })
       .catch((err) => console.log(err));
   };
@@ -76,6 +76,24 @@ const AnalyticsPage = () => {
           </Col>
           <Col span={8}>
             <Card
+              title="Average No. of Tasks Completed Per Day"
+              className="progress-card"
+              data-testid="productive-days"
+            >
+              {allData === null ? (
+                <Spin indicator={spinner} />
+              ) : (
+                <div>
+                  {allData.averageDailyTaskCompleted === null
+                    ? 0
+                    : allData.averageDailyTaskCompleted}{" "}
+                  Tasks
+                </div>
+              )}
+            </Card>
+          </Col>
+          <Col span={8}>
+            <Card
               title="Completion Rate"
               className="progress-card"
               data-testid="completion-rate"
@@ -94,20 +112,6 @@ const AnalyticsPage = () => {
               )}
             </Card>
           </Col>
-          <Col span={8}>
-            <Card
-              title="Productive Days Per Year"
-              className="progress-card"
-              data-testid="productive-days"
-            >
-              <Progress
-                type="dashboard"
-                format={() => "37 Days"}
-                percent={20}
-                strokeColor="orange"
-              />
-            </Card>
-          </Col>
         </Row>
       </div>
       <div className="site-card-wrapper">
@@ -121,7 +125,9 @@ const AnalyticsPage = () => {
               {allData === null ? (
                 <Spin indicator={spinner} />
               ) : (
-                <div>{allData.assignments} Tasks</div>
+                <div>
+                  {allData.assignments === null ? 0 : allData.assignments} Tasks
+                </div>
               )}
             </Card>
           </Col>
@@ -134,7 +140,7 @@ const AnalyticsPage = () => {
               {allData === null ? (
                 <Spin indicator={spinner} />
               ) : (
-                <div>{allData.notes} Notes</div>
+                <div>{allData.notes === null ? 0 : allData.notes} Notes</div>
               )}
             </Card>
           </Col>
@@ -147,7 +153,7 @@ const AnalyticsPage = () => {
               {allData === null ? (
                 <Spin indicator={spinner} />
               ) : (
-                <div>{allData.events} Events</div>
+                <div>{allData.events === null ? 0 : allData.events} Events</div>
               )}
             </Card>
           </Col>

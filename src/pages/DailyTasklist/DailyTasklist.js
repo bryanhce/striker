@@ -1,9 +1,10 @@
 import "./DailyTasklist.css";
-import { useState, useEffect, Fragment } from "react";
+import { useState, useEffect, Fragment, useContext } from "react";
 import { ContainerDaily } from "../../components/Tasklists/DailyTasklist/ContainerDaily";
 import "../../components/YesterdayModal/YesterdayModal";
 import YesterdayModal from "../../components/YesterdayModal/YesterdayModal";
 import PomodoroModal from "../../components/PomodoroModal/PomodoroModal";
+import { usePomodoro } from "../../context/PomodoroContext";
 
 //getTasklist API: https://striker-backend.herokuapp.com/task-list/dVxGQxT8uKepfQLJxqnhBRWx6Dz1?date=2022-06-12
 
@@ -447,7 +448,7 @@ function DailyTasklist() {
   //Modal popup for pomodoro timer
   const [isPomoVisible, setPomoVisible] = useState(false);
 
-  const closePomoModal = () => {
+  const togglePomo = () => {
     setPomoVisible(!isPomoVisible);
   };
 
@@ -459,7 +460,7 @@ function DailyTasklist() {
           GetDailyTasks={GetDailyTasks}
         />
       )}
-      {isPomoVisible && <PomodoroModal closePomoModal={closePomoModal} />}
+      {isPomoVisible && <PomodoroModal togglePomo={togglePomo} />}
       <ContainerDaily
         tasks={tasks}
         strikeTask={strikeTask}
@@ -476,6 +477,7 @@ function DailyTasklist() {
         updateTaskTextEvent={updateTaskText}
         updateTaskPriorityEvent={updateTaskPriority}
         updateTaskEffortEvent={updateTaskEffort}
+        togglePomo={togglePomo}
       />
     </Fragment>
   );
