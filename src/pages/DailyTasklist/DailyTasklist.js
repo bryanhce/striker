@@ -4,6 +4,7 @@ import { ContainerDaily } from "../../components/Tasklists/DailyTasklist/Contain
 import "../../components/YesterdayModal/YesterdayModal";
 import YesterdayModal from "../../components/YesterdayModal/YesterdayModal";
 import { SideMenu } from "../../components/Tasklists/DailyTasklist/SideMenu";
+import PomodoroModal from "../../components/PomodoroModal/PomodoroModal";
 
 //getTasklist API: https://striker-backend.herokuapp.com/task-list/dVxGQxT8uKepfQLJxqnhBRWx6Dz1?date=2022-06-12
 
@@ -52,6 +53,8 @@ function DailyTasklist() {
   //Initial update of tasks
   useEffect(() => {
     console.log("Data: ");
+  //Get daily task
+  function GetDailyTasks() {
     fetch(
       `https://striker-backend.herokuapp.com/task-list/${userId}?date=${dateString}`
     )
@@ -103,6 +106,11 @@ function DailyTasklist() {
           setMonthlyTasks(sortTasks(filteredData));
           return filteredData;
         })
+  }
+
+  //Initial update of tasks
+  useEffect(() => {
+    GetDailyTasks();
   }, []);
 
   // State for filters, first value is if filter is clicked, second is up or down
@@ -440,11 +448,62 @@ function DailyTasklist() {
   };
 
   //Modal popup for yesterday's task upon login
-  //need to implement w api  last login login
-  const [isYesterdayModalVisible, setIsVisible] = useState(true);
+
+  //state for yesterday task modal
+  const [isYesterdayModalVisible, setIsVisible] = useState(false);
+
+  //date to check against last login date
+  let realToday = new Date();
+  const realTodayString =
+    realToday.getFullYear() +
+    "-" +
+    String(realToday.getMonth() + 1).padStart(2, "0") +
+    "-" +
+    String(realToday.getDate()).padStart(2, "0");
+
+  //function to update last login date to new date
+  const updateLastLoginDate = () => {
+    const requestOptions = {
+      method: "PUT",
+      headers: { "Content-Type": "application/json" },
+    };
+    fetch(
+      `https://striker-backend.herokuapp.com/last-login/${userId}`,
+      requestOptions
+    )
+      .then((response) => console.log(response.json()))
+      .catch((e) => console.log(e));
+  };
+
+  //this func also updates last login date
+  const checkLastLogin = () => {
+    fetch(`https://striker-backend.herokuapp.com/last-login/${userId}`)
+      .then((response) => response.json())
+      .then((data) => {
+        if (data.lastLogin !== realTodayString) {
+          updateLastLoginDate();
+          setIsVisible(true);
+        } else {
+          setIsVisible(false);
+        }
+      });
+  };
+
+  useEffect(() => {
+    checkLastLogin();
+    //uncomment for testing
+    // setIsVisible(true);
+  }, []);
 
   const closeYesterdayModal = () => {
     setIsVisible(!isYesterdayModalVisible);
+  };
+
+  //Modal popup for pomodoro timer
+  const [isPomoVisible, setPomoVisible] = useState(false);
+
+  const closePomoModal = () => {
+    setPomoVisible(!isPomoVisible);
   };
 
   return (

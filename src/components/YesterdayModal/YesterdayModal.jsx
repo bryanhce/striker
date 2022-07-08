@@ -7,66 +7,143 @@ import Backdrop from "../ModalFeatures/Backdrop/Backdrop";
 import "./YesterdayModal.css";
 import { List, notification } from "antd";
 import { useEffect } from "react";
-import DailyTasklist from "../../pages/DailyTasklist/DailyTasklist";
+import { useRef } from "react";
 
-//replace this with get api
-const data = [
-  {
-    id: 1,
-    type: 0,
-    description: "Cut hair",
-    isCompleted: false,
-    effort: 10,
-    priority: 1,
-  },
-  {
-    id: 2,
-    type: 2,
-    description: "Read 3 chapters of Sapiens",
-    isCompleted: false,
-    effort: 25,
-    priority: 0,
-  },
-  {
-    id: 3,
-    type: 1,
-    description:
-      "super super super super super super super super super super long task",
-    isCompleted: false,
-    effort: 50,
-    priority: 2,
-  },
-  {
-    id: 4,
-    type: 1,
-    description: "Should not be rendered",
-    isCompleted: true,
-    effort: 0,
-    priority: 0,
-  },
-];
+//kept for testing purposes
+// const data = [
+//   {
+//     id: 1,
+//     type: 0,
+//     description: "Cut hair",
+//     isCompleted: false,
+//     effort: 10,
+//     priority: 1,
+//   },
+//   {
+//     id: 2,
+//     type: 2,
+//     description: "Read 3 chapters of Sapiens",
+//     isCompleted: false,
+//     effort: 25,
+//     priority: 0,
+//   },
+//   {
+//     id: 3,
+//     type: 1,
+//     description:
+//       "super super super super super super super super super super long task",
+//     isCompleted: false,
+//     effort: 50,
+//     priority: 2,
+//   },
+// ];
 
 const YesterdayCard = (props) => {
-  const [yesterdayTasks, setYesterdayTasks] = useState(
-    data.filter((x) => !x.isCompleted)
-  );
+  const [yesterdayTasks, setYesterdayTasks] = useState([]);
 
-  const successNotification = () => {
+  let yesterdayDate = new Date();
+  yesterdayDate.setDate(yesterdayDate.getDate() - 1);
+  const yesterdayDateString =
+    yesterdayDate.getFullYear() +
+    "-" +
+    String(yesterdayDate.getMonth() + 1).padStart(2, "0") +
+    "-" +
+    String(yesterdayDate.getDate()).padStart(2, "0");
+
+  let realToday = new Date();
+  const realTodayString =
+    realToday.getFullYear() +
+    "-" +
+    String(realToday.getMonth() + 1).padStart(2, "0") +
+    "-" +
+    String(realToday.getDate()).padStart(2, "0");
+
+  const userId = JSON.parse(localStorage.getItem("currentUser")).uid;
+
+  //sets state for yesterdayTasks and closes modal if no yesterday task
+  const checkYesterdayTasks = () => {
+    fetch(
+      `https://striker-backend.herokuapp.com/task-list/${userId}?date=${yesterdayDateString}`
+    )
+      .then((response) => response.json())
+      .then((data) =>
+        data.filter((task) => !task.deadline.Valid && !task.isCompleted.Bool)
+      )
+      .then((YesterdayData) =>
+        YesterdayData.map((task) => {
+          return {
+            id: task.id,
+            type: task.taskType,
+            description: task.description,
+            priority: task.priority.Int64,
+            effort: task.effort.Int64,
+            isCompleted: task.isCompleted.Bool,
+          };
+        })
+      )
+      .then((filteredData) => setYesterdayTasks(filteredData))
+      .then((d) => (d.length === 0 ? props.closeYesterdayModal() : null));
+  };
+
+  useEffect(() => checkYesterdayTasks(), []);
+
+  const successNotification = (desc) => {
     notification["success"]({
       message: "Transfer Successful!",
-      description: "Task sent to today's daily log",
+      description: desc + " sent to today's daily log",
       duration: 4.0,
     });
   };
 
-  const transferTaskHandler = (id) => {
-    //do a put api here
-    setYesterdayTasks(yesterdayTasks.filter((t) => t.id !== id));
-    successNotification();
+  const errorNotification = () => {
+    notification["error"]({
+      message: "Transfer to daily log failed, please try again",
+    });
   };
 
-  //does not only run when state changes but on mount as well
+  //create new task for today from yesterday task
+  const transferTaskHandler = (task) => {
+    const requestOptions = {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({
+        //TODO must change temp id
+        id: "1029i4092323",
+        taskType: task.type,
+        description: task.description,
+        isCompleted: false,
+        effort: task.effort,
+        priority: task.priority,
+        userId: userId,
+        hasChildren: false,
+      }),
+    };
+    fetch(
+      `https://striker-backend.herokuapp.com/task-list/single-task?date=${realTodayString}`,
+      requestOptions
+    )
+      .then((response) => {
+        console.log(response.json());
+        //shows user transfer is successful
+        successNotification(task.description);
+        //change display on FE for yesterdayTasks
+        setYesterdayTasks(yesterdayTasks.filter((t) => t.id !== task.id));
+        //reloads the background daily task page
+        props.GetDailyTasks();
+      })
+      .catch((err) => {
+        console.log("create today task err " + err);
+        errorNotification();
+      });
+  };
+
+  //runs only after second render
+  const isFirstRender = useRef(true);
   useEffect(() => {
+    if (isFirstRender.current) {
+      isFirstRender.current = false;
+      return;
+    }
     if (yesterdayTasks.length === 0) {
       props.closeYesterdayModal();
     }
@@ -93,19 +170,16 @@ const YesterdayCard = (props) => {
   };
 
   return (
-    <PopUpCard className="yesterday-popup">
+    <PopUpCard>
       <header style={{ display: "flex", flexDirection: "row" }}>
         <h2 style={{ paddingTop: "3%" }}>
           <strong>Yesterday's Uncompleted Tasks</strong>
         </h2>
-        <CloseModal
-          className="yesterday-close-modal"
-          onClick={props.closeYesterdayModal}
-        />
+        <CloseModal onClick={props.closeYesterdayModal} />
       </header>
-      <hr />
+      <hr className="popup-hr" />
       <List
-        style={{ width: "80%" }}
+        style={{ width: "80%", overflow: "scroll" }}
         dataSource={yesterdayTasks}
         bordered={true}
         renderItem={(task) => (
@@ -133,11 +207,13 @@ const YesterdayCard = (props) => {
             />
             <SendOutlined
               style={{ cursor: "pointer" }}
-              onClickCapture={() => transferTaskHandler(task.id)}
+              onClickCapture={() => transferTaskHandler(task)}
             />
           </List.Item>
         )}
       />
+      <br />
+      <br />
     </PopUpCard>
   );
 };
@@ -150,7 +226,10 @@ const YesterdayModal = (props) => {
         document.getElementById("backdrop-root")
       )}
       {ReactDOM.createPortal(
-        <YesterdayCard closeYesterdayModal={props.closeYesterdayModal} />,
+        <YesterdayCard
+          closeYesterdayModal={props.closeYesterdayModal}
+          GetDailyTasks={props.GetDailyTasks}
+        />,
         document.getElementById("overlay-root")
       )}
     </Fragment>
