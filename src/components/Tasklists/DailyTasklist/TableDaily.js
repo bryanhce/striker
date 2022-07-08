@@ -140,7 +140,7 @@ function TableDaily({ tasks, strikeTask, deleteTask, filterPriority, filterEffor
                             <div className={"taskText " + task.id + "text"} contentEditable="true" onBlur={() => updateTaskTextState(task.id)}>{task.text}</div>
                         </td>
                         <td className="priorityContainer">
-                            <div tabindex="0" className={"row_info priority " + priorities[task.priority]} onKeyDown={(e) => changeTaskPriority(task.id, e)} onBlur={() => {
+                            <div tabIndex="0" className={"row_info priority " + priorities[task.priority]} onKeyDown={(e) => changeTaskPriority(task.id, e)} onBlur={() => {
                                 updateTaskPriorityEvent(task.priority, task.id);
                                 onUnselect("priority", task.id);
                                 }} onClick={() => onSelect("priority", task.id)}></div>

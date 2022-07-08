@@ -4,6 +4,7 @@ import { ContainerDaily } from "../../components/Tasklists/DailyTasklist/Contain
 import "../../components/YesterdayModal/YesterdayModal";
 import YesterdayModal from "../../components/YesterdayModal/YesterdayModal";
 import { SideMenu } from "../../components/Tasklists/DailyTasklist/SideMenu";
+import { v4 as uuidv4 } from 'uuid';
 
 //getTasklist API: https://striker-backend.herokuapp.com/task-list/dVxGQxT8uKepfQLJxqnhBRWx6Dz1?date=2022-06-12
 
@@ -164,8 +165,10 @@ function DailyTasklist() {
 
   //Add Task Event
   const addTask = () => {
+    const taskId = uuidv4();
+    console.log("Adding Task of ID: " + taskId);
     const newTask = {
-      id: tasks.length + 1,
+      id: taskId,
       type: 0,
       text: "",
       priority: 0,
@@ -182,6 +185,7 @@ function DailyTasklist() {
       method: "POST",
       headers: { "Content-Type": "application/json" },
       body: JSON.stringify({
+        id: taskId,
         taskType: 0,
         description: "",
         effort: 0,
@@ -193,7 +197,10 @@ function DailyTasklist() {
     fetch(
       `https://striker-backend.herokuapp.com/task-list/single-task?date=${dateString}`,
       requestOptions
-    ).then((response) => console.log(response.json()));
+    ).then((response) => {
+      console.log("Adding task response: ");
+      console.log(response.json());
+    });
   };
 
   //Callback for Add Task Event

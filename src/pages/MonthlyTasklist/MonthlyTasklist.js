@@ -2,6 +2,7 @@ import "./MonthlyTasklist.css";
 import { useState, useEffect } from "react";
 import { Container } from "../../components/Tasklists/MonthlyTasklist/ContainerMonthly";
 import StrikerLayout from "../StrikerLayout/StrikerLayout";
+import { v4 as uuidv4 } from 'uuid';
 
 function MonthlyTasklist() {
   //Get User Data:
@@ -189,7 +190,10 @@ function MonthlyTasklist() {
 
   //Add Task Event
   const addTask = () => {
+    const taskId = uuidv4();
+    console.log("Adding Task of ID: " + taskId);
     const newTask = {
+      id: taskId,
       type: 0,
       text: "",
       deadline: "",
@@ -210,6 +214,7 @@ function MonthlyTasklist() {
       method: "POST",
       headers: { "Content-Type": "application/json" },
       body: JSON.stringify({
+        id: taskId,
         taskType: 0,
         description: "",
         progress: 0,
@@ -479,12 +484,14 @@ function MonthlyTasklist() {
 
   //Add Subtask Event
   const addSubtask = (parentId) => {
+    const taskId = uuidv4();
+    console.log("Adding Task of ID: " + taskId);
     const oldLength = tasks.length;
     const oldParentIndex = tasks.indexOf(
       tasks.filter((task) => task.id == parentId)[0]
     );
     const newTask = {
-      id: tasks.length + 1,
+      id: taskId,
       type: 0,
       text: "",
       deadline: "",
@@ -532,6 +539,44 @@ function MonthlyTasklist() {
     if (!booleanValue) {
       setLastParent([parentId]);
     }
+
+    //Send to Backend:
+    const requestOptions = {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({
+        id: taskId,
+        taskType: 0,
+        description: "",
+        progress: 0,
+        userId: userId,
+        parentId: parentId,
+        hasChildren: false,
+      }),
+    };
+
+    const requestOptionsParent = {
+      method: "PUT",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({
+        hasChildren: true,
+      })
+    };
+    
+    fetch(
+      `https://striker-backend.herokuapp.com/task-list/single-task?date=${dateString}`,
+      requestOptions
+    )
+    .then((response) => console.log(response.json()))
+    .then((response) => {
+      console.log(parentId);
+      fetch(
+      `https://striker-backend.herokuapp.com/task-list/single-task/${parentId}`,
+      requestOptionsParent
+    )
+      .then((response) => console.log(response.json()))
+      .catch((e) => console.log(e))});
+
   };
   //Callback for addSubtask
   useEffect(() => {
