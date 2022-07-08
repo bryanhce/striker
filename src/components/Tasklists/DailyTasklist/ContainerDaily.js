@@ -1,6 +1,7 @@
 import React from "react";
 import AddTask from "../AddTask";
 import ProgressBar from "../Progress";
+import { SideMenu } from "./SideMenu";
 import TableDaily from "./TableDaily";
 
 export const ContainerDaily = ({
@@ -35,9 +36,9 @@ export const ContainerDaily = ({
       <div className="border-header">
         <h2 className="border-day">{daysOfWeek[today.getDay() - 1]}</h2>
         <h2 className="border-date">
-          {today.getDate() +
+          {today.getDate().toString().padStart(2, "0") +
             " . " +
-            today.getMonth() +
+            (today.getMonth() + 1).toString().padStart(2, "0") +
             " . " +
             today.getFullYear()}
         </h2>

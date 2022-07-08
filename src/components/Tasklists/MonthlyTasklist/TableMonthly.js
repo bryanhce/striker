@@ -15,12 +15,35 @@ function TableMonthly({ tasks, setTasks, strikeTask, deleteTask, filterPriority,
     //Task type buttons
     const taskType = (type, id) => {
         if (type == 0) {
-            return <input type="image" className="strikeBtn" onDoubleClick={() => strikeTask(id)} src={require("../../../images/event.png")} onKeyDown={(e) => changeTaskType(id, e)} onBlur={() => updateTaskTypeEvent(0, id)} />
+            return <input type="image" className="strikeBtn" onDoubleClick={() => strikeTask(id)} src={require("../../../images/event.png")} onKeyDown={(e) => changeTaskType(id, e)} onBlur={() => {
+                updateTaskTypeEvent(0, id);
+                onUnselect("strikeBtn", id);
+            }} onClick={() => onSelect("strikeBtn", id)} />
         } else if (type == 1) {
-            return <input type="image" className="strikeBtn" onDoubleClick={() => strikeTask(id)} src={require("../../../images/assignment.png")} onKeyDown={(e) => changeTaskType(id, e)} onBlur={() => updateTaskTypeEvent(1, id)} />
+            return <input type="image" className="strikeBtn" onDoubleClick={() => strikeTask(id)} src={require("../../../images/assignment.png")} onKeyDown={(e) => changeTaskType(id, e)} onBlur={() => {
+                updateTaskTypeEvent(0, id);
+                onUnselect("strikeBtn", id);
+            }} onClick={() => onSelect("strikeBtn", id)} />        
         } else if (type == 2) {
-            return <input type="image" className="strikeBtn" onDoubleClick={() => strikeTask(id)} src={require("../../../images/note.png")} onKeyDown={(e) => changeTaskType(id, e)} onBlur={() => updateTaskTypeEvent(2, id)} />
+            return <input type="image" className="strikeBtn" onDoubleClick={() => strikeTask(id)} src={require("../../../images/note.png")} onKeyDown={(e) => changeTaskType(id, e)} onBlur={() => {
+                updateTaskTypeEvent(0, id);
+                onUnselect("strikeBtn", id);
+            }} onClick={() => onSelect("strikeBtn", id)} />        
         }
+    }
+
+    //Select field Event:
+    const onSelect = (className, id) => {
+        const task = document.getElementById(id +"ID");
+        const element = task.getElementsByClassName(className)[0];
+        element.classList.add("bordered");
+    }
+
+    //Unselect field Event:
+    const onUnselect = (className, id) => {
+        const task = document.getElementById(id +"ID");
+        const element = task.getElementsByClassName(className)[0];
+        element.classList.remove("bordered");    
     }
   
     //Filter Tasks Show All
@@ -150,7 +173,10 @@ function TableMonthly({ tasks, setTasks, strikeTask, deleteTask, filterPriority,
                                 <input className={"row_info deadline " + task.id + "deadline"} onFocus={() => deadlineOnFocus(task.id)} onBlur={() => deadlineOnBlur(task.id)} placeholder={task.deadline.substring(8) + "-" + task.deadline.substring(5, 7) + "-" + task.deadline.substring(0, 4)} />
                             </td>
                             <td>
-                                <div tabIndex="0" className={"taskProgress " + progressColours[task.progress]} onKeyDown={(e) => changeTaskProgress(task.id, e)} onBlur={updateTaskProgressEvent(task.progress, task.id)}>{progress[task.progress]}</div>
+                                <div tabIndex="0" className={"taskProgress " + progressColours[task.progress]} onKeyDown={(e) => changeTaskProgress(task.id, e)} onBlur={() => {
+                                    updateTaskProgressEvent(task.progress, task.id);
+                                    onUnselect("taskProgress", task.id);
+                                }} onClick={() => onSelect("taskProgress", task.id)}>{progress[task.progress]}</div>
                             </td>
                             <td className="btnContainer">
                                 <DeleteOutlined className="deleteTask" onClick={() => deleteTask(task.id)} />

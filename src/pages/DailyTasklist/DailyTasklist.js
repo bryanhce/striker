@@ -3,6 +3,7 @@ import { useState, useEffect, Fragment } from "react";
 import { ContainerDaily } from "../../components/Tasklists/DailyTasklist/ContainerDaily";
 import "../../components/YesterdayModal/YesterdayModal";
 import YesterdayModal from "../../components/YesterdayModal/YesterdayModal";
+import { SideMenu } from "../../components/Tasklists/DailyTasklist/SideMenu";
 import PomodoroModal from "../../components/PomodoroModal/PomodoroModal";
 
 //getTasklist API: https://striker-backend.herokuapp.com/task-list/dVxGQxT8uKepfQLJxqnhBRWx6Dz1?date=2022-06-12
@@ -22,11 +23,36 @@ function DailyTasklist() {
     String(today.getMonth() + 1).padStart(2, "0") +
     "-" +
     String(today.getDate()).padStart(2, "0");
+  const monthString = today.getFullYear() + "-" + String(today.getMonth() + 1).padStart(2, "0");
   console.log("Loading data for date: " + dateString);
 
   //State for Task list
   const [tasks, setTasks] = useState([]);
 
+  //State for Monthly Tasks
+  const [monthlyTasks, setMonthlyTasks] = useState([]);
+
+  //Sort Tasks and Subtasks
+  function sortTasks(tasks) {
+    const parentTasks = tasks.filter((task) => task.parent == "");
+    const subtasks = tasks.filter((task) => task.parent !== "");
+
+    let sortedTasks = [];
+    for (let i = 0; i < parentTasks.length; i++) {
+      sortedTasks.push(parentTasks[i]);
+      for (let n = 0; n < subtasks.length; n++) {
+        if (subtasks[n].parent == parentTasks[i].id) {
+          sortedTasks.push(subtasks[n]);
+        }
+      }
+    }
+
+    return sortedTasks;
+  }
+
+  //Initial update of tasks
+  useEffect(() => {
+    console.log("Data: ");
   //Get daily task
   function GetDailyTasks() {
     fetch(
@@ -51,6 +77,35 @@ function DailyTasklist() {
         return log;
       })
       .then((filteredData) => setTasks(filteredData));
+
+      fetch(
+        `https://striker-backend.herokuapp.com/calendar/${userId}?year-month=${monthString}`
+      )
+        .then((response) => response.json())
+        .then((data) => data.filter((task) => task.progress.Valid))
+        .then((dailyData) =>
+          dailyData.map((task) => {
+            return {
+              id: task.id,
+              type: task.taskType,
+              text: task.description,
+              deadline: task.deadline.String,
+              progress: task.progress.Int64,
+              striked: task.isCompleted.Bool,
+              parent: task.parentId.String,
+              hasChildren: task.hasChildren,
+            };
+          })
+        )
+        .then((log) => {
+          console.log("Data (Monthly): ");
+          console.log(log);
+          return log;
+        })
+        .then((filteredData) => {
+          setMonthlyTasks(sortTasks(filteredData));
+          return filteredData;
+        })
   }
 
   //Initial update of tasks
@@ -453,30 +508,29 @@ function DailyTasklist() {
 
   return (
     <Fragment>
-      {isYesterdayModalVisible && (
-        <YesterdayModal
-          closeYesterdayModal={closeYesterdayModal}
-          GetDailyTasks={GetDailyTasks}
+      {/* {isYesterdayModalVisible && (
+        <YesterdayModal closeYesterdayModal={closeYesterdayModal} />
+      )} */}
+      <div className="dailyLogCenterRow">
+        <ContainerDaily
+          tasks={tasks}
+          strikeTask={strikeTask}
+          deleteTask={deleteTask}
+          addTask={addTask}
+          filterPriority={filterPriority}
+          filterEffort={filterEffort}
+          filters={filters}
+          updateTaskTextState={updateTaskTextState}
+          updateTaskEffortState={updateTaskEffortState}
+          changeTaskType={changeTaskType}
+          changeTaskPriority={changeTaskPriority}
+          updateTaskTypeEvent={updateTaskType}
+          updateTaskTextEvent={updateTaskText}
+          updateTaskPriorityEvent={updateTaskPriority}
+          updateTaskEffortEvent={updateTaskEffort}
         />
-      )}
-      {isPomoVisible && <PomodoroModal closePomoModal={closePomoModal} />}
-      <ContainerDaily
-        tasks={tasks}
-        strikeTask={strikeTask}
-        deleteTask={deleteTask}
-        addTask={addTask}
-        filterPriority={filterPriority}
-        filterEffort={filterEffort}
-        filters={filters}
-        updateTaskTextState={updateTaskTextState}
-        updateTaskEffortState={updateTaskEffortState}
-        changeTaskType={changeTaskType}
-        changeTaskPriority={changeTaskPriority}
-        updateTaskTypeEvent={updateTaskType}
-        updateTaskTextEvent={updateTaskText}
-        updateTaskPriorityEvent={updateTaskPriority}
-        updateTaskEffortEvent={updateTaskEffort}
-      />
+        <SideMenu monthlyTasks={monthlyTasks}/>
+      </div>
     </Fragment>
   );
 }

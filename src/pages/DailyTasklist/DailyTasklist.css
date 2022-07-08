@@ -44,6 +44,7 @@
   font-family: "Poppins", sans-serif;
   margin: 10px;
   padding: 20px 40px;
+  width: 100%;
 }
 
 .border-header {
@@ -54,6 +55,12 @@
   text-transform: uppercase;
   font-size: 20px;
   font-family: "Poppins", sans-serif;
+}
+
+.dailyLogCenterRow {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
 }
 
 .tableContainer {
@@ -168,9 +175,12 @@ td {
 
 .strikeBtn {
   display: flex;
-  height: 20px;
-  width: 20px;
   align-self: center;
+}
+
+.bordered {
+  border: 2px solid black;
+  border-radius: 10%;
 }
 
 .taskText {
@@ -247,4 +257,114 @@ td {
 
 .progressText {
   font-size: 1.4em;
+}
+
+.sideMenuContainer {
+  display: flex;
+  flex-direction: row;
+  justify-content: center;
+  align-items: center;
+  margin-right: -100px;
+}
+
+.sideMenuHidden {
+  width: 0px;
+  background-color: gray;
+}
+
+.sideMenuShown {
+  width: 400px;
+}
+
+.sideMenuButton {
+  height: 100px;
+  width: 100px;
+  border-radius: 50%;
+  margin-right: -50px;
+  transition-duration: 0.3s;
+  background-color: #D0D0D0;
+  cursor: pointer;
+}
+
+.sideMenuButton:hover {
+  background-color: #A9A9A9;
+}
+
+.sideMenuButtonIcon {
+  font-size: 1.5rem;
+  margin-right: 50%;
+  margin-top: auto;
+}
+
+.sideMenuBodyContainer {
+  display: flex;
+  flex-direction: column;
+  justify-content: start;
+  align-items: flex-start;
+  background-color: #DCDCDC;
+  border: 1.5px black solid;
+  z-index: 1;
+  height: 700px;
+  padding: 30px;
+  transition-duration: 0.5s;
+}
+
+.sideMenuBodyHeader {
+  font-size: 2rem;
+}
+
+.sideMenuBodyTasksContainer {
+  width: 85%;
+}
+
+.sideMenuTaskContainer {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  border-bottom: 2px solid black;
+  width: 100%;
+  padding: 10px;
+  padding-bottom: 0px;
+  transition-duration: 0.2s;
+}
+
+.sideMenuTaskContainer:hover {
+  background-color: #A9A9A9;
+  cursor: pointer;
+}
+
+
+.sideMenuTaskTopContainer {
+  width: 100%;
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+}
+
+.sideMenuTaskType {
+  height: 20px;
+  width: 20px;
+}
+
+.sideMenuTaskText {
+  margin: 0px;
+  margin-left: 10px;
+  font-size: 1.3rem;
+}
+
+.sideMenuTaskBottomContainer {
+  width: 100%;
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.sideMenuTaskDeadline {
+  font-size: 1.1rem;
+}
+
+.sideMenuTaskProgress {
+  font-size: 1.1rem;
+  padding: 0px 8px;
 }
