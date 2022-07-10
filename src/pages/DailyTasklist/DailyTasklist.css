@@ -315,6 +315,7 @@ td {
 
 .sideMenuBodyTasksContainer {
   width: 85%;
+  overflow-y: auto;
 }
 
 .sideMenuTaskContainer {

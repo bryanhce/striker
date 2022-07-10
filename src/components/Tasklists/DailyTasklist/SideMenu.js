@@ -2,7 +2,7 @@ import React from 'react';
 import { useState } from "react";
 import { LeftOutlined, RightOutlined } from '@ant-design/icons'
 
-export const SideMenu = ({ monthlyTasks }) => {
+export const SideMenu = ({ monthlyTasks, transferTask }) => {
 
     const taskTypes = [
         <img className="sideMenuTaskType" src={require("../../../images/event.png")} />,
@@ -47,7 +47,7 @@ export const SideMenu = ({ monthlyTasks }) => {
                 <div className="sideMenuBodyTasksContainer">
                     {monthlyTasks.map((task) => {
                         if (task.progress !== 2) {
-                            return <div className="sideMenuTaskContainer">
+                            return <div className="sideMenuTaskContainer" id={task.id + "SideMenuTask"} onDoubleClick={() => transferTask(task.id, task.text, task.type)}>
                                 <div className="sideMenuTaskTopContainer">
                                     {taskTypes[task.type]}
                                     <h2 className="sideMenuTaskText">{task.text}</h2>

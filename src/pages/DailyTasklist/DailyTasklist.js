@@ -81,19 +81,20 @@ function DailyTasklist() {
       )
         .then((response) => response.json())
         .then((data) => data.filter((task) => task.progress.Valid))
-        .then((dailyData) =>
-          dailyData.map((task) => {
-            return {
-              id: task.id,
-              type: task.taskType,
-              text: task.description,
-              deadline: task.deadline.String,
-              progress: task.progress.Int64,
-              striked: task.isCompleted.Bool,
-              parent: task.parentId.String,
-              hasChildren: task.hasChildren,
-            };
-          })
+        .then((dailyData) => {
+            return dailyData.map((task) => {
+              return {
+                id: task.id,
+                type: task.taskType,
+                text: task.description,
+                deadline: task.deadline.String,
+                progress: task.progress.Int64,
+                striked: task.isCompleted.Bool,
+                parent: task.parentId.String,
+                hasChildren: task.hasChildren,
+              };
+            })
+          }
         )
         .then((log) => {
           console.log("Data (Monthly): ");
@@ -446,6 +447,47 @@ function DailyTasklist() {
     ]);
   };
 
+  //Transfer Side Menu Task Event:
+  const transferTask = (oldId, text, type) => {
+    //Remove old task
+    setMonthlyTasks(monthlyTasks.filter((task) => task.id !== oldId));
+
+    //Add to local tasks
+    const taskId = uuidv4();
+    const newTask = {
+      id: taskId,
+      type: type,
+      text: text,
+      priority: 0,
+      effort: 0,
+      striked: false,
+    }
+    const newTasks = [...tasks, newTask];
+    setTasks(newTasks);
+
+    //Send to Backend:
+    const requestOptions = {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({
+        id: taskId,
+        taskType: type,
+        description: text,
+        effort: 0,
+        priority: 0,
+        userId: userId,
+        hasChildren: false,
+      }),
+    };
+    fetch(
+      `https://striker-backend.herokuapp.com/task-list/single-task?date=${dateString}`,
+      requestOptions
+    ).then((response) => {
+      console.log("Transferring task response: ");
+      console.log(response.json());
+    });
+  }
+
   //Modal popup for yesterday's task upon login
   //need to implement w api  last login login
   const [isYesterdayModalVisible, setIsVisible] = useState(true);
@@ -477,7 +519,7 @@ function DailyTasklist() {
           updateTaskPriorityEvent={updateTaskPriority}
           updateTaskEffortEvent={updateTaskEffort}
         />
-        <SideMenu monthlyTasks={monthlyTasks}/>
+        <SideMenu monthlyTasks={monthlyTasks} transferTask={transferTask} />
       </div>
     </Fragment>
   );
