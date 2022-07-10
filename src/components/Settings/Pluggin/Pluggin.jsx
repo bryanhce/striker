@@ -37,30 +37,39 @@ const Pluggin = () => {
       <br />
       <div style={{ display: "flex", flexDirection: "row" }}>
         <h3 style={{ paddingRight: "1%" }}>
-          <strong>Eisenhower Matrix</strong>
+          <strong>Pomodoro Technique</strong>
         </h3>
         <Switch defaultChecked={false} autoFocus={true} />
       </div>
       <div style={{ display: "flex", flexDirection: "column" }}>
         <h3 style={{ textDecoration: "underline" }}>Philosophy</h3>
         <span>
-          Eisenhower Matrix is a productivity framework that focuses on
-          prioritisation to improve time management.
+          Pomodoro Technique is a time management framework where you split your
+          work into intervals.
         </span>
+        <span>This technique consist of six steps:</span>
+        <ol>
+          <li>
+            Decide which task you want to complete and click the associated
+            timer icon of the task on the daily task page.
+          </li>
+          <li>Click start and the timer will run for 25 minutes.</li>
+          <li>
+            Accomplish as much as you can, without distractions, until the timer
+            is up.
+          </li>
+          <li>Click on the Short Break tab and enjoy a 5 minute break.</li>
+          <li>
+            Repeat steps 2 and 3 until you have completed the cycle four times.
+          </li>
+          <li>
+            After the fourth pomodoro, click on the Long Break tab and enjoy
+            your well-deserved 15 minute break. Then repeat from step 2.
+          </li>
+        </ol>
         <span>
-          Tasks are prioritised by urgency and importance. Organise a task into
-          1 of these 4 categories:
-        </span>
-        <ul>
-          <li>Urgent and important</li>
-          <li>Important but not urgent</li>
-          <li>Urgent but not important</li>
-          <li>Neither urgent nor important</li>
-        </ul>
-        <span>
-          Through this type of filtering and funneling process, you are
-          intentionally allocating time to things that are pressing and crucial
-          while staving off procrastination of these tasks.
+          Do be warned, a pleasant ringing tone will emanate from your computer
+          when the time is up.
         </span>
       </div>
       <br />

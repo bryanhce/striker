@@ -1,7 +1,6 @@
 import { Calendar, Badge } from "antd";
 import "./CalendarPage.css";
 import "antd/dist/antd.min.css";
-import StrikerLayout from "../StrikerLayout/StrikerLayout";
 
 function getListData(value) {
   let listData;

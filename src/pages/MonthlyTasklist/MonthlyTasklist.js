@@ -541,11 +541,10 @@ function MonthlyTasklist() {
     }
 
     //Send to Backend:
-    const requestOptions = {
+    const requestOptionsSubtask = {
       method: "POST",
       headers: { "Content-Type": "application/json" },
       body: JSON.stringify({
-        id: taskId,
         taskType: 0,
         description: "",
         progress: 0,
@@ -554,30 +553,27 @@ function MonthlyTasklist() {
         hasChildren: false,
       }),
     };
+    fetch(
+      `https://striker-backend.herokuapp.com/task-list/single-task?date=${dateString}`,
+      requestOptionsSubtask
+    ).then((response) => console.log(response.json()));
 
+    //Send to Backend:
     const requestOptionsParent = {
       method: "PUT",
       headers: { "Content-Type": "application/json" },
       body: JSON.stringify({
         hasChildren: true,
-      })
+      }),
     };
-    
     fetch(
-      `https://striker-backend.herokuapp.com/task-list/single-task?date=${dateString}`,
-      requestOptions
-    )
-    .then((response) => console.log(response.json()))
-    .then((response) => {
-      console.log(parentId);
-      fetch(
       `https://striker-backend.herokuapp.com/task-list/single-task/${parentId}`,
       requestOptionsParent
     )
       .then((response) => console.log(response.json()))
-      .catch((e) => console.log(e))});
-
+      .catch((e) => console.log(e));
   };
+
   //Callback for addSubtask
   useEffect(() => {
     if (lastParent[0]) {

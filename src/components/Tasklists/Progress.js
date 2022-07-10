@@ -10,7 +10,7 @@ function ProgressBar({ tasks }) {
       <Progress
         id="tasksCompletionBar"
         percent={(completedTask / totalTask) * 100}
-        status="active"
+        status={completedTask === totalTask ? "success" : "active"}
         showInfo={false}
         strokeWidth={12}
       />
