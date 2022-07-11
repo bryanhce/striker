@@ -1,6 +1,7 @@
 import React from 'react';
 import { useState } from "react";
-import { LeftOutlined, RightOutlined } from '@ant-design/icons'
+import { LeftOutlined, RightOutlined } from '@ant-design/icons';
+import { useColourBlind } from "../../../context/ColourBlindContext";
 
 export const SideMenu = ({ monthlyTasks, transferTask }) => {
 
@@ -16,7 +17,9 @@ export const SideMenu = ({ monthlyTasks, transferTask }) => {
         "Completed"
     ]
 
-    const taskProgressClassNames = ["red", "yellow", "green"];
+    const { isColourBlindFilter } = useColourBlind();
+
+    const taskProgressClassNames = isColourBlindFilter ? ["cb-red", "cb-yellow", "cb-green"] : ["red", "yellow", "green"];
 
     //Side Menu Button Event:
     const sideMenuButtonEvent = () => {

@@ -224,14 +224,17 @@ td {
 
 .cb-green {
   background-color: #f5793a;
+  color: white;
 }
 
 .cb-yellow {
   background-color: #a95aa1;
+  color: white;
 }
 
 .cb-red {
   background-color: #0f2080;
+  color: white;
 }
 
 .addTask {

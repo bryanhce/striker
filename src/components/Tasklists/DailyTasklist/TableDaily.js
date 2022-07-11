@@ -95,8 +95,7 @@ function TableDaily({
                 onUnselect("strikeBtn", id);
             }} onClick={() => onSelect("strikeBtn", id)} />        
         }
-    }
-  };
+  }
 
   //Filter Tasks Show All
   const filterTasksAll = () => {
@@ -164,6 +163,9 @@ function TableDaily({
                                   : <CaretUpOutlined className={filters[1][0] !== 0 ? "filterIcon" : "filterIcon hidden"}/>}
                       </div>
                   </th>
+                  {isPomoButtonVisible && (
+                    <th className="clockHeader"></th>
+                  )}
                   <th className="deleteBtnHeader"></th>
               </tr>
               {tasks.map((task) => {
@@ -175,17 +177,38 @@ function TableDaily({
                           <div className={"taskText " + task.id + "text"} contentEditable="true" onBlur={() => updateTaskTextState(task.id)}>{task.text}</div>
                       </td>
                       <td className="priorityContainer">
-                          <div tabIndex="0" className={"row_info priority " + priorities[task.priority]} onKeyDown={(e) => changeTaskPriority(task.id, e)} onBlur={() => {
-                              updateTaskPriorityEvent(task.priority, task.id);
-                              onUnselect("priority", task.id);
-                              }} onClick={() => onSelect("priority", task.id)}></div>
-                      </td>
-                      <td>
-                          <div className={"taskEffort " + task.id + "effort"} contentEditable="true" onKeyDown={onlyNumbers} onBlur={() => updateTaskEffortState(task.id)}>{task.effort}</div>
-                      </td>
-                      <td className="btnContainer">
-                          <DeleteOutlined className="deleteTask" onClick={() => deleteTask(task.id)} />
-                      </td>
+                <div
+                  tabindex="0"
+                  className={`row_info priority ${
+                    isColourBlindFilter
+                      ? colourBlindPriorities[task.priority]
+                      : priorities[task.priority]
+                  }`}
+                  onKeyDown={(e) => changeTaskPriority(task.id, e)}
+                  onBlur={() => updateTaskPriorityEvent(task.priority, task.id)}
+                ></div>
+              </td>
+              <td>
+                <div
+                  className={"taskEffort " + task.id + "effort"}
+                  contentEditable="true"
+                  onKeyDown={onlyNumbers}
+                  onBlur={() => updateTaskEffortState(task.id)}
+                >
+                  {task.effort}
+                </div>
+              </td>
+              {isPomoButtonVisible && (
+                <td>
+                  <ClockCircleOutlined onClick={() => togglePomo()} />
+                </td>
+              )}
+              <td className="btnContainer">
+                <DeleteOutlined
+                  className="deleteTask"
+                  onClick={() => deleteTask(task.id)}
+                />
+              </td>
                   </tr>
               })}
           </table>

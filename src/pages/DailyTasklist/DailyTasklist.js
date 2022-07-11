@@ -490,9 +490,53 @@ function DailyTasklist() {
     });
   }
 
-  //Modal popup for yesterday's task upon login
-  //need to implement w api  last login login
-  const [isYesterdayModalVisible, setIsVisible] = useState(true);
+//Modal popup for yesterday's task upon login
+
+  //state for yesterday task modal
+  const [isYesterdayModalVisible, setIsVisible] = useState(false);
+
+  //date to check against last login date
+  let realToday = new Date();
+  const realTodayString =
+    realToday.getFullYear() +
+    "-" +
+    String(realToday.getMonth() + 1).padStart(2, "0") +
+    "-" +
+    String(realToday.getDate()).padStart(2, "0");
+
+  //function to update last login date to new date
+  const updateLastLoginDate = () => {
+    const requestOptions = {
+      method: "PUT",
+      headers: { "Content-Type": "application/json" },
+    };
+    fetch(
+      `https://striker-backend.herokuapp.com/last-login/${userId}`,
+      requestOptions
+    )
+      .then((response) => console.log(response.json()))
+      .catch((e) => console.log(e));
+  };
+
+  //this func also updates last login date
+  const checkLastLogin = () => {
+    fetch(`https://striker-backend.herokuapp.com/last-login/${userId}`)
+      .then((response) => response.json())
+      .then((data) => {
+        if (data.lastLogin !== realTodayString) {
+          updateLastLoginDate();
+          setIsVisible(true);
+        } else {
+          setIsVisible(false);
+        }
+      });
+  };
+
+  useEffect(() => {
+    checkLastLogin();
+    //uncomment for testing
+    // setIsVisible(true);
+  }, []);
 
   const closeYesterdayModal = () => {
     setIsVisible(!isYesterdayModalVisible);
@@ -505,12 +549,12 @@ function DailyTasklist() {
   const togglePomo = () => {
     setPomoVisible(!isPomoVisible);
   };
-
   return (
     <Fragment>
       {isYesterdayModalVisible && (
         <YesterdayModal closeYesterdayModal={closeYesterdayModal} />
       )}
+      {isPomoVisible && <PomodoroModal togglePomo={togglePomo} />}
       <div className="dailyLogCenterRow">
         <ContainerDaily
           tasks={tasks}
@@ -528,27 +572,8 @@ function DailyTasklist() {
           updateTaskTextEvent={updateTaskText}
           updateTaskPriorityEvent={updateTaskPriority}
           updateTaskEffortEvent={updateTaskEffort}
+          togglePomo={togglePomo}
         />
-      )}
-      {isPomoVisible && <PomodoroModal togglePomo={togglePomo} />}
-      <ContainerDaily
-        tasks={tasks}
-        strikeTask={strikeTask}
-        deleteTask={deleteTask}
-        addTask={addTask}
-        filterPriority={filterPriority}
-        filterEffort={filterEffort}
-        filters={filters}
-        updateTaskTextState={updateTaskTextState}
-        updateTaskEffortState={updateTaskEffortState}
-        changeTaskType={changeTaskType}
-        changeTaskPriority={changeTaskPriority}
-        updateTaskTypeEvent={updateTaskType}
-        updateTaskTextEvent={updateTaskText}
-        updateTaskPriorityEvent={updateTaskPriority}
-        updateTaskEffortEvent={updateTaskEffort}
-        togglePomo={togglePomo}
-      />
         <SideMenu monthlyTasks={monthlyTasks} transferTask={transferTask} />
       </div>
     </Fragment>
