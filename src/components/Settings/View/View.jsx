@@ -1,7 +1,10 @@
 import { Switch } from "antd";
 import { Fragment } from "react";
+import { useColourBlind } from "../../../context/ColourBlindContext";
 
 const View = () => {
+  const { toggleColourBlindFilter } = useColourBlind();
+
   return (
     <Fragment>
       <div style={{ fontSize: "20px" }}>
@@ -27,10 +30,18 @@ const View = () => {
         <h3 style={{ paddingRight: "1%" }}>
           <strong>Colour-blindness Filter</strong>
         </h3>
-        <Switch defaultChecked={false} autoFocus={true} />
+        <Switch
+          defaultChecked={false}
+          autoFocus={true}
+          onChange={toggleColourBlindFilter}
+        />
       </div>
       <div style={{ display: "flex", flexDirection: "column" }}>
         <span>Make the colours more friendly for our colour-blind users.</span>
+        <span>
+          View the changes in colours on the Home page with the priority bars
+          and on the Monthly page with the progress
+        </span>
       </div>
       <br />
       <hr />

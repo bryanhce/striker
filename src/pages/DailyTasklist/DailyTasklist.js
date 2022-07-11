@@ -1,8 +1,10 @@
 import "./DailyTasklist.css";
-import { useState, useEffect, Fragment } from "react";
+import { useState, useEffect, Fragment, useContext } from "react";
 import { ContainerDaily } from "../../components/Tasklists/DailyTasklist/ContainerDaily";
 import "../../components/YesterdayModal/YesterdayModal";
 import YesterdayModal from "../../components/YesterdayModal/YesterdayModal";
+import PomodoroModal from "../../components/PomodoroModal/PomodoroModal";
+import { usePomodoro } from "../../context/PomodoroContext";
 import { SideMenu } from "../../components/Tasklists/DailyTasklist/SideMenu";
 import { v4 as uuidv4 } from 'uuid';
 
@@ -496,11 +498,18 @@ function DailyTasklist() {
     setIsVisible(!isYesterdayModalVisible);
   };
 
+  //Modal popup for pomodoro timer
+  const [isPomoVisible, setPomoVisible] = useState(false);
+
+  const togglePomo = () => {
+    setPomoVisible(!isPomoVisible);
+  };
+
   return (
     <Fragment>
-      {/* {isYesterdayModalVisible && (
+      {isYesterdayModalVisible && (
         <YesterdayModal closeYesterdayModal={closeYesterdayModal} />
-      )} */}
+      )}
       <div className="dailyLogCenterRow">
         <ContainerDaily
           tasks={tasks}
@@ -519,6 +528,26 @@ function DailyTasklist() {
           updateTaskPriorityEvent={updateTaskPriority}
           updateTaskEffortEvent={updateTaskEffort}
         />
+      )}
+      {isPomoVisible && <PomodoroModal togglePomo={togglePomo} />}
+      <ContainerDaily
+        tasks={tasks}
+        strikeTask={strikeTask}
+        deleteTask={deleteTask}
+        addTask={addTask}
+        filterPriority={filterPriority}
+        filterEffort={filterEffort}
+        filters={filters}
+        updateTaskTextState={updateTaskTextState}
+        updateTaskEffortState={updateTaskEffortState}
+        changeTaskType={changeTaskType}
+        changeTaskPriority={changeTaskPriority}
+        updateTaskTypeEvent={updateTaskType}
+        updateTaskTextEvent={updateTaskText}
+        updateTaskPriorityEvent={updateTaskPriority}
+        updateTaskEffortEvent={updateTaskEffort}
+        togglePomo={togglePomo}
+      />
         <SideMenu monthlyTasks={monthlyTasks} transferTask={transferTask} />
       </div>
     </Fragment>

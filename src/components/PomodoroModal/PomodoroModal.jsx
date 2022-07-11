@@ -17,7 +17,7 @@ const PomodoroCard = (props) => {
         </h2>
         <CloseModal
           className="yesterday-close-modal"
-          onClick={props.closePomoModal}
+          onClick={props.togglePomo}
         />
       </header>
       <hr style={{ width: "60%", marginTop: "0" }} />
@@ -43,11 +43,11 @@ const PomodoroModal = (props) => {
   return (
     <Fragment>
       {ReactDOM.createPortal(
-        <Backdrop onClick={props.closePomoModal} />,
+        <Backdrop onClick={props.togglePomo} />,
         document.getElementById("backdrop-root")
       )}
       {ReactDOM.createPortal(
-        <PomodoroCard closeYesterdayModal={props.closePomoModal} />,
+        <PomodoroCard togglePomo={props.togglePomo} />,
         document.getElementById("overlay-root")
       )}
     </Fragment>

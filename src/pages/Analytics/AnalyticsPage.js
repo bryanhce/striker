@@ -6,7 +6,7 @@ import { LoadingOutlined } from "@ant-design/icons";
 
 const spinner = <LoadingOutlined style={{ fontSize: 24 }} spin />;
 
-const productivityData = [
+var productivityData = [
   { month: 1, productivity: 60 },
   { month: 2, productivity: 83 },
   { month: 3, productivity: 3 },
@@ -15,11 +15,7 @@ const productivityData = [
   { month: 6, productivity: 32 },
 ];
 
-const productivityLabelArr = productivityData.map(
-  (obj) => obj.productivity.toString() + "%"
-);
-
-const CompletionData = [
+var completionData = [
   { month: 1, productivity: 34 },
   { month: 2, productivity: 50 },
   { month: 3, productivity: 97 },
@@ -28,27 +24,83 @@ const CompletionData = [
   { month: 6, productivity: 49 },
 ];
 
-const CompletionLabelArr = CompletionData.map(
-  (obj) => obj.productivity.toString() + "%"
-);
+function createLabelArr(data) {
+  return data.map((obj) => obj.productivity.toString() + "%");
+}
+
+const createLastSixMonthsWithYear = (month, year, arr, count) => {
+  if (count === 7) {
+    return arr.reverse();
+  }
+
+  if (month === 0) {
+    arr[count] = (year - 1).toString() + "-" + 12 + "-01";
+    return createLastSixMonthsWithYear(11, year - 1, arr, count + 1);
+  } else if (month < 10) {
+    arr[count] = year.toString() + "-0" + month + "-01";
+    return createLastSixMonthsWithYear(month - 1, year, arr, count + 1);
+  } else {
+    arr[count] = year.toString() + "-" + month + "-01";
+    return createLastSixMonthsWithYear(month - 1, year, arr, count + 1);
+  }
+};
+
+var dateNow = new Date();
+//need to get additional month for the range query to work properly
+var monthNow = dateNow.getMonth() + 2;
+var yearNow = dateNow.getFullYear();
+var dateArr = createLastSixMonthsWithYear(monthNow, yearNow, [], 0);
 
 let userId = JSON.parse(localStorage.getItem("currentUser")).uid;
 
 const AnalyticsPage = () => {
   const [allData, setAllData] = useState(null);
+  const [completionLabelArr, setCompletionLabelArr] = useState([]);
+  const [productivityLabelArr, setProductivityLabelArr] = useState([]);
 
   const getAllAnalytics = async () => {
     await fetch(`https://striker-backend.herokuapp.com/analytics/all/${userId}`)
       .then((response) => response.json())
       .then((data) => {
         setAllData(data);
-        console.log(allData.totalCompletedEffort);
+      })
+      .catch((err) => console.log(err));
+  };
+
+  const getLastSixMonthsProductivity = async (start, end, count) => {
+    await fetch(
+      `https://striker-backend.herokuapp.com/analytics/${userId}?start-date=${start}&end-date=${end}`
+    )
+      .then((res) => res.json())
+      .then((data) => {
+        if (data.totalEffort === 0) {
+          productivityData[count]["productivity"] = 0;
+        } else {
+          productivityData[count]["productivity"] = Math.round(
+            (data.totalCompletedEffort / data.totalEffort) * 100
+          );
+        }
+        if (data.events + data.notes + data.assignments === 0) {
+          completionData[count]["productivity"] = 0;
+        } else {
+          completionData[count]["productivity"] = Math.round(
+            (data.totalCompletedEvents /
+              (data.events + data.notes + data.assignments)) *
+              100
+          );
+        }
+        setCompletionLabelArr(createLabelArr(completionData));
+        setProductivityLabelArr(createLabelArr(productivityData));
       })
       .catch((err) => console.log(err));
   };
 
   useEffect(() => {
     getAllAnalytics();
+    //for loop to call the api 6 times
+    for (let i = 0; i < 6; i++) {
+      getLastSixMonthsProductivity(dateArr[i], dateArr[i + 1], i);
+    }
   }, []);
 
   return (
@@ -66,11 +118,30 @@ const AnalyticsPage = () => {
               ) : (
                 <Progress
                   type="circle"
+                  format={(p) => (p === 100 ? "100%" : p + "%")}
                   percent={Math.round(
                     (allData.totalCompletedEffort / allData.totalEffort) * 100
                   )}
                   strokeColor={"#a0d911"}
                 />
+              )}
+            </Card>
+          </Col>
+          <Col span={8}>
+            <Card
+              title="Avg No. of Tasks Completed Per Day"
+              className="progress-card"
+              data-testid="productive-days"
+            >
+              {allData === null ? (
+                <Spin indicator={spinner} />
+              ) : (
+                <div>
+                  {allData.averageDailyTaskCompleted === null
+                    ? 0
+                    : allData.averageDailyTaskCompleted}{" "}
+                  Tasks
+                </div>
               )}
             </Card>
           </Col>
@@ -85,6 +156,7 @@ const AnalyticsPage = () => {
               ) : (
                 <Progress
                   type="circle"
+                  format={(p) => (p === 100 ? "100%" : p + "%")}
                   percent={Math.round(
                     (allData.totalCompletedEvents /
                       (allData.assignments + allData.events + allData.notes)) *
@@ -92,20 +164,6 @@ const AnalyticsPage = () => {
                   )}
                 />
               )}
-            </Card>
-          </Col>
-          <Col span={8}>
-            <Card
-              title="Productive Days Per Year"
-              className="progress-card"
-              data-testid="productive-days"
-            >
-              <Progress
-                type="dashboard"
-                format={() => "37 Days"}
-                percent={20}
-                strokeColor="orange"
-              />
             </Card>
           </Col>
         </Row>
@@ -121,7 +179,9 @@ const AnalyticsPage = () => {
               {allData === null ? (
                 <Spin indicator={spinner} />
               ) : (
-                <div>{allData.assignments} Tasks</div>
+                <div>
+                  {allData.assignments === null ? 0 : allData.assignments} Tasks
+                </div>
               )}
             </Card>
           </Col>
@@ -134,7 +194,7 @@ const AnalyticsPage = () => {
               {allData === null ? (
                 <Spin indicator={spinner} />
               ) : (
-                <div>{allData.notes} Notes</div>
+                <div>{allData.notes === null ? 0 : allData.notes} Notes</div>
               )}
             </Card>
           </Col>
@@ -147,7 +207,7 @@ const AnalyticsPage = () => {
               {allData === null ? (
                 <Spin indicator={spinner} />
               ) : (
-                <div>{allData.events} Events</div>
+                <div>{allData.events === null ? 0 : allData.events} Events</div>
               )}
             </Card>
           </Col>
@@ -161,8 +221,8 @@ const AnalyticsPage = () => {
         />
         <AnalyticsGraph
           title="Graph of Completion Per Month"
-          data={CompletionData}
-          labelArr={CompletionLabelArr}
+          data={completionData}
+          labelArr={completionLabelArr}
         />
       </div>
     </Fragment>

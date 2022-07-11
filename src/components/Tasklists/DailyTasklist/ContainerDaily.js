@@ -20,6 +20,7 @@ export const ContainerDaily = ({
   updateTaskTextEvent,
   updateTaskPriorityEvent,
   updateTaskEffortEvent,
+  togglePomo,
 }) => {
   const daysOfWeek = [
     "monday",
@@ -58,6 +59,7 @@ export const ContainerDaily = ({
         updateTaskTextEvent={updateTaskTextEvent}
         updateTaskPriorityEvent={updateTaskPriorityEvent}
         updateTaskEffortEvent={updateTaskEffortEvent}
+        togglePomo={togglePomo}
       />
       <AddTask addTask={addTask} />
       <ProgressBar tasks={tasks} />

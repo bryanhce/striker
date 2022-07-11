@@ -12,80 +12,86 @@ import UserGuidePage from "./pages/UserGuide/UserGuidePage";
 import { UserAuthContextProvider } from "./context/UserAuthContext";
 import ProtectedRoute from "./components/ProtectedRoute/ProtectedRoute";
 import StrikerLayout from "./pages/StrikerLayout/StrikerLayout";
+import { PomodoroContextProvider } from "./context/PomodoroContext";
+import { ColourBlindContextProvider } from "./context/ColourBlindContext";
 
 function App() {
   return (
     <UserAuthContextProvider>
-      <Routes>
-        <Route exact path="/" element={<LoginPage />} />
-        <Route path="/signup" element={<SignUpPage />} />
-        <Route path="/reset-password" element={<ResetPasswordPage />} />
-        <Route
-          path="/"
-          element={
-            <ProtectedRoute>
-              <StrikerLayout />
-            </ProtectedRoute>
-          }
-        >
-          {/* nested routes */}
-          <Route
-            exact
-            path="daily-task-list"
-            element={
-              <ProtectedRoute>
-                <DailyTasklist />
-              </ProtectedRoute>
-            }
-          />
-          <Route
-            exact
-            path="monthly-task-list"
-            element={
-              <ProtectedRoute>
-                <MonthlyTasklist />
-              </ProtectedRoute>
-            }
-          />
-          <Route
-            exact
-            path="calendar"
-            element={
-              <ProtectedRoute>
-                <CalendarPage />
-              </ProtectedRoute>
-            }
-          />
-          <Route
-            exact
-            path="analytics"
-            element={
-              <ProtectedRoute>
-                <AnalyticsPage />
-              </ProtectedRoute>
-            }
-          />
-          <Route
-            exact
-            path="user-guide"
-            element={
-              <ProtectedRoute>
-                <UserGuidePage />
-              </ProtectedRoute>
-            }
-          />
-          <Route
-            exact
-            path="settings"
-            element={
-              <ProtectedRoute>
-                <SettingsPage />
-              </ProtectedRoute>
-            }
-          />
-        </Route>
-        <Route path="*" element={<LoginPage />} /> {/* page not found */}
-      </Routes>
+      <PomodoroContextProvider>
+        <ColourBlindContextProvider>
+          <Routes>
+            <Route exact path="/" element={<LoginPage />} />
+            <Route path="/signup" element={<SignUpPage />} />
+            <Route path="/reset-password" element={<ResetPasswordPage />} />
+            <Route
+              path="/"
+              element={
+                <ProtectedRoute>
+                  <StrikerLayout />
+                </ProtectedRoute>
+              }
+            >
+              {/* nested routes */}
+              <Route
+                exact
+                path="daily-task-list"
+                element={
+                  <ProtectedRoute>
+                    <DailyTasklist />
+                  </ProtectedRoute>
+                }
+              />
+              <Route
+                exact
+                path="monthly-task-list"
+                element={
+                  <ProtectedRoute>
+                    <MonthlyTasklist />
+                  </ProtectedRoute>
+                }
+              />
+              <Route
+                exact
+                path="calendar"
+                element={
+                  <ProtectedRoute>
+                    <CalendarPage />
+                  </ProtectedRoute>
+                }
+              />
+              <Route
+                exact
+                path="analytics"
+                element={
+                  <ProtectedRoute>
+                    <AnalyticsPage />
+                  </ProtectedRoute>
+                }
+              />
+              <Route
+                exact
+                path="user-guide"
+                element={
+                  <ProtectedRoute>
+                    <UserGuidePage />
+                  </ProtectedRoute>
+                }
+              />
+              <Route
+                exact
+                path="settings"
+                element={
+                  <ProtectedRoute>
+                    <SettingsPage />
+                  </ProtectedRoute>
+                }
+              />
+            </Route>
+            <Route path="*" element={<LoginPage />} /> {/* page not found */}
+          </Routes>
+        </ColourBlindContextProvider>
+      </PomodoroContextProvider>
     </UserAuthContextProvider>
   );
 }

@@ -55,14 +55,31 @@ const HomeGuide = () => {
             the task. This action is irreversible. Do use with caution.{" "}
           </p>
         </Panel>
-        <Panel header="Transfer Monthly Task to Today" key="5">
+        <Panel header="Filter Task" key="5">
+          <p>
+            Click on the header "Task" of the task list table. On first click,
+            the task list will filter to show only the uncompleted task. On a
+            subsequent click, the task list will filter to show only completed
+            task. And finally on the last click, the task list will return to
+            its original state.
+          </p>
+        </Panel>
+        <Panel header="Sort Task" key="6">
+          <p>
+            Click on the headers "Priority" or "Effort" of the task list table.
+            On first click, the task list will be sorted in decreasing priority
+            and ascending order of effort respectively. On second click, the
+            previously sorted order will be reversed.
+          </p>
+        </Panel>
+        <Panel header="Transfer Monthly Task to Today" key="7">
           <p>
             Click on the slider arrow on the most right of the home page to view
             your Monthly tasks. Double click on the task you wish to add it to
             the daily task list.
           </p>
         </Panel>
-        <Panel header="Transfer Yesterday's Task to Today" key="6">
+        <Panel header="Transfer Yesterday's Task to Today" key="8">
           <p>
             This popup shows the uncompleted task from yesterday. This pop up
             only renders the first time you login for the day and if you have

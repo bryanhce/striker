@@ -1,7 +1,9 @@
 import { Switch } from "antd";
 import { Fragment } from "react";
+import { usePomodoro } from "../../../context/PomodoroContext";
 
 const Pluggin = () => {
+  const { togglePomoButton } = usePomodoro();
   return (
     <Fragment>
       <div style={{ fontSize: "20px" }}>
@@ -39,7 +41,11 @@ const Pluggin = () => {
         <h3 style={{ paddingRight: "1%" }}>
           <strong>Pomodoro Technique</strong>
         </h3>
-        <Switch defaultChecked={false} autoFocus={true} />
+        <Switch
+          defaultChecked={false}
+          autoFocus={true}
+          onChange={togglePomoButton}
+        />
       </div>
       <div style={{ display: "flex", flexDirection: "column" }}>
         <h3 style={{ textDecoration: "underline" }}>Philosophy</h3>
