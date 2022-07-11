@@ -448,6 +448,7 @@ function DailyTasklist() {
   //Modal popup for pomodoro timer
   const [isPomoVisible, setPomoVisible] = useState(false);
 
+  //to open and close pomo modal
   const togglePomo = () => {
     setPomoVisible(!isPomoVisible);
   };
