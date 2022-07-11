@@ -41,55 +41,49 @@ function TableMonthly({
   ];
 
   const { isColourBlindFilter } = useColourBlind();
-
-  //State for shown and hidden tasks (0 is show all, 1 is uncompleted tasks, 2 is completed tasks)
-  const [filtered, setFiltered] = useState([0]);
-
   //Task type buttons
   const taskType = (type, id) => {
-    if (type == 0) {
-      return (
-        <input
-          type="image"
-          className="strikeBtn"
-          onDoubleClick={() => strikeTask(id)}
-          src={require("../../../images/event.png")}
-          onKeyDown={(e) => changeTaskType(id, e)}
-          onBlur={() => updateTaskTypeEvent(0, id)}
-        />
-      );
-    } else if (type == 1) {
-      return (
-        <input
-          type="image"
-          className="strikeBtn"
-          onDoubleClick={() => strikeTask(id)}
-          src={require("../../../images/assignment.png")}
-          onKeyDown={(e) => changeTaskType(id, e)}
-          onBlur={() => updateTaskTypeEvent(1, id)}
-        />
-      );
-    } else if (type == 2) {
-      return (
-        <input
-          type="image"
-          className="strikeBtn"
-          onDoubleClick={() => strikeTask(id)}
-          src={require("../../../images/note.png")}
-          onKeyDown={(e) => changeTaskType(id, e)}
-          onBlur={() => updateTaskTypeEvent(2, id)}
-        />
-      );
-    }
-  };
+      if (type == 0) {
+          return <input type="image" className="strikeBtn" onDoubleClick={() => strikeTask(id)} src={require("../../../images/event.png")} onKeyDown={(e) => changeTaskType(id, e)} onBlur={() => {
+              updateTaskTypeEvent(0, id);
+              onUnselect("strikeBtn", id);
+          }} onClick={() => onSelect("strikeBtn", id)} />
+      } else if (type == 1) {
+          return <input type="image" className="strikeBtn" onDoubleClick={() => strikeTask(id)} src={require("../../../images/assignment.png")} onKeyDown={(e) => changeTaskType(id, e)} onBlur={() => {
+              updateTaskTypeEvent(0, id);
+              onUnselect("strikeBtn", id);
+          }} onClick={() => onSelect("strikeBtn", id)} />        
+      } else if (type == 2) {
+          return <input type="image" className="strikeBtn" onDoubleClick={() => strikeTask(id)} src={require("../../../images/note.png")} onKeyDown={(e) => changeTaskType(id, e)} onBlur={() => {
+              updateTaskTypeEvent(0, id);
+              onUnselect("strikeBtn", id);
+          }} onClick={() => onSelect("strikeBtn", id)} />        
+      }
+  }
+
+  //Select field Event:
+  const onSelect = (className, id) => {
+      const task = document.getElementById(id +"ID");
+      const element = task.getElementsByClassName(className)[0];
+      element.classList.add("bordered");
+  }
+
+  //Unselect field Event:
+  const onUnselect = (className, id) => {
+      const task = document.getElementById(id +"ID");
+      const element = task.getElementsByClassName(className)[0];
+      element.classList.remove("bordered");    
+  }
 
   //Filter Tasks Show All
   const filterTasksAll = () => {
-    var taskRows = document.querySelectorAll(".task");
-    for (let i = 0; i < taskRows.length; i++) {
-      if (taskRows[i]) {
-        taskRows[i].classList.remove("hidden");
+      var taskRows = document.querySelectorAll(".task");
+      for (let i = 0; i < taskRows.length; i++) {
+          if (taskRows[i]) {
+              taskRows[i].classList.remove("hidden");
+          }
       }
+      setFiltered([0]);
     }
     setFiltered([0]);
   };

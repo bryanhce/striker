@@ -5,6 +5,8 @@ import "../../components/YesterdayModal/YesterdayModal";
 import YesterdayModal from "../../components/YesterdayModal/YesterdayModal";
 import PomodoroModal from "../../components/PomodoroModal/PomodoroModal";
 import { usePomodoro } from "../../context/PomodoroContext";
+import { SideMenu } from "../../components/Tasklists/DailyTasklist/SideMenu";
+import { v4 as uuidv4 } from 'uuid';
 
 //getTasklist API: https://striker-backend.herokuapp.com/task-list/dVxGQxT8uKepfQLJxqnhBRWx6Dz1?date=2022-06-12
 
@@ -23,13 +25,36 @@ function DailyTasklist() {
     String(today.getMonth() + 1).padStart(2, "0") +
     "-" +
     String(today.getDate()).padStart(2, "0");
+  const monthString = today.getFullYear() + "-" + String(today.getMonth() + 1).padStart(2, "0");
   console.log("Loading data for date: " + dateString);
 
   //State for Task list
   const [tasks, setTasks] = useState([]);
 
-  //Get daily task
-  function GetDailyTasks() {
+  //State for Monthly Tasks
+  const [monthlyTasks, setMonthlyTasks] = useState([]);
+
+  //Sort Tasks and Subtasks
+  function sortTasks(tasks) {
+    const parentTasks = tasks.filter((task) => task.parent == "");
+    const subtasks = tasks.filter((task) => task.parent !== "");
+
+    let sortedTasks = [];
+    for (let i = 0; i < parentTasks.length; i++) {
+      sortedTasks.push(parentTasks[i]);
+      for (let n = 0; n < subtasks.length; n++) {
+        if (subtasks[n].parent == parentTasks[i].id) {
+          sortedTasks.push(subtasks[n]);
+        }
+      }
+    }
+
+    return sortedTasks;
+  }
+
+  //Initial update of tasks
+  useEffect(() => {
+    console.log("Data: ");
     fetch(
       `https://striker-backend.herokuapp.com/task-list/${userId}?date=${dateString}`
     )
@@ -52,11 +77,36 @@ function DailyTasklist() {
         return log;
       })
       .then((filteredData) => setTasks(filteredData));
-  }
 
-  //Initial update of tasks
-  useEffect(() => {
-    GetDailyTasks();
+      fetch(
+        `https://striker-backend.herokuapp.com/calendar/${userId}?year-month=${monthString}`
+      )
+        .then((response) => response.json())
+        .then((data) => data.filter((task) => task.progress.Valid))
+        .then((dailyData) => {
+            return dailyData.map((task) => {
+              return {
+                id: task.id,
+                type: task.taskType,
+                text: task.description,
+                deadline: task.deadline.String,
+                progress: task.progress.Int64,
+                striked: task.isCompleted.Bool,
+                parent: task.parentId.String,
+                hasChildren: task.hasChildren,
+              };
+            })
+          }
+        )
+        .then((log) => {
+          console.log("Data (Monthly): ");
+          console.log(log);
+          return log;
+        })
+        .then((filteredData) => {
+          setMonthlyTasks(sortTasks(filteredData));
+          return filteredData;
+        })
   }, []);
 
   // State for filters, first value is if filter is clicked, second is up or down
@@ -118,8 +168,10 @@ function DailyTasklist() {
 
   //Add Task Event
   const addTask = () => {
+    const taskId = uuidv4();
+    console.log("Adding Task of ID: " + taskId);
     const newTask = {
-      id: tasks.length + 1,
+      id: taskId,
       type: 0,
       text: "",
       priority: 0,
@@ -136,6 +188,7 @@ function DailyTasklist() {
       method: "POST",
       headers: { "Content-Type": "application/json" },
       body: JSON.stringify({
+        id: taskId,
         taskType: 0,
         description: "",
         effort: 0,
@@ -147,7 +200,10 @@ function DailyTasklist() {
     fetch(
       `https://striker-backend.herokuapp.com/task-list/single-task?date=${dateString}`,
       requestOptions
-    ).then((response) => console.log(response.json()));
+    ).then((response) => {
+      console.log("Adding task response: ");
+      console.log(response.json());
+    });
   };
 
   //Callback for Add Task Event
@@ -393,53 +449,50 @@ function DailyTasklist() {
     ]);
   };
 
-  //Modal popup for yesterday's task upon login
+  //Transfer Side Menu Task Event:
+  const transferTask = (oldId, text, type) => {
+    //Remove old task
+    setMonthlyTasks(monthlyTasks.filter((task) => task.id !== oldId));
 
-  //state for yesterday task modal
-  const [isYesterdayModalVisible, setIsVisible] = useState(false);
+    //Add to local tasks
+    const taskId = uuidv4();
+    const newTask = {
+      id: taskId,
+      type: type,
+      text: text,
+      priority: 0,
+      effort: 0,
+      striked: false,
+    }
+    const newTasks = [...tasks, newTask];
+    setTasks(newTasks);
 
-  //date to check against last login date
-  let realToday = new Date();
-  const realTodayString =
-    realToday.getFullYear() +
-    "-" +
-    String(realToday.getMonth() + 1).padStart(2, "0") +
-    "-" +
-    String(realToday.getDate()).padStart(2, "0");
-
-  //function to update last login date to new date
-  const updateLastLoginDate = () => {
+    //Send to Backend:
     const requestOptions = {
-      method: "PUT",
+      method: "POST",
       headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({
+        id: taskId,
+        taskType: type,
+        description: text,
+        effort: 0,
+        priority: 0,
+        userId: userId,
+        hasChildren: false,
+      }),
     };
     fetch(
-      `https://striker-backend.herokuapp.com/last-login/${userId}`,
+      `https://striker-backend.herokuapp.com/task-list/single-task?date=${dateString}`,
       requestOptions
-    )
-      .then((response) => console.log(response.json()))
-      .catch((e) => console.log(e));
-  };
+    ).then((response) => {
+      console.log("Transferring task response: ");
+      console.log(response.json());
+    });
+  }
 
-  //this func also updates last login date
-  const checkLastLogin = () => {
-    fetch(`https://striker-backend.herokuapp.com/last-login/${userId}`)
-      .then((response) => response.json())
-      .then((data) => {
-        if (data.lastLogin !== realTodayString) {
-          updateLastLoginDate();
-          setIsVisible(true);
-        } else {
-          setIsVisible(false);
-        }
-      });
-  };
-
-  useEffect(() => {
-    checkLastLogin();
-    //uncomment for testing
-    // setIsVisible(true);
-  }, []);
+  //Modal popup for yesterday's task upon login
+  //need to implement w api  last login login
+  const [isYesterdayModalVisible, setIsVisible] = useState(true);
 
   const closeYesterdayModal = () => {
     setIsVisible(!isYesterdayModalVisible);
@@ -455,9 +508,25 @@ function DailyTasklist() {
   return (
     <Fragment>
       {isYesterdayModalVisible && (
-        <YesterdayModal
-          closeYesterdayModal={closeYesterdayModal}
-          GetDailyTasks={GetDailyTasks}
+        <YesterdayModal closeYesterdayModal={closeYesterdayModal} />
+      )}
+      <div className="dailyLogCenterRow">
+        <ContainerDaily
+          tasks={tasks}
+          strikeTask={strikeTask}
+          deleteTask={deleteTask}
+          addTask={addTask}
+          filterPriority={filterPriority}
+          filterEffort={filterEffort}
+          filters={filters}
+          updateTaskTextState={updateTaskTextState}
+          updateTaskEffortState={updateTaskEffortState}
+          changeTaskType={changeTaskType}
+          changeTaskPriority={changeTaskPriority}
+          updateTaskTypeEvent={updateTaskType}
+          updateTaskTextEvent={updateTaskText}
+          updateTaskPriorityEvent={updateTaskPriority}
+          updateTaskEffortEvent={updateTaskEffort}
         />
       )}
       {isPomoVisible && <PomodoroModal togglePomo={togglePomo} />}
@@ -479,6 +548,8 @@ function DailyTasklist() {
         updateTaskEffortEvent={updateTaskEffort}
         togglePomo={togglePomo}
       />
+        <SideMenu monthlyTasks={monthlyTasks} transferTask={transferTask} />
+      </div>
     </Fragment>
   );
 }

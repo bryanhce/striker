@@ -2,6 +2,7 @@ import "./MonthlyTasklist.css";
 import { useState, useEffect } from "react";
 import { Container } from "../../components/Tasklists/MonthlyTasklist/ContainerMonthly";
 import StrikerLayout from "../StrikerLayout/StrikerLayout";
+import { v4 as uuidv4 } from 'uuid';
 
 function MonthlyTasklist() {
   //Get User Data:
@@ -189,8 +190,10 @@ function MonthlyTasklist() {
 
   //Add Task Event
   const addTask = () => {
+    const taskId = uuidv4();
+    console.log("Adding Task of ID: " + taskId);
     const newTask = {
-      id: "",
+      id: taskId,
       type: 0,
       text: "",
       deadline: "",
@@ -211,6 +214,7 @@ function MonthlyTasklist() {
       method: "POST",
       headers: { "Content-Type": "application/json" },
       body: JSON.stringify({
+        id: taskId,
         taskType: 0,
         description: "",
         progress: 0,
@@ -480,12 +484,14 @@ function MonthlyTasklist() {
 
   //Add Subtask Event
   const addSubtask = (parentId) => {
+    const taskId = uuidv4();
+    console.log("Adding Task of ID: " + taskId);
     const oldLength = tasks.length;
     const oldParentIndex = tasks.indexOf(
       tasks.filter((task) => task.id == parentId)[0]
     );
     const newTask = {
-      id: tasks.length + 1,
+      id: taskId,
       type: 0,
       text: "",
       deadline: "",
