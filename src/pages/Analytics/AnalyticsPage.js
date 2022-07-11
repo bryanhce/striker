@@ -32,7 +32,11 @@ const CompletionLabelArr = CompletionData.map(
   (obj) => obj.productivity.toString() + "%"
 );
 
-let userId = JSON.parse(localStorage.getItem("currentUser")).uid;
+let user = JSON.parse(localStorage.getItem("currentUser"));
+const userId = 0;
+if (user !== null) {
+  let userId = user.uid;
+}
 
 const AnalyticsPage = () => {
   const [allData, setAllData] = useState(null);
