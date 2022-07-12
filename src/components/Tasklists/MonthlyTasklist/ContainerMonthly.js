@@ -41,7 +41,7 @@ export const Container = ({
   return (
     <div className="border">
       <div className="border-header">
-        <h2 className="border-day">{months[today.getMonth()]}</h2>
+        <h2 className="border-month">{months[today.getMonth()]}</h2>
       </div>
       <TableMonthly
         tasks={tasks}
