@@ -10,10 +10,13 @@
   padding-bottom: 2%;
 }
 
+.overall-analytics-layout {
+  overflow-x: hidden;
+}
+
 .graph-div {
   display: flex;
   flex-direction: row;
   align-items: center;
-  justify-content: center;
-  gap: 20%;
+  justify-content: space-around;
 }

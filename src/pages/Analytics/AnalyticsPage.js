@@ -1,27 +1,28 @@
-import { Card, Col, Row, Progress, Spin } from "antd";
+import { Card, Col, Row, Progress, Spin, Tooltip } from "antd";
 import "./AnalyticsPage.css";
 import AnalyticsGraph from "../../components/AnalyticsGraphs/AnalyticsGraph";
-import { Fragment, useEffect, useState } from "react";
+import { useEffect, useState } from "react";
 import { LoadingOutlined } from "@ant-design/icons";
+import { auth } from "../../firebase";
 
 const spinner = <LoadingOutlined style={{ fontSize: 24 }} spin />;
 
 var productivityData = [
-  { month: 1, productivity: 60 },
-  { month: 2, productivity: 83 },
-  { month: 3, productivity: 3 },
-  { month: 4, productivity: 45 },
-  { month: 5, productivity: 100 },
-  { month: 6, productivity: 32 },
+  { month: 1, productivity: 0 },
+  { month: 2, productivity: 0 },
+  { month: 3, productivity: 0 },
+  { month: 4, productivity: 0 },
+  { month: 5, productivity: 0 },
+  { month: 6, productivity: 0 },
 ];
 
 var completionData = [
-  { month: 1, productivity: 34 },
-  { month: 2, productivity: 50 },
-  { month: 3, productivity: 97 },
-  { month: 4, productivity: 88 },
-  { month: 5, productivity: 67 },
-  { month: 6, productivity: 49 },
+  { month: 1, productivity: 0 },
+  { month: 2, productivity: 0 },
+  { month: 3, productivity: 0 },
+  { month: 4, productivity: 0 },
+  { month: 5, productivity: 0 },
+  { month: 6, productivity: 0 },
 ];
 
 function createLabelArr(data) {
@@ -52,9 +53,13 @@ var yearNow = dateNow.getFullYear();
 var dateArr = createLastSixMonthsWithYear(monthNow, yearNow, [], 0);
 
 let user = JSON.parse(localStorage.getItem("currentUser"));
-const userId = 0;
-if (user !== null) {
-  let userId = user.uid;
+let userId = user.uid;
+if (user === null) {
+  userId = auth.currentUser.uid;
+}
+//last resort so that app does not crash but bad error handling
+if (user === null) {
+  userId = 0;
 }
 
 const AnalyticsPage = () => {
@@ -108,112 +113,138 @@ const AnalyticsPage = () => {
   }, []);
 
   return (
-    <Fragment>
+    <div className="overall-analytics-layout">
       <div className="site-card-wrapper">
         <Row gutter={16}>
           <Col span={8}>
-            <Card
-              title="Productivity/ Effort Rate"
-              className="progress-card"
-              data-testid="productivity-rate"
-            >
-              {allData === null ? (
-                <Spin indicator={spinner} />
-              ) : (
-                <Progress
-                  type="circle"
-                  format={(p) => (p === 100 ? "100%" : p + "%")}
-                  percent={Math.round(
-                    (allData.totalCompletedEffort / allData.totalEffort) * 100
-                  )}
-                  strokeColor={"#a0d911"}
-                />
-              )}
-            </Card>
+            <Tooltip title="Total effort of completed task over total effort">
+              <Card
+                title="Productivity/ Effort Rate"
+                className="progress-card"
+                data-testid="productivity-rate"
+              >
+                {allData === null ? (
+                  <Spin indicator={spinner} />
+                ) : (
+                  <Progress
+                    type="circle"
+                    format={(p) => (p === 100 ? "100%" : p + "%")}
+                    percent={Math.round(
+                      (allData.totalCompletedEffort / allData.totalEffort) * 100
+                    )}
+                    strokeColor={"#a0d911"}
+                  />
+                )}
+              </Card>
+            </Tooltip>
           </Col>
           <Col span={8}>
-            <Card
-              title="Avg No. of Tasks Completed Per Day"
-              className="progress-card"
-              data-testid="productive-days"
-            >
-              {allData === null ? (
-                <Spin indicator={spinner} />
-              ) : (
-                <div>
-                  {allData.averageDailyTaskCompleted === null
-                    ? 0
-                    : allData.averageDailyTaskCompleted}{" "}
-                  Tasks
-                </div>
-              )}
-            </Card>
+            <Tooltip title="Average number of tasks striked in a day">
+              <Card
+                title="Avg No. of Tasks Completed Per Day"
+                className="progress-card"
+                data-testid="productive-days"
+                style={{ height: "100%" }}
+              >
+                {allData === null ? (
+                  <Spin indicator={spinner} />
+                ) : (
+                  <span
+                    style={{
+                      display: "flex",
+                      textAlign: "center",
+                      justifyContent: "center",
+                      fontSize: "5vh",
+                      paddingTop: "7%",
+                    }}
+                  >
+                    {allData.averageDailyTaskCompleted === null
+                      ? 0
+                      : allData.averageDailyTaskCompleted}{" "}
+                    Tasks
+                  </span>
+                )}
+              </Card>
+            </Tooltip>
           </Col>
           <Col span={8}>
-            <Card
-              title="Completion Rate"
-              className="progress-card"
-              data-testid="completion-rate"
-            >
-              {allData === null ? (
-                <Spin indicator={spinner} />
-              ) : (
-                <Progress
-                  type="circle"
-                  format={(p) => (p === 100 ? "100%" : p + "%")}
-                  percent={Math.round(
-                    (allData.totalCompletedEvents /
-                      (allData.assignments + allData.events + allData.notes)) *
-                      100
-                  )}
-                />
-              )}
-            </Card>
+            <Tooltip title="Total completed tasks over total tasks">
+              <Card
+                title="Completion Rate"
+                className="progress-card"
+                data-testid="completion-rate"
+              >
+                {allData === null ? (
+                  <Spin indicator={spinner} />
+                ) : (
+                  <Progress
+                    type="circle"
+                    format={(p) => (p === 100 ? "100%" : p + "%")}
+                    percent={Math.round(
+                      (allData.totalCompletedEvents /
+                        (allData.assignments +
+                          allData.events +
+                          allData.notes)) *
+                        100
+                    )}
+                  />
+                )}
+              </Card>
+            </Tooltip>
           </Col>
         </Row>
       </div>
       <div className="site-card-wrapper">
         <Row gutter={16}>
           <Col span={8}>
-            <Card
-              title="Total Tasks Completed"
-              className="progress-card"
-              data-testid="tasks-completed"
-            >
-              {allData === null ? (
-                <Spin indicator={spinner} />
-              ) : (
-                <div>
-                  {allData.assignments === null ? 0 : allData.assignments} Tasks
-                </div>
-              )}
-            </Card>
+            <Tooltip title="Total number of assignments created">
+              <Card
+                title="Total Tasks Completed"
+                className="progress-card"
+                data-testid="tasks-completed"
+              >
+                {allData === null ? (
+                  <Spin indicator={spinner} />
+                ) : (
+                  <div>
+                    {allData.assignments === null ? 0 : allData.assignments}{" "}
+                    Tasks
+                  </div>
+                )}
+              </Card>
+            </Tooltip>
           </Col>
           <Col span={8}>
-            <Card
-              title="Total Notes"
-              className="progress-card"
-              data-testid="total-reminders"
-            >
-              {allData === null ? (
-                <Spin indicator={spinner} />
-              ) : (
-                <div>{allData.notes === null ? 0 : allData.notes} Notes</div>
-              )}
-            </Card>
+            <Tooltip title="Total number of notes created">
+              <Card
+                title="Total Notes"
+                className="progress-card"
+                data-testid="total-reminders"
+              >
+                {allData === null ? (
+                  <Spin indicator={spinner} />
+                ) : (
+                  <div>{allData.notes === null ? 0 : allData.notes} Notes</div>
+                )}
+              </Card>
+            </Tooltip>
           </Col>
           <Col span={8}>
-            <Card
-              title="Total Events"
-              className="progress-card"
-              data-testid="total-events"
-            >
-              {allData === null ? (
-                <Spin indicator={spinner} />
-              ) : (
-                <div>{allData.events === null ? 0 : allData.events} Events</div>
-              )}
-            </Card>
+            <Tooltip title="Total number of events created">
+              <Card
+                title="Total Events"
+                className="progress-card"
+                data-testid="total-events"
+              >
+                {allData === null ? (
+                  <Spin indicator={spinner} />
+                ) : (
+                  <div>
+                    {allData.events === null ? 0 : allData.events} Events
+                  </div>
+                )}
+              </Card>
+            </Tooltip>
           </Col>
         </Row>
       </div>
@@ -229,7 +260,7 @@ const AnalyticsPage = () => {
           labelArr={completionLabelArr}
         />
       </div>
-    </Fragment>
+    </div>
   );
 };
 
