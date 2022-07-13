@@ -185,7 +185,11 @@ function TableDaily({
                       : priorities[task.priority]
                   }`}
                   onKeyDown={(e) => changeTaskPriority(task.id, e)}
-                  onBlur={() => updateTaskPriorityEvent(task.priority, task.id)}
+                  onBlur={() => {
+                    updateTaskPriorityEvent(task.priority, task.id);
+                    onUnselect("priority", task.id);
+                  }}
+                  onFocus={() => onSelect("priority", task.id)}
                 ></div>
               </td>
               <td>
@@ -193,7 +197,11 @@ function TableDaily({
                   className={"taskEffort " + task.id + "effort"}
                   contentEditable="true"
                   onKeyDown={onlyNumbers}
-                  onBlur={() => updateTaskEffortState(task.id)}
+                  onFocus={() => onFocus("taskEffort", task.id)}
+                  onBlur={() => {
+                    updateTaskEffortState(task.id);
+                    onUnselect("taskEffort", task.id)
+                  }}
                 >
                   {task.effort}
                 </div>

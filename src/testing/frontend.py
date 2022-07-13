@@ -43,7 +43,7 @@ def null_fail():
 #Test Cases:
 def testcase1():
     #Wait for signup button
-    wait = WebDriverWait(driver, 3).until(EC.presence_of_element_located((By.ID, "basic_email")))
+    wait = WebDriverWait(driver, 10).until(EC.presence_of_element_located((By.ID, "basic_email")))
     signup_button = driver.find_element(By.LINK_TEXT, "Create Account")
     signup_button.click()
 
