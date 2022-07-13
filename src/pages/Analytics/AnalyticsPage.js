@@ -52,16 +52,16 @@ var monthNow = dateNow.getMonth() + 2;
 var yearNow = dateNow.getFullYear();
 var dateArr = createLastSixMonthsWithYear(monthNow, yearNow, [], 0);
 
-let user = auth.currentUser;
-let userId = 0;
-if (user !== null) {
-  userId = JSON.parse(localStorage.getItem("currentUser")).uid;
-}
-
 const AnalyticsPage = () => {
   const [allData, setAllData] = useState(null);
   const [completionLabelArr, setCompletionLabelArr] = useState([]);
   const [productivityLabelArr, setProductivityLabelArr] = useState([]);
+
+  let user = JSON.parse(localStorage.getItem("currentUser"));
+  if (user === null) {
+    user = auth.currentUser;
+  }
+  let userId = user.uid;
 
   const getAllAnalytics = async () => {
     await fetch(`https://striker-backend.herokuapp.com/analytics/all/${userId}`)
