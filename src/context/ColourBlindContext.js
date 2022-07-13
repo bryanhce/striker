@@ -5,6 +5,19 @@ const ColourBlindContext = createContext();
 export function ColourBlindContextProvider({ children }) {
   const [isColourBlindFilter, setColourBlindFilter] = useState(false);
 
+  let user = JSON.parse(localStorage.getItem("currentUser"));
+  let userId = user.uid;
+  if (userId === null) {
+    userId = 0;
+  }
+
+  // fetch(
+  //   `https://striker-backend.herokuapp.com/dependencies/colourBlind/${userId}`
+  // )
+  //   .then((response) => response.json())
+  //   .then((isCB) => setColourBlindFilter(isCB))
+  //   .catch((err) => console.log("colour blind api error " + err));
+
   const toggleColourBlindFilter = () => {
     setColourBlindFilter(!isColourBlindFilter);
   };

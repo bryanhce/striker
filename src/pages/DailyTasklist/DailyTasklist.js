@@ -1,11 +1,13 @@
 import "./DailyTasklist.css";
-import { useState, useEffect, Fragment, useContext } from "react";
+import { useState, useEffect, Fragment } from "react";
 import { ContainerDaily } from "../../components/Tasklists/DailyTasklist/ContainerDaily";
 import "../../components/YesterdayModal/YesterdayModal";
 import YesterdayModal from "../../components/YesterdayModal/YesterdayModal";
 import PomodoroModal from "../../components/PomodoroModal/PomodoroModal";
 import { SideMenu } from "../../components/Tasklists/DailyTasklist/SideMenu";
 import { v4 as uuidv4 } from "uuid";
+import { use135 } from "../../context/OneThreeFiveContext";
+import OneThreeFiveModal from "../../components/OneThreeFiveModal/OneThreeFiveModal";
 import { useParams } from "react-router-dom";
 
 function DailyTasklist() {
@@ -547,6 +549,41 @@ function DailyTasklist() {
   const togglePomo = () => {
     setPomoVisible(!isPomoVisible);
   };
+
+  //for 135 feature
+  const { is135Active } = use135();
+  const [is135ErrorVisible, set135ErrorVisible] = useState(false);
+
+  function check135Condition() {
+    const numOfRedTasks = tasks.reduce(
+      (x, y) => (y.priority === 2 ? x + 1 : x),
+      0
+    );
+    const numOfOrangeTasks = tasks.reduce(
+      (x, y) => (y.priority === 1 ? x + 1 : x),
+      0
+    );
+    const numOfGreenTasks = tasks.reduce(
+      (x, y) => (y.priority === 0 ? x + 1 : x),
+      0
+    );
+
+    if (
+      tasks.length > 9 ||
+      numOfRedTasks > 1 ||
+      numOfOrangeTasks > 3 ||
+      numOfGreenTasks > 5
+    ) {
+      set135ErrorVisible(true);
+    }
+  }
+
+  useEffect(() => {
+    if (is135Active) {
+      check135Condition();
+    }
+  }, [tasks, is135Active]);
+
   return (
     <Fragment>
       {isYesterdayModalVisible && (
@@ -555,6 +592,10 @@ function DailyTasklist() {
           GetDailyTasks={GetDailyTasks}
         />
       )}
+      <OneThreeFiveModal
+        is135ErrorVisible={is135ErrorVisible}
+        set135ErrorVisible={set135ErrorVisible}
+      />
       {isPomoVisible && <PomodoroModal togglePomo={togglePomo} />}
       <div className="dailyLogCenterRow">
         <ContainerDaily
