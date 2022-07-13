@@ -5,10 +5,13 @@ import PopUpCard from "../ModalFeatures/PopUpCard/PopUpCard";
 import Backdrop from "../ModalFeatures/Backdrop/Backdrop";
 import Timer from "./Timer/Timer";
 import { Tabs } from "antd";
+import { usePomodoro } from "../../context/PomodoroContext";
 
 const { TabPane } = Tabs;
 
 const PomodoroCard = (props) => {
+  const { pomoTime } = usePomodoro();
+
   return (
     <PopUpCard>
       <header style={{ display: "flex", flexDirection: "row" }}>
@@ -24,7 +27,7 @@ const PomodoroCard = (props) => {
       <div>
         <Tabs tabPosition="bottom" defaultActiveKey="1" centered={true}>
           <TabPane tab="Pomodoro" key="1">
-            <Timer time={1500000} desc={"Pomodoro"} />
+            <Timer time={pomoTime * 60 * 1000} desc={"Pomodoro"} />
             {/* <Timer time={5000} desc={"Pomodoro"} /> */}
           </TabPane>
           <TabPane tab="Short Break" key="2">

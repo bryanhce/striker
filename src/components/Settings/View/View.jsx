@@ -12,7 +12,7 @@ const View = () => {
       </div>
       <hr />
       <br />
-      <div style={{ display: "flex", flexDirection: "row" }}>
+      {/* <div style={{ display: "flex", flexDirection: "row" }}>
         <h3 style={{ paddingRight: "1%" }}>
           <strong>Dark Mode</strong>
         </h3>
@@ -25,7 +25,7 @@ const View = () => {
       </div>
       <br />
       <hr />
-      <br />
+      <br /> */}
       <div style={{ display: "flex", flexDirection: "row" }}>
         <h3 style={{ paddingRight: "1%" }}>
           <strong>Colour-blindness Filter</strong>

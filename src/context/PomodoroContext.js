@@ -4,6 +4,7 @@ const PomodoroContext = createContext();
 
 export function PomodoroContextProvider({ children }) {
   const [isPomoButtonVisible, setPomoButtonVisible] = useState(false);
+  const [pomoTime, setPomoTime] = useState(25);
 
   const togglePomoButton = () => {
     setPomoButtonVisible(!isPomoButtonVisible);
@@ -15,6 +16,8 @@ export function PomodoroContextProvider({ children }) {
         isPomoButtonVisible,
         setPomoButtonVisible,
         togglePomoButton,
+        pomoTime,
+        setPomoTime,
       }}
     >
       {children}
