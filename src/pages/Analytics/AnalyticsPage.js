@@ -52,14 +52,10 @@ var monthNow = dateNow.getMonth() + 2;
 var yearNow = dateNow.getFullYear();
 var dateArr = createLastSixMonthsWithYear(monthNow, yearNow, [], 0);
 
-let user = JSON.parse(localStorage.getItem("currentUser"));
-let userId = user.uid;
-if (user === null) {
-  userId = auth.currentUser.uid;
-}
-//last resort so that app does not crash but bad error handling
-if (user === null) {
-  userId = 0;
+let user = auth.currentUser;
+let userId = 0;
+if (user !== null) {
+  userId = JSON.parse(localStorage.getItem("currentUser")).uid;
 }
 
 const AnalyticsPage = () => {
