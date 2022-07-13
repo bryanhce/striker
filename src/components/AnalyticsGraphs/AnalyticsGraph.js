@@ -53,7 +53,11 @@ const AnalyticsGraph = (props) => {
           tickValues={[1, 2, 3, 4, 5, 6]}
           tickFormat={lastSixMonthsText}
         />
-        <VictoryAxis dependentAxis tickFormat={(x) => `${x}%`} />
+        <VictoryAxis
+          dependentAxis
+          tickFormat={(x) => `${x}%`}
+          domain={[0, 100]}
+        />
         <VictoryBar
           data={props.data}
           x="month"

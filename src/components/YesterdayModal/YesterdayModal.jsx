@@ -8,6 +8,7 @@ import "./YesterdayModal.css";
 import { List, notification } from "antd";
 import { useEffect } from "react";
 import { useRef } from "react";
+import { v4 as uuidv4 } from "uuid";
 
 //kept for testing purposes
 // const data = [
@@ -107,8 +108,7 @@ const YesterdayCard = (props) => {
       method: "POST",
       headers: { "Content-Type": "application/json" },
       body: JSON.stringify({
-        //TODO must change temp id
-        id: "1029i4092323",
+        id: uuidv4(),
         taskType: task.type,
         description: task.description,
         isCompleted: false,
