@@ -63,39 +63,69 @@ function TableDaily({
   //colourblindness check
   const { isColourBlindFilter } = useColourBlind();
 
-    //Select field Event:
-    const onSelect = (className, id) => {
-        const task = document.getElementById(id +"ID");
-        const element = task.getElementsByClassName(className)[0];
-        element.classList.add("bordered");
-    }
+  //Select field Event:
+  const onSelect = (className, id) => {
+    const task = document.getElementById(id + "ID");
+    const element = task.getElementsByClassName(className)[0];
+    element.classList.add("bordered");
+  };
 
-    //Unselect field Event:
-    const onUnselect = (className, id) => {
-        const task = document.getElementById(id +"ID");
-        const element = task.getElementsByClassName(className)[0];
-        element.classList.remove("bordered");    
-    }
+  //Unselect field Event:
+  const onUnselect = (className, id) => {
+    const task = document.getElementById(id + "ID");
+    const element = task.getElementsByClassName(className)[0];
+    element.classList.remove("bordered");
+  };
 
-    //Task type buttons
-    const taskType = (type, id) => {
-        if (type == 0) {
-            return <input type="image" className="strikeBtn" onDoubleClick={() => strikeTask(id)} src={require("../../../images/event.png")} onKeyDown={(e) => changeTaskType(id, e)} onBlur={() => {
-                updateTaskTypeEvent(0, id);
-                onUnselect("strikeBtn", id);
-            }} onClick={() => onSelect("strikeBtn", id)} />
-        } else if (type == 1) {
-            return <input type="image" className="strikeBtn" onDoubleClick={() => strikeTask(id)} src={require("../../../images/assignment.png")} onKeyDown={(e) => changeTaskType(id, e)} onBlur={() => {
-                updateTaskTypeEvent(0, id);
-                onUnselect("strikeBtn", id);
-            }} onClick={() => onSelect("strikeBtn", id)} />        
-        } else if (type == 2) {
-            return <input type="image" className="strikeBtn" onDoubleClick={() => strikeTask(id)} src={require("../../../images/note.png")} onKeyDown={(e) => changeTaskType(id, e)} onBlur={() => {
-                updateTaskTypeEvent(0, id);
-                onUnselect("strikeBtn", id);
-            }} onClick={() => onSelect("strikeBtn", id)} />        
-        }
-  }
+  //Task type buttons
+  const taskType = (type, id) => {
+    if (type == 0) {
+      return (
+        <input
+          type="image"
+          className="strikeBtn"
+          onDoubleClick={() => strikeTask(id)}
+          src={require("../../../images/event.png")}
+          onKeyDown={(e) => changeTaskType(id, e)}
+          onBlur={() => {
+            updateTaskTypeEvent(0, id);
+            onUnselect("strikeBtn", id);
+          }}
+          onClick={() => onSelect("strikeBtn", id)}
+        />
+      );
+    } else if (type == 1) {
+      return (
+        <input
+          type="image"
+          className="strikeBtn"
+          onDoubleClick={() => strikeTask(id)}
+          src={require("../../../images/assignment.png")}
+          onKeyDown={(e) => changeTaskType(id, e)}
+          onBlur={() => {
+            updateTaskTypeEvent(0, id);
+            onUnselect("strikeBtn", id);
+          }}
+          onClick={() => onSelect("strikeBtn", id)}
+        />
+      );
+    } else if (type == 2) {
+      return (
+        <input
+          type="image"
+          className="strikeBtn"
+          onDoubleClick={() => strikeTask(id)}
+          src={require("../../../images/note.png")}
+          onKeyDown={(e) => changeTaskType(id, e)}
+          onBlur={() => {
+            updateTaskTypeEvent(0, id);
+            onUnselect("strikeBtn", id);
+          }}
+          onClick={() => onSelect("strikeBtn", id)}
+        />
+      );
+    }
+  };
 
   //Filter Tasks Show All
   const filterTasksAll = () => {
@@ -137,46 +167,91 @@ function TableDaily({
   //useContext for rendering pomdoro
   const { isPomoButtonVisible } = usePomodoro();
   return (
-      <div className="tableContainer">
-          <table>
-              <tr className="tableHeader">
-                  <th className="strikeBtnHeader"></th>
-                  <th className="taskHeader filterableHeader" onClick={filtered == 0 ? filterTasksUncompleted : (filtered == 1 ? filterTasksCompleted : filterTasksAll)}>
-                      <div className="headerContainer">
-                          <div>Task</div>
-                          {filtered == 1 ? <EyeOutlined className="filterIcon" /> : (filtered == 2 ? <EyeInvisibleOutlined className="filterIcon" /> : <EyeOutlined className="hidden" />)}
-                      </div>
-                  </th>
-                  <th className="priorityHeader filterableHeader" onClick={filterPriority}>
-                      <div className="headerContainer">
-                          <div className="priorityHeaderText">Priority</div>
-                          {filters[0][1] > 0
-                                  ? <CaretDownOutlined className={filters[0][0] !== 0 ? "filterIcon" : "filterIcon hidden"} />
-                                  : <CaretUpOutlined className={filters[0][0] !== 0 ? "filterIcon" : "filterIcon hidden"}/>}
-                      </div>
-                  </th>
-                  <th className="effortHeader filterableHeader" onClick={filterEffort}>
-                      <div className="headerContainer">
-                          <div className="effortHeaderText">Effort</div>
-                          {filters[1][1] > 0
-                                  ? <CaretDownOutlined className={filters[1][0] !== 0 ? "filterIcon" : "filterIcon hidden"} />
-                                  : <CaretUpOutlined className={filters[1][0] !== 0 ? "filterIcon" : "filterIcon hidden"}/>}
-                      </div>
-                  </th>
-                  {isPomoButtonVisible && (
-                    <th className="clockHeader"></th>
-                  )}
-                  <th className="deleteBtnHeader"></th>
-              </tr>
-              {tasks.map((task) => {
-                  return <tr key={tasks.indexOf(task)} className={task.striked ? "task striked" : "task"} id={task.id + "ID"}>
-                      <td className="btnContainer">
-                          {taskType(task.type, task.id)}
-                      </td>
-                      <td>
-                          <div className={"taskText " + task.id + "text"} contentEditable="true" onBlur={() => updateTaskTextState(task.id)}>{task.text}</div>
-                      </td>
-                      <td className="priorityContainer">
+    <div className="tableContainer">
+      <table>
+        <tr className="tableHeader">
+          <th className="strikeBtnHeader"></th>
+          <th
+            className="taskHeader filterableHeader"
+            onClick={
+              filtered == 0
+                ? filterTasksUncompleted
+                : filtered == 1
+                ? filterTasksCompleted
+                : filterTasksAll
+            }
+          >
+            <div className="headerContainer">
+              <div>Task</div>
+              {filtered == 1 ? (
+                <EyeOutlined className="filterIcon" />
+              ) : filtered == 2 ? (
+                <EyeInvisibleOutlined className="filterIcon" />
+              ) : (
+                <EyeOutlined className="hidden" />
+              )}
+            </div>
+          </th>
+          <th
+            className="priorityHeader filterableHeader"
+            onClick={filterPriority}
+          >
+            <div className="headerContainer">
+              <div className="priorityHeaderText">Priority</div>
+              {filters[0][1] > 0 ? (
+                <CaretDownOutlined
+                  className={
+                    filters[0][0] !== 0 ? "filterIcon" : "filterIcon hidden"
+                  }
+                />
+              ) : (
+                <CaretUpOutlined
+                  className={
+                    filters[0][0] !== 0 ? "filterIcon" : "filterIcon hidden"
+                  }
+                />
+              )}
+            </div>
+          </th>
+          <th className="effortHeader filterableHeader" onClick={filterEffort}>
+            <div className="headerContainer">
+              <div className="effortHeaderText">Effort</div>
+              {filters[1][1] > 0 ? (
+                <CaretDownOutlined
+                  className={
+                    filters[1][0] !== 0 ? "filterIcon" : "filterIcon hidden"
+                  }
+                />
+              ) : (
+                <CaretUpOutlined
+                  className={
+                    filters[1][0] !== 0 ? "filterIcon" : "filterIcon hidden"
+                  }
+                />
+              )}
+            </div>
+          </th>
+          {isPomoButtonVisible && <th className="clockHeader"></th>}
+          <th className="deleteBtnHeader"></th>
+        </tr>
+        {tasks.map((task) => {
+          return (
+            <tr
+              key={tasks.indexOf(task)}
+              className={task.striked ? "task striked" : "task"}
+              id={task.id + "ID"}
+            >
+              <td className="btnContainer">{taskType(task.type, task.id)}</td>
+              <td>
+                <div
+                  className={"taskText " + task.id + "text"}
+                  contentEditable="true"
+                  onBlur={() => updateTaskTextState(task.id)}
+                >
+                  {task.text}
+                </div>
+              </td>
+              <td className="priorityContainer">
                 <div
                   tabindex="0"
                   className={`row_info priority ${
@@ -197,10 +272,10 @@ function TableDaily({
                   className={"taskEffort " + task.id + "effort"}
                   contentEditable="true"
                   onKeyDown={onlyNumbers}
-                  onFocus={() => onFocus("taskEffort", task.id)}
+                  // onFocus={() => onFocus("taskEffort", task.id)}
                   onBlur={() => {
                     updateTaskEffortState(task.id);
-                    onUnselect("taskEffort", task.id)
+                    onUnselect("taskEffort", task.id);
                   }}
                 >
                   {task.effort}
@@ -217,11 +292,12 @@ function TableDaily({
                   onClick={() => deleteTask(task.id)}
                 />
               </td>
-                  </tr>
-              })}
-          </table>
-      </div>
-  )
+            </tr>
+          );
+        })}
+      </table>
+    </div>
+  );
 }
 
 export default TableDaily;
