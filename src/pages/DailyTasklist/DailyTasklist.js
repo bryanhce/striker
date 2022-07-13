@@ -4,11 +4,8 @@ import { ContainerDaily } from "../../components/Tasklists/DailyTasklist/Contain
 import "../../components/YesterdayModal/YesterdayModal";
 import YesterdayModal from "../../components/YesterdayModal/YesterdayModal";
 import PomodoroModal from "../../components/PomodoroModal/PomodoroModal";
-import { usePomodoro } from "../../context/PomodoroContext";
 import { SideMenu } from "../../components/Tasklists/DailyTasklist/SideMenu";
-import { v4 as uuidv4 } from 'uuid';
-
-//getTasklist API: https://striker-backend.herokuapp.com/task-list/dVxGQxT8uKepfQLJxqnhBRWx6Dz1?date=2022-06-12
+import { v4 as uuidv4 } from "uuid";
 
 function DailyTasklist() {
   //Get User Data:
@@ -25,7 +22,8 @@ function DailyTasklist() {
     String(today.getMonth() + 1).padStart(2, "0") +
     "-" +
     String(today.getDate()).padStart(2, "0");
-  const monthString = today.getFullYear() + "-" + String(today.getMonth() + 1).padStart(2, "0");
+  const monthString =
+    today.getFullYear() + "-" + String(today.getMonth() + 1).padStart(2, "0");
   console.log("Loading data for date: " + dateString);
 
   //State for Task list
@@ -52,9 +50,7 @@ function DailyTasklist() {
     return sortedTasks;
   }
 
-  //Initial update of tasks
-  useEffect(() => {
-    console.log("Data: ");
+  const GetDailyTasks = () => {
     fetch(
       `https://striker-backend.herokuapp.com/task-list/${userId}?date=${dateString}`
     )
@@ -77,36 +73,40 @@ function DailyTasklist() {
         return log;
       })
       .then((filteredData) => setTasks(filteredData));
+  };
 
-      fetch(
-        `https://striker-backend.herokuapp.com/calendar/${userId}?year-month=${monthString}`
-      )
-        .then((response) => response.json())
-        .then((data) => data.filter((task) => task.progress.Valid))
-        .then((dailyData) => {
-            return dailyData.map((task) => {
-              return {
-                id: task.id,
-                type: task.taskType,
-                text: task.description,
-                deadline: task.deadline.String,
-                progress: task.progress.Int64,
-                striked: task.isCompleted.Bool,
-                parent: task.parentId.String,
-                hasChildren: task.hasChildren,
-              };
-            })
-          }
-        )
-        .then((log) => {
-          console.log("Data (Monthly): ");
-          console.log(log);
-          return log;
-        })
-        .then((filteredData) => {
-          setMonthlyTasks(sortTasks(filteredData));
-          return filteredData;
-        })
+  //Initial update of tasks
+  useEffect(() => {
+    GetDailyTasks();
+
+    fetch(
+      `https://striker-backend.herokuapp.com/calendar/${userId}?year-month=${monthString}`
+    )
+      .then((response) => response.json())
+      .then((data) => data.filter((task) => task.progress.Valid))
+      .then((dailyData) => {
+        return dailyData.map((task) => {
+          return {
+            id: task.id,
+            type: task.taskType,
+            text: task.description,
+            deadline: task.deadline.String,
+            progress: task.progress.Int64,
+            striked: task.isCompleted.Bool,
+            parent: task.parentId.String,
+            hasChildren: task.hasChildren,
+          };
+        });
+      })
+      .then((log) => {
+        console.log("Data (Monthly): ");
+        console.log(log);
+        return log;
+      })
+      .then((filteredData) => {
+        setMonthlyTasks(sortTasks(filteredData));
+        return filteredData;
+      });
   }, []);
 
   // State for filters, first value is if filter is clicked, second is up or down
@@ -463,7 +463,7 @@ function DailyTasklist() {
       priority: 0,
       effort: 0,
       striked: false,
-    }
+    };
     const newTasks = [...tasks, newTask];
     setTasks(newTasks);
 
@@ -488,9 +488,9 @@ function DailyTasklist() {
       console.log("Transferring task response: ");
       console.log(response.json());
     });
-  }
+  };
 
-//Modal popup for yesterday's task upon login
+  //Modal popup for yesterday's task upon login
 
   //state for yesterday task modal
   const [isYesterdayModalVisible, setIsVisible] = useState(false);
@@ -552,7 +552,10 @@ function DailyTasklist() {
   return (
     <Fragment>
       {isYesterdayModalVisible && (
-        <YesterdayModal closeYesterdayModal={closeYesterdayModal} />
+        <YesterdayModal
+          closeYesterdayModal={closeYesterdayModal}
+          GetDailyTasks={GetDailyTasks}
+        />
       )}
       {isPomoVisible && <PomodoroModal togglePomo={togglePomo} />}
       <div className="dailyLogCenterRow">

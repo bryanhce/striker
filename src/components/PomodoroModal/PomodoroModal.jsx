@@ -22,7 +22,7 @@ const PomodoroCard = (props) => {
       </header>
       <hr style={{ width: "60%", marginTop: "0" }} />
       <div>
-        <Tabs tabPosition="bottom" defaultActiveKey="1">
+        <Tabs tabPosition="bottom" defaultActiveKey="1" centered={true}>
           <TabPane tab="Pomodoro" key="1">
             <Timer time={1500000} desc={"Pomodoro"} />
             {/* <Timer time={5000} desc={"Pomodoro"} /> */}
