@@ -178,7 +178,7 @@ function TableDaily({
                       </td>
                       <td className="priorityContainer">
                 <div
-                  tabindex="0"
+                  tabIndex="0"
                   className={`row_info priority ${
                     isColourBlindFilter
                       ? colourBlindPriorities[task.priority]
@@ -197,7 +197,7 @@ function TableDaily({
                   className={"taskEffort " + task.id + "effort"}
                   contentEditable="true"
                   onKeyDown={onlyNumbers}
-                  onFocus={() => onFocus("taskEffort", task.id)}
+                  onFocus={() => onSelect("taskEffort", task.id)}
                   onBlur={() => {
                     updateTaskEffortState(task.id);
                     onUnselect("taskEffort", task.id)

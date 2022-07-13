@@ -14,8 +14,11 @@ import ProtectedRoute from "./components/ProtectedRoute/ProtectedRoute";
 import StrikerLayout from "./pages/StrikerLayout/StrikerLayout";
 import { PomodoroContextProvider } from "./context/PomodoroContext";
 import { ColourBlindContextProvider } from "./context/ColourBlindContext";
+import { useState } from "react";
+import { setDate } from "date-fns";
 
 function App() {
+
   return (
     <UserAuthContextProvider>
       <PomodoroContextProvider>
@@ -35,7 +38,7 @@ function App() {
               {/* nested routes */}
               <Route
                 exact
-                path="daily-task-list"
+                path="daily-task-list/:date"
                 element={
                   <ProtectedRoute>
                     <DailyTasklist />

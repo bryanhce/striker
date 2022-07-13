@@ -15,7 +15,7 @@ import {
 import { useUserAuth } from "../../context/UserAuthContext";
 import { format, addDays } from "date-fns";
 
-const StrikerMenu = () => {
+const StrikerMenu = ({ setDateSelected }) => {
   //logic for logout
   const { logOut } = useUserAuth();
   const navigate = useNavigate();
@@ -30,9 +30,15 @@ const StrikerMenu = () => {
   };
 
   //logic for date
-  const todayDisplay = format(new Date(), "dd.MM.yyyy");
-  const yesterdayDisplay = format(addDays(new Date(), -1), "dd.MM.yyyy");
-  const tomorrowDisplay = format(addDays(new Date(), 1), "dd.MM.yyyy");
+  const today = new Date();
+  const yesterday = addDays(today, -1);
+  const tomorrow = addDays(today, 1);
+  const todayString = format(today, "yyyy-MM-dd");
+  const yesterdayString = format(yesterday, "yyyy-MM-dd");
+  const tomorrowString = format(tomorrow, "yyyy-MM-dd");
+  const todayDisplay = format(today, "dd.MM.yyyy");
+  const yesterdayDisplay = format(yesterday, "dd.MM.yyyy");
+  const tomorrowDisplay = format(tomorrow, "dd.MM.yyyy");
 
   //function to default select key based on url
   const highlightDefaultKey = () => {
@@ -64,22 +70,22 @@ const StrikerMenu = () => {
       <Menu.Item key="1">
         <RightOutlined />
         <span>{tomorrowDisplay}</span>
-        <Link to="/daily-task-list" />
+        <Link to={"/daily-task-list/" + tomorrowString} />
       </Menu.Item>
       <Menu.Item key="2">
         <RightCircleOutlined />
         <span>{todayDisplay}</span>
-        <Link to="/daily-task-list" />
+        <Link to={"/daily-task-list/" + todayString} />
       </Menu.Item>
       <Menu.Item key="3">
         <RightOutlined />
         <span>{yesterdayDisplay}</span>
-        <Link to="/daily-task-list" />
+        <Link to={"/daily-task-list/" + yesterdayString} />
       </Menu.Item>
       <Menu.Item key="4">
         <HomeOutlined />
         <span>Home</span>
-        <Link to="/daily-task-list" />
+        <Link to={"/daily-task-list/" + todayString} />
       </Menu.Item>
       <Menu.Item key="5">
         <DesktopOutlined />
