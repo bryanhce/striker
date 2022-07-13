@@ -5,6 +5,7 @@ import { SideMenu } from "./SideMenu";
 import TableDaily from "./TableDaily";
 
 export const ContainerDaily = ({
+  todayString,
   tasks,
   strikeTask,
   deleteTask,
@@ -22,6 +23,7 @@ export const ContainerDaily = ({
   updateTaskEffortEvent,
   togglePomo,
 }) => {
+  
   const daysOfWeek = [
     "monday",
     "tuesday",
@@ -31,18 +33,15 @@ export const ContainerDaily = ({
     "saturday",
     "sunday",
   ];
-  var today = new Date();
+  const todayDate = new Date(todayString);
+  const todayDay = daysOfWeek[todayDate.getDay()];
+  const todayDisplay = todayString.slice(8) + " . " + todayString.slice(5, 7) + " . " + todayString.slice(0, 4);
+
   return (
     <div className="border">
       <div className="border-header">
-        <h2 className="border-day">{daysOfWeek[today.getDay() - 1]}</h2>
-        <h2 className="border-date">
-          {today.getDate().toString().padStart(2, "0") +
-            " . " +
-            (today.getMonth() + 1).toString().padStart(2, "0") +
-            " . " +
-            today.getFullYear()}
-        </h2>
+        <h2 className="border-day">{todayDay}</h2>
+        <h2 className="border-date">{todayDisplay}</h2>
       </div>
       <TableDaily
         tasks={tasks}

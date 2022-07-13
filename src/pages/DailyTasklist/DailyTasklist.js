@@ -8,6 +8,7 @@ import { SideMenu } from "../../components/Tasklists/DailyTasklist/SideMenu";
 import { v4 as uuidv4 } from "uuid";
 import { use135 } from "../../context/OneThreeFiveContext";
 import OneThreeFiveModal from "../../components/OneThreeFiveModal/OneThreeFiveModal";
+import { useParams } from "react-router-dom";
 
 function DailyTasklist() {
   //Get User Data:
@@ -16,17 +17,11 @@ function DailyTasklist() {
   console.log(user);
   const userId = user.uid;
 
+  const { date } = useParams();
+
   //Today's date:
-  let today = new Date();
-  const dateString =
-    today.getFullYear() +
-    "-" +
-    String(today.getMonth() + 1).padStart(2, "0") +
-    "-" +
-    String(today.getDate()).padStart(2, "0");
-  const monthString =
-    today.getFullYear() + "-" + String(today.getMonth() + 1).padStart(2, "0");
-  console.log("Loading data for date: " + dateString);
+  const dateString = date;
+  const monthString = dateString.slice(0, 7);
 
   //State for Task list
   const [tasks, setTasks] = useState([]);
@@ -71,14 +66,17 @@ function DailyTasklist() {
         })
       )
       .then((log) => {
+        console.log("Loading data for date: " + dateString);
         console.log(log);
         return log;
       })
-      .then((filteredData) => setTasks(filteredData));
+      .then((filteredData) => setTasks(filteredData))
+      .catch(setTasks([]));
   };
 
   //Initial update of tasks
   useEffect(() => {
+    console.log("Updating Tasks:");
     GetDailyTasks();
 
     fetch(
@@ -109,7 +107,7 @@ function DailyTasklist() {
         setMonthlyTasks(sortTasks(filteredData));
         return filteredData;
       });
-  }, []);
+  }, [date]);
 
   // State for filters, first value is if filter is clicked, second is up or down
   const [filters, setFilters] = useState([
@@ -601,6 +599,7 @@ function DailyTasklist() {
       {isPomoVisible && <PomodoroModal togglePomo={togglePomo} />}
       <div className="dailyLogCenterRow">
         <ContainerDaily
+          todayString={date}
           tasks={tasks}
           strikeTask={strikeTask}
           deleteTask={deleteTask}

@@ -3,6 +3,7 @@ import { Button, Form, Input, Card, Layout, notification } from "antd";
 import { Link, useNavigate } from "react-router-dom";
 import { useUserAuth } from "../../context/UserAuthContext";
 import { useState } from "react";
+import { format } from "date-fns";
 
 import "antd/dist/antd.min.css";
 
@@ -21,7 +22,9 @@ const LoginPage = () => {
     setError("");
     try {
       await logIn(email, password);
-      navigate("/daily-task-list");
+      const today = new Date();
+      const todayString = format(today, "yyyy-MM-dd");
+      navigate("/daily-task-list/" + todayString);
     } catch (err) {
       setError(err.message);
       console.log(error);
