@@ -10,7 +10,6 @@ import {
   EyeInvisibleOutlined,
   EyeOutlined,
 } from "@ant-design/icons";
-import AddTask from "../AddTask";
 import { useColourBlind } from "../../../context/ColourBlindContext";
 
 function TableMonthly({
@@ -52,6 +51,7 @@ function TableMonthly({
         <input
           type="image"
           className="strikeBtn"
+          alt="event"
           onDoubleClick={() => strikeTask(id)}
           src={require("../../../images/event.png")}
           onKeyDown={(e) => changeTaskType(id, e)}
@@ -63,6 +63,7 @@ function TableMonthly({
         <input
           type="image"
           className="strikeBtn"
+          alt="assignment"
           onDoubleClick={() => strikeTask(id)}
           src={require("../../../images/assignment.png")}
           onKeyDown={(e) => changeTaskType(id, e)}
@@ -74,6 +75,7 @@ function TableMonthly({
         <input
           type="image"
           className="strikeBtn"
+          alt="note"
           onDoubleClick={() => strikeTask(id)}
           src={require("../../../images/note.png")}
           onKeyDown={(e) => changeTaskType(id, e)}
@@ -166,17 +168,17 @@ function TableMonthly({
 
   //Select field Event:
   const onSelect = (className, id) => {
-    const task = document.getElementById(id +"ID");
+    const task = document.getElementById(id + "ID");
     const element = task.getElementsByClassName(className)[0];
     element.classList.add("bordered");
-  }
+  };
 
   //Unselect field Event:
   const onUnselect = (className, id) => {
-    const task = document.getElementById(id +"ID");
+    const task = document.getElementById(id + "ID");
     const element = task.getElementsByClassName(className)[0];
-    element.classList.remove("bordered");    
-  }
+    element.classList.remove("bordered");
+  };
 
   return (
     <div className="tableContainer">

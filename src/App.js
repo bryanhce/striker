@@ -15,8 +15,6 @@ import StrikerLayout from "./pages/StrikerLayout/StrikerLayout";
 import { PomodoroContextProvider } from "./context/PomodoroContext";
 import { ColourBlindContextProvider } from "./context/ColourBlindContext";
 import { OneThreeFiveContextProvider } from "./context/OneThreeFiveContext";
-import { useState } from "react";
-import { setDate } from "date-fns";
 
 function App() {
   return (

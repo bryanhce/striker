@@ -18,6 +18,7 @@ export function ColourBlindContextProvider({ children }) {
       .then((response) => response.json())
       .then((isCB) => setColourBlindFilter(isCB.dependency))
       .catch((err) => console.log("colour blind api error " + err));
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
   //updates backend and sets the new state

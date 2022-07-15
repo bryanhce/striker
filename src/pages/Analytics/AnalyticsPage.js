@@ -66,49 +66,54 @@ const AnalyticsPage = () => {
     userId = user.uid;
   }
 
-  const getAllAnalytics = async () => {
-    await fetch(`https://striker-backend.herokuapp.com/analytics/all/${userId}`)
-      .then((response) => response.json())
-      .then((data) => {
-        setAllData(data);
-      })
-      .catch((err) => console.log(err));
-  };
-
-  const getLastSixMonthsProductivity = async (start, end, count) => {
-    await fetch(
-      `https://striker-backend.herokuapp.com/analytics/${userId}?start-date=${start}&end-date=${end}`
-    )
-      .then((res) => res.json())
-      .then((data) => {
-        if (data.totalEffort === 0) {
-          productivityData[count]["productivity"] = 0;
-        } else {
-          productivityData[count]["productivity"] = Math.round(
-            (data.totalCompletedEffort / data.totalEffort) * 100
-          );
-        }
-        if (data.events + data.notes + data.assignments === 0) {
-          completionData[count]["productivity"] = 0;
-        } else {
-          completionData[count]["productivity"] = Math.round(
-            (data.totalCompletedEvents /
-              (data.events + data.notes + data.assignments)) *
-              100
-          );
-        }
-        setCompletionLabelArr(createLabelArr(completionData));
-        setProductivityLabelArr(createLabelArr(productivityData));
-      })
-      .catch((err) => console.log(err));
-  };
-
   useEffect(() => {
+    //definition of functions
+    const getAllAnalytics = async () => {
+      await fetch(
+        `https://striker-backend.herokuapp.com/analytics/all/${userId}`
+      )
+        .then((response) => response.json())
+        .then((data) => {
+          setAllData(data);
+        })
+        .catch((err) => console.log(err));
+    };
+
+    const getLastSixMonthsProductivity = async (start, end, count) => {
+      await fetch(
+        `https://striker-backend.herokuapp.com/analytics/${userId}?start-date=${start}&end-date=${end}`
+      )
+        .then((res) => res.json())
+        .then((data) => {
+          if (data.totalEffort === 0) {
+            productivityData[count]["productivity"] = 0;
+          } else {
+            productivityData[count]["productivity"] = Math.round(
+              (data.totalCompletedEffort / data.totalEffort) * 100
+            );
+          }
+          if (data.events + data.notes + data.assignments === 0) {
+            completionData[count]["productivity"] = 0;
+          } else {
+            completionData[count]["productivity"] = Math.round(
+              (data.totalCompletedEvents /
+                (data.events + data.notes + data.assignments)) *
+                100
+            );
+          }
+          setCompletionLabelArr(createLabelArr(completionData));
+          setProductivityLabelArr(createLabelArr(productivityData));
+        })
+        .catch((err) => console.log(err));
+    };
+
+    //calling the functions above
     getAllAnalytics();
     //for loop to call the api 6 times
     for (let i = 0; i < 6; i++) {
       getLastSixMonthsProductivity(dateArr[i], dateArr[i + 1], i);
     }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
   return (

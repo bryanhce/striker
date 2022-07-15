@@ -1,4 +1,4 @@
-import React, { Fragment, useState } from "react";
+import React, { Fragment } from "react";
 import ReactDOM from "react-dom";
 import CloseModal from "../ModalFeatures/CloseModal/CloseModal";
 import PopUpCard from "../ModalFeatures/PopUpCard/PopUpCard";

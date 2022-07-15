@@ -20,6 +20,7 @@ export function PomodoroContextProvider({ children }) {
       .then((response) => response.json())
       .then((isPomo) => setPomoButtonVisible(isPomo.dependency))
       .catch((err) => console.log("get pomodoro api error " + err));
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
   const togglePomoButton = () => {

@@ -1,7 +1,6 @@
 import React from "react";
 import AddTask from "../AddTask";
 import ProgressBar from "../Progress";
-import { SideMenu } from "./SideMenu";
 import TableDaily from "./TableDaily";
 
 export const ContainerDaily = ({

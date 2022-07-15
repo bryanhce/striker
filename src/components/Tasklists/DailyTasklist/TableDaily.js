@@ -84,6 +84,7 @@ function TableDaily({
         <input
           type="image"
           className="strikeBtn"
+          alt="event"
           onDoubleClick={() => strikeTask(id)}
           src={require("../../../images/event.png")}
           onKeyDown={(e) => changeTaskType(id, e)}
@@ -99,6 +100,7 @@ function TableDaily({
         <input
           type="image"
           className="strikeBtn"
+          alt="assignments"
           onDoubleClick={() => strikeTask(id)}
           src={require("../../../images/assignment.png")}
           onKeyDown={(e) => changeTaskType(id, e)}
@@ -114,6 +116,7 @@ function TableDaily({
         <input
           type="image"
           className="strikeBtn"
+          alt="note"
           onDoubleClick={() => strikeTask(id)}
           src={require("../../../images/note.png")}
           onKeyDown={(e) => changeTaskType(id, e)}

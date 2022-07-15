@@ -17,6 +17,7 @@ export function OneThreeFiveContextProvider({ children }) {
       .then((response) => response.json())
       .then((is135) => set135Active(is135.dependency))
       .catch((err) => console.log("1-3-5 api error " + err));
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
   const toggle135Button = () => {
