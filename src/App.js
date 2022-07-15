@@ -19,7 +19,6 @@ import { useState } from "react";
 import { setDate } from "date-fns";
 
 function App() {
-
   return (
     <UserAuthContextProvider>
       <PomodoroContextProvider>
@@ -31,7 +30,7 @@ function App() {
               <Route path="/reset-password" element={<ResetPasswordPage />} />
               <Route
                 exact
-                path="daily-task-list/:date"
+                path="/"
                 element={
                   <ProtectedRoute>
                     <StrikerLayout />
@@ -41,7 +40,7 @@ function App() {
                 {/* nested routes */}
                 <Route
                   exact
-                  path="daily-task-list"
+                  path="daily-task-list/:date"
                   element={
                     <ProtectedRoute>
                       <DailyTasklist />

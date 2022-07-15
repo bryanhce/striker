@@ -44,7 +44,11 @@ const StrikerMenu = ({ setDateSelected }) => {
   const highlightDefaultKey = () => {
     var path = window.location.pathname;
     switch (path) {
-      case "/daily-task-list":
+      case "/daily-task-list/" + tomorrowString:
+        return "1";
+      case "/daily-task-list/" + yesterdayString:
+        return "3";
+      case "/daily-task-list/" + todayString:
         return "4";
       case "/monthly-task-list":
         return "5";

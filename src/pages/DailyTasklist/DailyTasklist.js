@@ -47,6 +47,7 @@ function DailyTasklist() {
     return sortedTasks;
   }
 
+  //function take loads tasks in the daily log
   const GetDailyTasks = () => {
     fetch(
       `https://striker-backend.herokuapp.com/task-list/${userId}?date=${dateString}`
@@ -79,6 +80,7 @@ function DailyTasklist() {
     console.log("Updating Tasks:");
     GetDailyTasks();
 
+    //gets monthly tasks
     fetch(
       `https://striker-backend.herokuapp.com/calendar/${userId}?year-month=${monthString}`
     )

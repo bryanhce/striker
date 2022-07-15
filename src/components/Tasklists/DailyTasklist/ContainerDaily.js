@@ -23,7 +23,6 @@ export const ContainerDaily = ({
   updateTaskEffortEvent,
   togglePomo,
 }) => {
-  
   const daysOfWeek = [
     "monday",
     "tuesday",
@@ -34,8 +33,13 @@ export const ContainerDaily = ({
     "sunday",
   ];
   const todayDate = new Date(todayString);
-  const todayDay = daysOfWeek[todayDate.getDay()];
-  const todayDisplay = todayString.slice(8) + " . " + todayString.slice(5, 7) + " . " + todayString.slice(0, 4);
+  const todayDay = daysOfWeek[todayDate.getDay() - 1];
+  const todayDisplay =
+    todayString.slice(8) +
+    " . " +
+    todayString.slice(5, 7) +
+    " . " +
+    todayString.slice(0, 4);
 
   return (
     <div className="border">

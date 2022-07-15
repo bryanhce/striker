@@ -61,7 +61,10 @@ const AnalyticsPage = () => {
   if (user === null) {
     user = auth.currentUser;
   }
-  let userId = user.uid;
+  let userId = 0;
+  if (user !== null) {
+    userId = user.uid;
+  }
 
   const getAllAnalytics = async () => {
     await fetch(`https://striker-backend.herokuapp.com/analytics/all/${userId}`)
@@ -195,7 +198,7 @@ const AnalyticsPage = () => {
           <Col span={8}>
             <Tooltip title="Total number of assignments created">
               <Card
-                title="Total Tasks Completed"
+                title="Total Assignments"
                 className="progress-card"
                 data-testid="tasks-completed"
               >

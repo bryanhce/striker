@@ -128,7 +128,9 @@ const Pluggin = () => {
       <h3 style={{ textDecoration: "underline" }}>Customisation</h3>
       <span>
         Fine tune the duration of the pomodoro timer in minutes. The maximum
-        duration is 60 minutes.
+        duration is 60 minutes. <br /> Note that this change is temporary as we
+        do not want to stray too far from the original concept of the Pomodoro
+        Technique.
       </span>
       <br />
       <br />
