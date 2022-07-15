@@ -57,6 +57,11 @@
   font-family: "Poppins", sans-serif;
 }
 
+.ant-layout-content {
+  max-width: 100%;
+  overflow-x: hidden;
+}
+
 .dailyLogCenterRow {
   display: flex;
   flex-direction: row;
@@ -279,7 +284,7 @@ td {
   flex-direction: row;
   justify-content: center;
   align-items: center;
-  margin-right: -100px;
+  margin-right: -90px;
 }
 
 .sideMenuHidden {

@@ -236,6 +236,8 @@ testcase_template(9, testcase9, null_fail)
 testcase_template(10, testcase10, null_fail)
 testcase_template(11, testcase11, null_fail)
 testcase_template(12, testcase12, null_fail)
+testcase_template(13, testcase13, null_fail)
+
 
 time.sleep(100)
 
