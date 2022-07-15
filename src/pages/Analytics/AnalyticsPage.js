@@ -115,7 +115,7 @@ const AnalyticsPage = () => {
           <Col span={8}>
             <Tooltip title="Total effort of completed task over total effort">
               <Card
-                title="Productivity/ Effort Rate"
+                title="Weighted Completion Rate"
                 className="progress-card"
                 data-testid="productivity-rate"
               >
