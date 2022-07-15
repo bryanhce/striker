@@ -46,8 +46,7 @@ function TableMonthly({
 
   //Task type buttons
   const taskType = (type, id) => {
-    // eslint-disable-next-line
-    if (type == 0) {
+    if (type === 0) {
       return (
         <input
           type="image"
@@ -56,24 +55,30 @@ function TableMonthly({
           onDoubleClick={() => strikeTask(id)}
           src={require("../../../images/event.png")}
           onKeyDown={(e) => changeTaskType(id, e)}
-          onBlur={() => updateTaskTypeEvent(0, id)}
+          onBlur={() => {
+            updateTaskTypeEvent(type, id);
+            onUnselect("strikeBtn", id);
+          }}
+          onClick={() => onSelect("strikeBtn", id)}
         />
       );
-      // eslint-disable-next-line
-    } else if (type == 1) {
+    } else if (type === 1) {
       return (
         <input
           type="image"
           className="strikeBtn"
-          alt="assignment"
+          alt="assignments"
           onDoubleClick={() => strikeTask(id)}
           src={require("../../../images/assignment.png")}
           onKeyDown={(e) => changeTaskType(id, e)}
-          onBlur={() => updateTaskTypeEvent(1, id)}
+          onBlur={() => {
+            updateTaskTypeEvent(type, id);
+            onUnselect("strikeBtn", id);
+          }}
+          onClick={() => onSelect("strikeBtn", id)}
         />
       );
-      // eslint-disable-next-line
-    } else if (type == 2) {
+    } else if (type === 2) {
       return (
         <input
           type="image"
@@ -82,7 +87,11 @@ function TableMonthly({
           onDoubleClick={() => strikeTask(id)}
           src={require("../../../images/note.png")}
           onKeyDown={(e) => changeTaskType(id, e)}
-          onBlur={() => updateTaskTypeEvent(2, id)}
+          onBlur={() => {
+            updateTaskTypeEvent(type, id);
+            onUnselect("strikeBtn", id);
+          }}
+          onClick={() => onSelect("strikeBtn", id)}
         />
       );
     }
@@ -128,8 +137,7 @@ function TableMonthly({
   //Deadline onFocus (Date)
   const deadlineOnFocus = (id) => {
     const taskDeadline = document.getElementsByClassName(id + "deadline")[0];
-    // eslint-disable-next-line
-    const task = tasks.filter((task) => task.id == id)[0];
+    const task = tasks.filter((task) => task.id === id)[0];
     taskDeadline.value =
       task.deadline.substring(6) +
       "-" +

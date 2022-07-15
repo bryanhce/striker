@@ -29,10 +29,13 @@ export const ContainerDaily = ({
     "thursday",
     "friday",
     "saturday",
-    "sunday",
   ];
   const todayDate = new Date(todayString);
-  const todayDay = daysOfWeek[todayDate.getDay() - 1];
+  const todayIndex = todayDate.getDay() - 1;
+  let todayDay = daysOfWeek[todayIndex];
+  if (todayIndex === -1) {
+    todayDay = "sunday"
+  }
   const todayDisplay =
     todayString.slice(8) +
     " . " +

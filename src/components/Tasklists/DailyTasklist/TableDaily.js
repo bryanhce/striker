@@ -79,8 +79,7 @@ function TableDaily({
 
   //Task type buttons
   const taskType = (type, id) => {
-    // eslint-disable-next-line
-    if (type == 0) {
+    if (type === 0) {
       return (
         <input
           type="image"
@@ -90,14 +89,13 @@ function TableDaily({
           src={require("../../../images/event.png")}
           onKeyDown={(e) => changeTaskType(id, e)}
           onBlur={() => {
-            updateTaskTypeEvent(0, id);
+            updateTaskTypeEvent(type, id);
             onUnselect("strikeBtn", id);
           }}
           onClick={() => onSelect("strikeBtn", id)}
         />
       );
-      // eslint-disable-next-line
-    } else if (type == 1) {
+    } else if (type === 1) {
       return (
         <input
           type="image"
@@ -107,14 +105,13 @@ function TableDaily({
           src={require("../../../images/assignment.png")}
           onKeyDown={(e) => changeTaskType(id, e)}
           onBlur={() => {
-            updateTaskTypeEvent(0, id);
+            updateTaskTypeEvent(type, id);
             onUnselect("strikeBtn", id);
           }}
           onClick={() => onSelect("strikeBtn", id)}
         />
       );
-      // eslint-disable-next-line
-    } else if (type == 2) {
+    } else if (type === 2) {
       return (
         <input
           type="image"

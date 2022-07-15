@@ -332,8 +332,7 @@ function DailyTasklist() {
     if (e.keyCode == 40) {
       setTasks(
         tasks.map((task) =>
-          // eslint-disable-next-line
-          task.id == id
+          task.id === id
             ? {
                 id: task.id,
                 type: task.type,
@@ -345,12 +344,10 @@ function DailyTasklist() {
             : task
         )
       );
-      // eslint-disable-next-line
-    } else if (e.keyCode == 38) {
+    } else if (e.keyCode === 38) {
       setTasks(
         tasks.map((task) =>
-          // eslint-disable-next-line
-          task.id == id
+          task.id === id
             ? {
                 id: task.id,
                 type: task.type,
