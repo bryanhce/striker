@@ -67,35 +67,38 @@ export const SideMenu = ({ monthlyTasks, transferTask }) => {
       <div className="sideMenuBodyContainer sideMenuShown">
         <h1 className="sideMenuBodyHeader">JULY</h1>
         <div className="sideMenuBodyTasksContainer">
-          {monthlyTasks.map((task) => {
-            if (task.progress !== 2) {
-              return (
-                <div
-                  className="sideMenuTaskContainer"
-                  id={task.id + "SideMenuTask"}
-                  onDoubleClick={() =>
-                    transferTask(task.id, task.text, task.type)
-                  }
-                >
-                  <div className="sideMenuTaskTopContainer">
-                    {taskTypes[task.type]}
-                    <h2 className="sideMenuTaskText">{task.text}</h2>
+          {
+            // eslint-disable-next-line
+            monthlyTasks.map((task) => {
+              if (task.progress !== 2) {
+                return (
+                  <div
+                    className="sideMenuTaskContainer"
+                    id={task.id + "SideMenuTask"}
+                    onDoubleClick={() =>
+                      transferTask(task.id, task.text, task.type)
+                    }
+                  >
+                    <div className="sideMenuTaskTopContainer">
+                      {taskTypes[task.type]}
+                      <h2 className="sideMenuTaskText">{task.text}</h2>
+                    </div>
+                    <div className="sideMenuTaskBottomContainer">
+                      <h2 className="sideMenuTaskDeadline">{task.deadline}</h2>
+                      <h2
+                        className={
+                          "sideMenuTaskProgress " +
+                          taskProgressClassNames[task.progress]
+                        }
+                      >
+                        {taskProgresses[task.progress]}
+                      </h2>
+                    </div>
                   </div>
-                  <div className="sideMenuTaskBottomContainer">
-                    <h2 className="sideMenuTaskDeadline">{task.deadline}</h2>
-                    <h2
-                      className={
-                        "sideMenuTaskProgress " +
-                        taskProgressClassNames[task.progress]
-                      }
-                    >
-                      {taskProgresses[task.progress]}
-                    </h2>
-                  </div>
-                </div>
-              );
-            }
-          })}
+                );
+              }
+            })
+          }
         </div>
       </div>
     </div>

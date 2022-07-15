@@ -79,6 +79,7 @@ function TableDaily({
 
   //Task type buttons
   const taskType = (type, id) => {
+    // eslint-disable-next-line
     if (type == 0) {
       return (
         <input
@@ -95,6 +96,7 @@ function TableDaily({
           onClick={() => onSelect("strikeBtn", id)}
         />
       );
+      // eslint-disable-next-line
     } else if (type == 1) {
       return (
         <input
@@ -111,6 +113,7 @@ function TableDaily({
           onClick={() => onSelect("strikeBtn", id)}
         />
       );
+      // eslint-disable-next-line
     } else if (type == 2) {
       return (
         <input
@@ -177,22 +180,28 @@ function TableDaily({
           <th
             className="taskHeader filterableHeader"
             onClick={
+              // eslint-disable-next-line
               filtered == 0
                 ? filterTasksUncompleted
-                : filtered == 1
+                : // eslint-disable-next-line
+                filtered == 1
                 ? filterTasksCompleted
                 : filterTasksAll
             }
           >
             <div className="headerContainer">
               <div>Task</div>
-              {filtered == 1 ? (
-                <EyeOutlined className="filterIcon" />
-              ) : filtered == 2 ? (
-                <EyeInvisibleOutlined className="filterIcon" />
-              ) : (
-                <EyeOutlined className="hidden" />
-              )}
+              {
+                // eslint-disable-next-line
+                filtered == 1 ? (
+                  <EyeOutlined className="filterIcon" />
+                ) : // eslint-disable-next-line
+                filtered == 2 ? (
+                  <EyeInvisibleOutlined className="filterIcon" />
+                ) : (
+                  <EyeOutlined className="hidden" />
+                )
+              }
             </div>
           </th>
           <th
