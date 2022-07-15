@@ -79,11 +79,13 @@ function TableDaily({
 
   //Task type buttons
   const taskType = (type, id) => {
+    // eslint-disable-next-line
     if (type == 0) {
       return (
         <input
           type="image"
           className="strikeBtn"
+          alt="event"
           onDoubleClick={() => strikeTask(id)}
           src={require("../../../images/event.png")}
           onKeyDown={(e) => changeTaskType(id, e)}
@@ -94,11 +96,13 @@ function TableDaily({
           onClick={() => onSelect("strikeBtn", id)}
         />
       );
+      // eslint-disable-next-line
     } else if (type == 1) {
       return (
         <input
           type="image"
           className="strikeBtn"
+          alt="assignments"
           onDoubleClick={() => strikeTask(id)}
           src={require("../../../images/assignment.png")}
           onKeyDown={(e) => changeTaskType(id, e)}
@@ -109,11 +113,13 @@ function TableDaily({
           onClick={() => onSelect("strikeBtn", id)}
         />
       );
+      // eslint-disable-next-line
     } else if (type == 2) {
       return (
         <input
           type="image"
           className="strikeBtn"
+          alt="note"
           onDoubleClick={() => strikeTask(id)}
           src={require("../../../images/note.png")}
           onKeyDown={(e) => changeTaskType(id, e)}
@@ -174,22 +180,28 @@ function TableDaily({
           <th
             className="taskHeader filterableHeader"
             onClick={
+              // eslint-disable-next-line
               filtered == 0
                 ? filterTasksUncompleted
-                : filtered == 1
+                : // eslint-disable-next-line
+                filtered == 1
                 ? filterTasksCompleted
                 : filterTasksAll
             }
           >
             <div className="headerContainer">
               <div>Task</div>
-              {filtered == 1 ? (
-                <EyeOutlined className="filterIcon" />
-              ) : filtered == 2 ? (
-                <EyeInvisibleOutlined className="filterIcon" />
-              ) : (
-                <EyeOutlined className="hidden" />
-              )}
+              {
+                // eslint-disable-next-line
+                filtered == 1 ? (
+                  <EyeOutlined className="filterIcon" />
+                ) : // eslint-disable-next-line
+                filtered == 2 ? (
+                  <EyeInvisibleOutlined className="filterIcon" />
+                ) : (
+                  <EyeOutlined className="hidden" />
+                )
+              }
             </div>
           </th>
           <th

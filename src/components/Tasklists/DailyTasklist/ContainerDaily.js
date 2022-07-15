@@ -1,7 +1,6 @@
 import React from "react";
 import AddTask from "../AddTask";
 import ProgressBar from "../Progress";
-import { SideMenu } from "./SideMenu";
 import TableDaily from "./TableDaily";
 
 export const ContainerDaily = ({
@@ -23,7 +22,6 @@ export const ContainerDaily = ({
   updateTaskEffortEvent,
   togglePomo,
 }) => {
-  
   const daysOfWeek = [
     "monday",
     "tuesday",
@@ -34,8 +32,13 @@ export const ContainerDaily = ({
     "sunday",
   ];
   const todayDate = new Date(todayString);
-  const todayDay = daysOfWeek[todayDate.getDay()];
-  const todayDisplay = todayString.slice(8) + " . " + todayString.slice(5, 7) + " . " + todayString.slice(0, 4);
+  const todayDay = daysOfWeek[todayDate.getDay() - 1];
+  const todayDisplay =
+    todayString.slice(8) +
+    " . " +
+    todayString.slice(5, 7) +
+    " . " +
+    todayString.slice(0, 4);
 
   return (
     <div className="border">

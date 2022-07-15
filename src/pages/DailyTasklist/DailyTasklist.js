@@ -31,6 +31,7 @@ function DailyTasklist() {
 
   //Sort Tasks and Subtasks
   function sortTasks(tasks) {
+    // eslint-disable-next-line
     const parentTasks = tasks.filter((task) => task.parent == "");
     const subtasks = tasks.filter((task) => task.parent !== "");
 
@@ -38,6 +39,7 @@ function DailyTasklist() {
     for (let i = 0; i < parentTasks.length; i++) {
       sortedTasks.push(parentTasks[i]);
       for (let n = 0; n < subtasks.length; n++) {
+        // eslint-disable-next-line
         if (subtasks[n].parent == parentTasks[i].id) {
           sortedTasks.push(subtasks[n]);
         }
@@ -47,6 +49,7 @@ function DailyTasklist() {
     return sortedTasks;
   }
 
+  //function take loads tasks in the daily log
   const GetDailyTasks = () => {
     fetch(
       `https://striker-backend.herokuapp.com/task-list/${userId}?date=${dateString}`
@@ -79,6 +82,7 @@ function DailyTasklist() {
     console.log("Updating Tasks:");
     GetDailyTasks();
 
+    //gets monthly tasks
     fetch(
       `https://striker-backend.herokuapp.com/calendar/${userId}?year-month=${monthString}`
     )
@@ -107,6 +111,7 @@ function DailyTasklist() {
         setMonthlyTasks(sortTasks(filteredData));
         return filteredData;
       });
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [date]);
 
   // State for filters, first value is if filter is clicked, second is up or down
@@ -122,6 +127,7 @@ function DailyTasklist() {
   const strikeTask = (id) => {
     setTasks(
       tasks.map((task) =>
+        // eslint-disable-next-line
         task.id == id
           ? {
               id: task.id,
@@ -222,9 +228,11 @@ function DailyTasklist() {
   //Change Task Type Event
   const changeTaskType = (id, e) => {
     e.preventDefault();
+    // eslint-disable-next-line
     if (e.keyCode == 40) {
       setTasks(
         tasks.map((task) =>
+          // eslint-disable-next-line
           task.id == id
             ? {
                 id: task.id,
@@ -237,9 +245,11 @@ function DailyTasklist() {
             : task
         )
       );
+      // eslint-disable-next-line
     } else if (e.keyCode == 38) {
       setTasks(
         tasks.map((task) =>
+          // eslint-disable-next-line
           task.id == id
             ? {
                 id: task.id,
@@ -281,6 +291,7 @@ function DailyTasklist() {
     const updatedText = targetText.textContent;
     setTasks(
       tasks.map((task) =>
+        // eslint-disable-next-line
         task.id == id
           ? {
               id: task.id,
@@ -317,9 +328,11 @@ function DailyTasklist() {
   //Change Task Priority Event
   const changeTaskPriority = (id, e) => {
     e.preventDefault();
+    // eslint-disable-next-line
     if (e.keyCode == 40) {
       setTasks(
         tasks.map((task) =>
+          // eslint-disable-next-line
           task.id == id
             ? {
                 id: task.id,
@@ -332,9 +345,11 @@ function DailyTasklist() {
             : task
         )
       );
+      // eslint-disable-next-line
     } else if (e.keyCode == 38) {
       setTasks(
         tasks.map((task) =>
+          // eslint-disable-next-line
           task.id == id
             ? {
                 id: task.id,
@@ -378,6 +393,7 @@ function DailyTasklist() {
     console.log(updatedEffort);
     setTasks(
       tasks.map((task) =>
+        // eslint-disable-next-line
         task.id == id
           ? {
               id: task.id,
@@ -518,24 +534,25 @@ function DailyTasklist() {
       .catch((e) => console.log(e));
   };
 
-  //this func also updates last login date
-  const checkLastLogin = () => {
-    fetch(`https://striker-backend.herokuapp.com/last-login/${userId}`)
-      .then((response) => response.json())
-      .then((data) => {
-        if (data.lastLogin !== realTodayString) {
-          updateLastLoginDate();
-          setIsVisible(true);
-        } else {
-          setIsVisible(false);
-        }
-      });
-  };
-
   useEffect(() => {
+    //this func also updates last login date
+    const checkLastLogin = () => {
+      fetch(`https://striker-backend.herokuapp.com/last-login/${userId}`)
+        .then((response) => response.json())
+        .then((data) => {
+          if (data.lastLogin !== realTodayString) {
+            updateLastLoginDate();
+            setIsVisible(true);
+          } else {
+            setIsVisible(false);
+          }
+        });
+    };
+
     checkLastLogin();
     //uncomment for testing
     // setIsVisible(true);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
   const closeYesterdayModal = () => {
@@ -554,31 +571,31 @@ function DailyTasklist() {
   const { is135Active } = use135();
   const [is135ErrorVisible, set135ErrorVisible] = useState(false);
 
-  function check135Condition() {
-    const numOfRedTasks = tasks.reduce(
-      (x, y) => (y.priority === 2 ? x + 1 : x),
-      0
-    );
-    const numOfOrangeTasks = tasks.reduce(
-      (x, y) => (y.priority === 1 ? x + 1 : x),
-      0
-    );
-    const numOfGreenTasks = tasks.reduce(
-      (x, y) => (y.priority === 0 ? x + 1 : x),
-      0
-    );
-
-    if (
-      tasks.length > 9 ||
-      numOfRedTasks > 1 ||
-      numOfOrangeTasks > 3 ||
-      numOfGreenTasks > 5
-    ) {
-      set135ErrorVisible(true);
-    }
-  }
-
   useEffect(() => {
+    function check135Condition() {
+      const numOfRedTasks = tasks.reduce(
+        (x, y) => (y.priority === 2 ? x + 1 : x),
+        0
+      );
+      const numOfOrangeTasks = tasks.reduce(
+        (x, y) => (y.priority === 1 ? x + 1 : x),
+        0
+      );
+      const numOfGreenTasks = tasks.reduce(
+        (x, y) => (y.priority === 0 ? x + 1 : x),
+        0
+      );
+
+      if (
+        tasks.length > 9 ||
+        numOfRedTasks > 1 ||
+        numOfOrangeTasks > 3 ||
+        numOfGreenTasks > 5
+      ) {
+        set135ErrorVisible(true);
+      }
+    }
+
     if (is135Active) {
       check135Condition();
     }

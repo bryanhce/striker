@@ -45,6 +45,7 @@ const Timer = (props) => {
         return () => clearInterval(interval);
       }
     }
+    // eslint-disable-next-line
   }, [countDown]);
 
   var minutes = Math.floor((countDown % (1000 * 60 * 60)) / (1000 * 60));

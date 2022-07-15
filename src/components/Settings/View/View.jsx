@@ -3,7 +3,7 @@ import { Fragment } from "react";
 import { useColourBlind } from "../../../context/ColourBlindContext";
 
 const View = () => {
-  const { toggleColourBlindFilter } = useColourBlind();
+  const { toggleColourBlindFilter, isColourBlindFilter } = useColourBlind();
 
   return (
     <Fragment>
@@ -31,7 +31,7 @@ const View = () => {
           <strong>Colour-blindness Filter</strong>
         </h3>
         <Switch
-          defaultChecked={false}
+          defaultChecked={isColourBlindFilter}
           autoFocus={true}
           onChange={toggleColourBlindFilter}
         />

@@ -28,5 +28,7 @@ test("slider has the correct menu items", () => {
   );
   const sliderEl = getByTestId("slider");
   const menuItems = sliderEl.textContent.substring(30);
-  expect(menuItems).toBe("HomeMonthlyCalendarAnalyticsSign Out");
+  expect(menuItems).toBe(
+    "HomeMonthlyCalendarAnalyticsUser GuideSettingsSign Out"
+  );
 });

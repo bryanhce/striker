@@ -4,8 +4,9 @@ import { usePomodoro } from "../../../context/PomodoroContext";
 import { use135 } from "../../../context/OneThreeFiveContext";
 
 const Pluggin = () => {
-  const { togglePomoButton, setPomoTime, pomoTime } = usePomodoro();
-  const { toggle135Button } = use135();
+  const { togglePomoButton, setPomoTime, pomoTime, isPomoButtonVisible } =
+    usePomodoro();
+  const { toggle135Button, is135Active } = use135();
 
   const [tempTime, setTempTime] = useState(pomoTime);
   const handleChange = (e) => {
@@ -49,7 +50,7 @@ const Pluggin = () => {
           <strong>1-3-5 Framework</strong>
         </h3>
         <Switch
-          defaultChecked={false}
+          defaultChecked={is135Active}
           autoFocus={true}
           onChange={toggle135Button}
         />
@@ -82,7 +83,7 @@ const Pluggin = () => {
           <strong>Pomodoro Technique</strong>
         </h3>
         <Switch
-          defaultChecked={false}
+          defaultChecked={isPomoButtonVisible}
           autoFocus={true}
           onChange={togglePomoButton}
         />
@@ -127,7 +128,9 @@ const Pluggin = () => {
       <h3 style={{ textDecoration: "underline" }}>Customisation</h3>
       <span>
         Fine tune the duration of the pomodoro timer in minutes. The maximum
-        duration is 60 minutes.
+        duration is 60 minutes. <br /> Note that this change is temporary as we
+        do not want to stray too far from the original concept of the Pomodoro
+        Technique.
       </span>
       <br />
       <br />

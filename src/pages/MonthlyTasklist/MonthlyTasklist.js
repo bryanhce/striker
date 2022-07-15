@@ -1,8 +1,7 @@
 import "./MonthlyTasklist.css";
 import { useState, useEffect } from "react";
 import { Container } from "../../components/Tasklists/MonthlyTasklist/ContainerMonthly";
-import StrikerLayout from "../StrikerLayout/StrikerLayout";
-import { v4 as uuidv4 } from 'uuid';
+import { v4 as uuidv4 } from "uuid";
 
 function MonthlyTasklist() {
   //Get User Data:
@@ -35,13 +34,16 @@ function MonthlyTasklist() {
 
   //Sort Tasks and Subtasks
   function sortTasks(tasks) {
+    // eslint-disable-next-line
     const parentTasks = tasks.filter((task) => task.parent == "");
+    // eslint-disable-next-line
     const subtasks = tasks.filter((task) => task.parent !== "");
 
     let sortedTasks = [];
     for (let i = 0; i < parentTasks.length; i++) {
       sortedTasks.push(parentTasks[i]);
       for (let n = 0; n < subtasks.length; n++) {
+        // eslint-disable-next-line
         if (subtasks[n].parent == parentTasks[i].id) {
           sortedTasks.push(subtasks[n]);
         }
@@ -88,6 +90,7 @@ function MonthlyTasklist() {
       .then((filteredData) =>
         setShownSubtasksState(filteredData.map((task) => false))
       );
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
   // State for filters, first value is if filter is clicked, second is up or down
@@ -105,10 +108,12 @@ function MonthlyTasklist() {
   //Strike Task Event
   const strikeTask = (id) => {
     for (let i = 0; i < tasks.length; i++) {
+      // eslint-disable-next-line
       if (tasks[i].id == id) {
         if (tasks[i].striked) {
           setTasks(
             tasks.map((task) =>
+              // eslint-disable-next-line
               task.id == id
                 ? {
                     id: task.id,
@@ -127,6 +132,7 @@ function MonthlyTasklist() {
           setTasks(
             sortTasks(
               tasks.map((task) =>
+                // eslint-disable-next-line
                 task.id == id || task.parent == id
                   ? {
                       id: task.id,
@@ -181,11 +187,9 @@ function MonthlyTasklist() {
     setSubtasksBtnState(newSubtasksBtnState);
     setShownSubtasksState(newShownSubtasksState);
 
-    fetch(
-      `https://striker-backend.herokuapp.com/task-list/single-task/${id}`, {
-      method: 'DELETE'
-      }
-    ).then((response) => console.log(response));
+    fetch(`https://striker-backend.herokuapp.com/task-list/single-task/${id}`, {
+      method: "DELETE",
+    }).then((response) => console.log(response));
   };
 
   //Add Task Event
@@ -266,6 +270,7 @@ function MonthlyTasklist() {
     console.log(updatedText);
     setTasks(
       tasks.map((task) =>
+        // eslint-disable-next-line
         task.id == id
           ? {
               id: task.id,
@@ -286,9 +291,11 @@ function MonthlyTasklist() {
   //Change Task Type Event
   const changeTaskType = (id, e) => {
     e.preventDefault();
+    // eslint-disable-next-line
     if (e.keyCode == 40) {
       setTasks(
         tasks.map((task) =>
+          // eslint-disable-next-line
           task.id == id
             ? {
                 id: task.id,
@@ -303,9 +310,11 @@ function MonthlyTasklist() {
             : task
         )
       );
+      // eslint-disable-next-line
     } else if (e.keyCode == 38) {
       setTasks(
         tasks.map((task) =>
+          // eslint-disable-next-line
           task.id == id
             ? {
                 id: task.id,
@@ -346,15 +355,17 @@ function MonthlyTasklist() {
   //Update Task Progress Event
   const updateTaskProgress = (taskProgress, id) => {
     //Send to Backend:
-    const bodyJson = taskProgress == 2
-      ? {
-        progress: taskProgress,
-        isCompleted: true
-      }
-      : {
-        progress: taskProgress,
-        isCompleted: false
-      }
+    const bodyJson =
+      // eslint-disable-next-line
+      taskProgress == 2
+        ? {
+            progress: taskProgress,
+            isCompleted: true,
+          }
+        : {
+            progress: taskProgress,
+            isCompleted: false,
+          };
     const requestOptions = {
       method: "PUT",
       headers: { "Content-Type": "application/json" },
@@ -376,20 +387,25 @@ function MonthlyTasklist() {
     let newStriked;
     e.preventDefault();
     for (let i = 0; i < tasks.length; i++) {
+      // eslint-disable-next-line
       if (tasks[i].id == id) {
         taskClicked = tasks[i];
         targetTasks.push(taskClicked);
+        // eslint-disable-next-line
         if (e.keyCode == 40) {
           newProgress = tasks[i].progress - 1 >= 0 ? tasks[i].progress - 1 : 2;
+          // eslint-disable-next-line
         } else if (e.keyCode == 38) {
           newProgress = tasks[i].progress + 1 <= 2 ? tasks[i].progress + 1 : 0;
         } else {
           alert("Use the up or down arrows to swap through task progress!");
         }
+        // eslint-disable-next-line
       } else if (tasks[i].parent == id) {
         targetTasks.push(tasks[i]);
       }
     }
+    // eslint-disable-next-line
     if (newProgress == 2) {
       newStriked = true;
     } else {
@@ -469,9 +485,11 @@ function MonthlyTasklist() {
     const newShownSubtaskState = [...shownSubtasksState];
     let taskIndex = 0;
     for (let i = 0; i < tasks.length; i++) {
+      // eslint-disable-next-line
       if (tasks[i].parent == id) {
         newShownSubtaskState[i] = !newShownSubtaskState[i];
       }
+      // eslint-disable-next-line
       if (tasks[i].id == id) {
         taskIndex = i;
       }
@@ -488,6 +506,7 @@ function MonthlyTasklist() {
     console.log("Adding Task of ID: " + taskId);
     const oldLength = tasks.length;
     const oldParentIndex = tasks.indexOf(
+      // eslint-disable-next-line
       tasks.filter((task) => task.id == parentId)[0]
     );
     const newTask = {
@@ -501,6 +520,7 @@ function MonthlyTasklist() {
       hasChildren: false,
     };
     const newTasks = tasks.map((task) =>
+      // eslint-disable-next-line
       task.id == parentId
         ? {
             id: task.id,
@@ -528,6 +548,7 @@ function MonthlyTasklist() {
       newSubtasksBtnState.push(subtasksBtnState[counter]);
       newShownSubtasksState.push(shownSubtasksState[counter]);
       counter++;
+      // eslint-disable-next-line
       if (tasks[i].id == parentId) {
         newSubtasksBtnState.push(false);
         newShownSubtasksState.push(booleanValue);
@@ -579,6 +600,7 @@ function MonthlyTasklist() {
     if (lastParent[0]) {
       showSubtasks(lastParent[0]);
     }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [lastParent]);
 
   return (

@@ -61,32 +61,35 @@ const YesterdayCard = (props) => {
 
   const userId = JSON.parse(localStorage.getItem("currentUser")).uid;
 
-  //sets state for yesterdayTasks and closes modal if no yesterday task
-  const checkYesterdayTasks = () => {
-    fetch(
-      `https://striker-backend.herokuapp.com/task-list/${userId}?date=${yesterdayDateString}`
-    )
-      .then((response) => response.json())
-      .then((data) =>
-        data.filter((task) => !task.deadline.Valid && !task.isCompleted.Bool)
+  useEffect(() => {
+    //sets state for yesterdayTasks and closes modal if no yesterday task
+    const checkYesterdayTasks = () => {
+      fetch(
+        `https://striker-backend.herokuapp.com/task-list/${userId}?date=${yesterdayDateString}`
       )
-      .then((YesterdayData) =>
-        YesterdayData.map((task) => {
-          return {
-            id: task.id,
-            type: task.taskType,
-            description: task.description,
-            priority: task.priority.Int64,
-            effort: task.effort.Int64,
-            isCompleted: task.isCompleted.Bool,
-          };
-        })
-      )
-      .then((filteredData) => setYesterdayTasks(filteredData))
-      .then((d) => (d.length === 0 ? props.closeYesterdayModal() : null));
-  };
+        .then((response) => response.json())
+        .then((data) =>
+          data.filter((task) => !task.deadline.Valid && !task.isCompleted.Bool)
+        )
+        .then((YesterdayData) =>
+          YesterdayData.map((task) => {
+            return {
+              id: task.id,
+              type: task.taskType,
+              description: task.description,
+              priority: task.priority.Int64,
+              effort: task.effort.Int64,
+              isCompleted: task.isCompleted.Bool,
+            };
+          })
+        )
+        .then((filteredData) => setYesterdayTasks(filteredData))
+        .then((d) => (d.length === 0 ? props.closeYesterdayModal() : null));
+    };
 
-  useEffect(() => checkYesterdayTasks(), []);
+    checkYesterdayTasks();
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []);
 
   const successNotification = (desc) => {
     notification["success"]({
@@ -147,6 +150,7 @@ const YesterdayCard = (props) => {
     if (yesterdayTasks.length === 0) {
       props.closeYesterdayModal();
     }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [yesterdayTasks]);
 
   const priorityConverter = (p) => {
