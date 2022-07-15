@@ -5,11 +5,14 @@ const ColourBlindContext = createContext();
 export function ColourBlindContextProvider({ children }) {
   const [isColourBlindFilter, setColourBlindFilter] = useState(false);
 
+  //Doesn't work:
+  /*
   let user = JSON.parse(localStorage.getItem("currentUser"));
-  let userId = 0
+  userId = user.uid;
   if (user !== null) {
     userId = user.uid;
   }
+  */
 
 
   // fetch(

@@ -41,7 +41,7 @@ function App() {
                 {/* nested routes */}
                 <Route
                   exact
-                  path="daily-task-list"
+                  path="daily-task-list/:date"
                   element={
                     <ProtectedRoute>
                       <DailyTasklist />

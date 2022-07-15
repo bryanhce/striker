@@ -15,7 +15,7 @@ import {
 import { useUserAuth } from "../../context/UserAuthContext";
 import { format, addDays } from "date-fns";
 
-const StrikerMenu = ({ setDateSelected }) => {
+const StrikerMenu = () => {
   //logic for logout
   const { logOut } = useUserAuth();
   const navigate = useNavigate();

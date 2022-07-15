@@ -7,7 +7,7 @@ import { Layout, Breadcrumb } from "antd";
 import { Outlet } from "react-router-dom";
 const { Header, Content, Footer, Sider } = Layout;
 
-const StrikerLayout = ({ setDateSelected }) => {
+const StrikerLayout = () => {
   const [isCollapse, setCollapse] = useState(false);
 
   const onCollapse = () => {
@@ -43,7 +43,7 @@ const StrikerLayout = ({ setDateSelected }) => {
           data-testid="slider"
         >
           <div className="logo" />
-          <StrikerMenu setDateSelected={setDateSelected} />
+          <StrikerMenu />
         </Sider>
         <Content
           style={{
