@@ -85,6 +85,7 @@ const AnalyticsPage = () => {
       )
         .then((res) => res.json())
         .then((data) => {
+          //filling info for productivityData
           if (data.totalEffort === 0) {
             productivityData[count]["productivity"] = 0;
           } else {
@@ -92,6 +93,7 @@ const AnalyticsPage = () => {
               (data.totalCompletedEffort / data.totalEffort) * 100
             );
           }
+          //filling info for completionData
           if (data.events + data.notes + data.assignments === 0) {
             completionData[count]["productivity"] = 0;
           } else {
@@ -113,6 +115,8 @@ const AnalyticsPage = () => {
     for (let i = 0; i < 6; i++) {
       getLastSixMonthsProductivity(dateArr[i], dateArr[i + 1], i);
     }
+    console.log(completionData);
+    console.log(dateArr);
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
@@ -164,7 +168,8 @@ const AnalyticsPage = () => {
                   >
                     {allData.averageDailyTaskCompleted === null
                       ? 0
-                      : allData.averageDailyTaskCompleted}{" "}
+                      : Math.round(allData.averageDailyTaskCompleted * 100) /
+                        100}{" "}
                     Tasks
                   </span>
                 )}
@@ -212,7 +217,7 @@ const AnalyticsPage = () => {
                 ) : (
                   <div>
                     {allData.assignments === null ? 0 : allData.assignments}{" "}
-                    Tasks
+                    Assignments
                   </div>
                 )}
               </Card>
@@ -254,7 +259,7 @@ const AnalyticsPage = () => {
       </div>
       <div className="graph-div">
         <AnalyticsGraph
-          title="Graph of Productivity Per Month"
+          title="Graph of Weighted Completion Per Month"
           data={productivityData}
           labelArr={productivityLabelArr}
         />
