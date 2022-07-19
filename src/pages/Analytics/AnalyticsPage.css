@@ -20,3 +20,13 @@
   align-items: center;
   justify-content: space-around;
 }
+
+@media screen and (max-width: 1024px) {
+  .graph-div {
+    justify-content: space-evenly;
+  }
+
+  .progress-card {
+    font-size: medium;
+  }
+}

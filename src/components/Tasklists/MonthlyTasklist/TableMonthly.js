@@ -10,6 +10,7 @@ import {
   EyeInvisibleOutlined,
   EyeOutlined,
 } from "@ant-design/icons";
+import { Menu, Dropdown } from "antd";
 import { useColourBlind } from "../../../context/ColourBlindContext";
 
 function TableMonthly({
@@ -30,6 +31,8 @@ function TableMonthly({
   shownSubtasksState,
   showSubtasks,
   addSubtask,
+  changeAndUpdateProgressDropdown,
+  changeAndUpdateTaskTypeDropdown,
 }) {
   const progress = ["Haven't Started", "In Progress", "Completed"];
   const progressColours = ["redMonth", "yellowMonth", "greenMonth"];
@@ -44,10 +47,72 @@ function TableMonthly({
   //State for shown and hidden tasks (0 is show all, 1 is uncompleted tasks, 2 is completed tasks)
   const [filtered, setFiltered] = useState([0]);
 
+  //for ipad usage
+  let widthBool = window.innerWidth <= 1024;
+
+  //for ipad dropdown menu
+  const MenuTaskTypeDropdown = ({ id }) => (
+    <Menu
+      items={[
+        {
+          key: "1",
+          label: (
+            <img
+              src={require("../../../images/event.png")}
+              alt="event"
+              className="dropdown-icon"
+            />
+          ),
+          onClick: () => changeAndUpdateTaskTypeDropdown(id, 0),
+        },
+        {
+          key: "2",
+          label: (
+            <img
+              src={require("../../../images/assignment.png")}
+              alt="assignment"
+              className="dropdown-icon"
+            />
+          ),
+          onClick: () => changeAndUpdateTaskTypeDropdown(id, 1),
+        },
+        {
+          key: "3",
+          label: (
+            <img
+              src={require("../../../images/note.png")}
+              alt="note"
+              className="dropdown-icon"
+            />
+          ),
+          onClick: () => changeAndUpdateTaskTypeDropdown(id, 2),
+        },
+        {
+          key: "4",
+          label: <span>Strike</span>,
+          onClick: () => strikeTask(id),
+        },
+      ]}
+    />
+  );
+
   //Task type buttons
   const taskType = (type, id) => {
     if (type === 0) {
-      return (
+      return widthBool ? (
+        <Dropdown
+          overlay={<MenuTaskTypeDropdown id={id} />}
+          trigger={["click"]}
+          autoFocus={true}
+        >
+          <input
+            type="image"
+            className="strikeBtn"
+            alt="event"
+            src={require("../../../images/event.png")}
+          />
+        </Dropdown>
+      ) : (
         <input
           type="image"
           className="strikeBtn"
@@ -63,7 +128,20 @@ function TableMonthly({
         />
       );
     } else if (type === 1) {
-      return (
+      return widthBool ? (
+        <Dropdown
+          overlay={<MenuTaskTypeDropdown id={id} />}
+          trigger={["click"]}
+          autoFocus={true}
+        >
+          <input
+            type="image"
+            className="strikeBtn"
+            alt="assignments"
+            src={require("../../../images/assignment.png")}
+          />
+        </Dropdown>
+      ) : (
         <input
           type="image"
           className="strikeBtn"
@@ -79,7 +157,20 @@ function TableMonthly({
         />
       );
     } else if (type === 2) {
-      return (
+      return widthBool ? (
+        <Dropdown
+          overlay={<MenuTaskTypeDropdown id={id} />}
+          trigger={["click"]}
+          autoFocus={true}
+        >
+          <input
+            type="image"
+            className="strikeBtn"
+            alt="note"
+            src={require("../../../images/note.png")}
+          />
+        </Dropdown>
+      ) : (
         <input
           type="image"
           className="strikeBtn"
@@ -192,6 +283,59 @@ function TableMonthly({
     const element = task.getElementsByClassName(className)[0];
     element.classList.remove("bordered");
   };
+
+  //for ipad dropdown menu
+  const MenuProgressDropdown = ({ id }) => (
+    <Menu
+      items={[
+        {
+          key: "1",
+          label: (
+            <div
+              className={`taskProgress ${
+                isColourBlindFilter
+                  ? colourBlindProgressColours[0]
+                  : progressColours[0]
+              }`}
+            >
+              {progress[0]}
+            </div>
+          ),
+          onClick: () => changeAndUpdateProgressDropdown(0, id),
+        },
+        {
+          key: "2",
+          label: (
+            <div
+              className={`taskProgress ${
+                isColourBlindFilter
+                  ? colourBlindProgressColours[1]
+                  : progressColours[1]
+              }`}
+            >
+              {progress[1]}
+            </div>
+          ),
+          onClick: () => changeAndUpdateProgressDropdown(1, id),
+        },
+        {
+          key: "3",
+          label: (
+            <div
+              className={`taskProgress ${
+                isColourBlindFilter
+                  ? colourBlindProgressColours[2]
+                  : progressColours[2]
+              }`}
+            >
+              {progress[2]}
+            </div>
+          ),
+          onClick: () => changeAndUpdateProgressDropdown(2, id),
+        },
+      ]}
+    />
+  );
 
   return (
     <div className="tableContainer">
@@ -365,22 +509,41 @@ function TableMonthly({
                   />
                 </td>
                 <td>
-                  <div
-                    tabIndex="0"
-                    className={`taskProgress ${
-                      isColourBlindFilter
-                        ? colourBlindProgressColours[task.progress]
-                        : progressColours[task.progress]
-                    }`}
-                    onFocus={() => onSelect("taskProgress", task.id)}
-                    onKeyDown={(e) => changeTaskProgress(task.id, e)}
-                    onBlur={() => {
-                      updateTaskProgressEvent(task.progress, task.id);
-                      onUnselect("taskProgress", task.id);
-                    }}
-                  >
-                    {progress[task.progress]}
-                  </div>
+                  {widthBool ? (
+                    <Dropdown
+                      overlay={<MenuProgressDropdown id={task.id} />}
+                      trigger={["click"]}
+                      autoFocus={true}
+                    >
+                      <div
+                        tabIndex="0"
+                        className={`taskProgress ${
+                          isColourBlindFilter
+                            ? colourBlindProgressColours[task.progress]
+                            : progressColours[task.progress]
+                        }`}
+                      >
+                        {progress[task.progress]}
+                      </div>
+                    </Dropdown>
+                  ) : (
+                    <div
+                      tabIndex="0"
+                      className={`taskProgress ${
+                        isColourBlindFilter
+                          ? colourBlindProgressColours[task.progress]
+                          : progressColours[task.progress]
+                      }`}
+                      onFocus={() => onSelect("taskProgress", task.id)}
+                      onKeyDown={(e) => changeTaskProgress(task.id, e)}
+                      onBlur={() => {
+                        updateTaskProgressEvent(task.progress, task.id);
+                        onUnselect("taskProgress", task.id);
+                      }}
+                    >
+                      {progress[task.progress]}
+                    </div>
+                  )}
                 </td>
                 <td className="btnContainer">
                   <DeleteOutlined

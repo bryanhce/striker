@@ -388,3 +388,31 @@ td {
   font-size: 1.1rem;
   padding: 0px 8px;
 }
+
+.dropdown-icon {
+  width: 2.5vh;
+  height: auto;
+}
+
+@media screen and (max-width: 1024px) {
+  .tableContainer {
+    font-size: 1.4vh;
+  }
+
+  .border-day {
+    font-size: 3vh;
+  }
+
+  .border-date {
+    font-size: 3vh;
+  }
+
+  .progressContainer {
+    font-size: 1.5vh;
+    margin-top: -3%;
+  }
+
+  .ant-dropdown {
+    box-shadow: 2px 2px 2px 2px #474646 !important;
+  }
+}

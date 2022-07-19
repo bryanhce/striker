@@ -352,6 +352,30 @@ function MonthlyTasklist() {
       .catch((e) => console.log(e));
   };
 
+  //Change and update task type event for dropdown
+  const changeAndUpdateTaskTypeDropdown = (id, taskType) => {
+    //change
+    setTasks(
+      tasks.map((task) =>
+        // eslint-disable-next-line
+        task.id == id
+          ? {
+              id: task.id,
+              type: taskType,
+              text: task.text,
+              deadline: task.deadline,
+              progress: task.progress,
+              striked: task.striked,
+              parent: task.parent,
+              hasChildren: task.hasChildren,
+            }
+          : task
+      )
+    );
+    //update
+    updateTaskType(taskType, id);
+  };
+
   //Update Task Progress Event
   const updateTaskProgress = (taskProgress, id) => {
     //Send to Backend:
@@ -422,6 +446,46 @@ function MonthlyTasklist() {
     }
 
     setTasks(sortTasks(tasks));
+  };
+
+  //Change and update task progress event for dropdown
+  const changeAndUpdateProgressDropdown = (taskProgress, id) => {
+    //changing
+    let taskClicked;
+    const targetTasks = [];
+    let newProgress;
+    let newStriked;
+    for (let i = 0; i < tasks.length; i++) {
+      // eslint-disable-next-line
+      if (tasks[i].id == id) {
+        taskClicked = tasks[i];
+        targetTasks.push(taskClicked);
+        newProgress = taskProgress;
+        // eslint-disable-next-line
+      } else if (tasks[i].parent == id) {
+        targetTasks.push(tasks[i]);
+      }
+    }
+    // eslint-disable-next-line
+    if (newProgress == 2) {
+      newStriked = true;
+    } else {
+      newStriked = false;
+    }
+    if (newStriked) {
+      for (let n = 0; n < targetTasks.length; n++) {
+        targetTasks[n].progress = newProgress;
+        targetTasks[n].striked = newStriked;
+      }
+    } else {
+      taskClicked.progress = newProgress;
+      taskClicked.striked = newStriked;
+    }
+
+    setTasks(sortTasks(tasks));
+
+    //updating
+    updateTaskProgress(taskProgress, id);
   };
 
   //Update Task Type Event
@@ -624,6 +688,8 @@ function MonthlyTasklist() {
         shownSubtasksState={shownSubtasksState}
         showSubtasks={showSubtasks}
         addSubtask={addSubtask}
+        changeAndUpdateProgressDropdown={changeAndUpdateProgressDropdown}
+        changeAndUpdateTaskTypeDropdown={changeAndUpdateTaskTypeDropdown}
       />
     </div>
   );

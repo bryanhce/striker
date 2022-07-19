@@ -3,6 +3,7 @@ import { useState } from "react";
 import { useNavigate, Link } from "react-router-dom";
 import "antd/dist/antd.min.css";
 import { useUserAuth } from "../../context/UserAuthContext";
+import "../Login/LoginPage.css";
 
 const { Content, Footer } = Layout;
 
@@ -91,6 +92,7 @@ const SignUpPage = () => {
                 <img
                   src={require("../../images/striker-title.png")}
                   alt="striker title"
+                  className="login-stiker-logo"
                 />
               </span>
               <Form

@@ -360,3 +360,9 @@ td {
 .progressText {
   font-size: 1.4em;
 }
+
+@media screen and (max-width: 1024px) {
+  .border-month {
+    font-size: 3vh;
+  }
+}

@@ -1,11 +1,12 @@
 import { Menu } from "antd";
 import { Link, useNavigate } from "react-router-dom";
 import {
-  DesktopOutlined,
+  ContainerOutlined,
   BarChartOutlined,
   CalendarOutlined,
   HomeOutlined,
-  RightOutlined,
+  UpOutlined,
+  DownOutlined,
   RightCircleOutlined,
   UserOutlined,
   SettingOutlined,
@@ -72,7 +73,7 @@ const StrikerMenu = () => {
       defaultSelectedKeys={highlightDefaultKey()}
     >
       <Menu.Item key="1">
-        <RightOutlined />
+        <UpOutlined />
         <span>{tomorrowDisplay}</span>
         <Link to={"/daily-task-list/" + tomorrowString} />
       </Menu.Item>
@@ -82,7 +83,7 @@ const StrikerMenu = () => {
         <Link to={"/daily-task-list/" + todayString} />
       </Menu.Item>
       <Menu.Item key="3">
-        <RightOutlined />
+        <DownOutlined />
         <span>{yesterdayDisplay}</span>
         <Link to={"/daily-task-list/" + yesterdayString} />
       </Menu.Item>
@@ -92,7 +93,7 @@ const StrikerMenu = () => {
         <Link to={"/daily-task-list/" + todayString} />
       </Menu.Item>
       <Menu.Item key="5">
-        <DesktopOutlined />
+        <ContainerOutlined />
         <span>Monthly</span>
         <Link to="/monthly-task-list" />
       </Menu.Item>
