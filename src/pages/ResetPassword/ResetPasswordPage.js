@@ -2,6 +2,7 @@ import { Button, Form, Input, Card, Layout, notification } from "antd";
 import { useState } from "react";
 import { Link } from "react-router-dom";
 import "antd/dist/antd.min.css";
+import "../Login/LoginPage.css";
 import { useUserAuth } from "../../context/UserAuthContext";
 
 const { Content, Footer } = Layout;
@@ -76,6 +77,7 @@ const ResetPasswordPage = () => {
                 <img
                   src={require("../../images/striker-title.png")}
                   alt="striker title"
+                  className="login-stiker-logo"
                 />
               </span>
               <Form

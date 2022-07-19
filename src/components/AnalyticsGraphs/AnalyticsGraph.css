@@ -6,3 +6,9 @@
 .analytics-chart {
   width: 40vh;
 }
+
+@media screen and (max-width: 1024px) {
+  .analytics-chart {
+    width: 30vh;
+  }
+}

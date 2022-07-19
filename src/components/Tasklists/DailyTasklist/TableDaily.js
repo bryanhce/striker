@@ -1,6 +1,6 @@
 import React from "react";
 import { useState } from "react";
-import { notification } from "antd";
+import { Dropdown, notification, Menu } from "antd";
 import { usePomodoro } from "../../../context/PomodoroContext";
 import {
   EyeOutlined,
@@ -28,6 +28,8 @@ function TableDaily({
   updateTaskPriorityEvent,
   updateTaskEffortEvent,
   togglePomo,
+  changeAndUpdateTaskTypeDropdown,
+  changeAndUpdateTaskPriorityDropdown,
 }) {
   //State for shown and hidden tasks (0 is show all, 1 is uncompleted tasks, 2 is completed tasks)
   const [filtered, setFiltered] = useState([0]);
@@ -77,10 +79,72 @@ function TableDaily({
     element.classList.remove("bordered");
   };
 
+  //for ipad usage
+  let widthBool = window.innerWidth <= 1024;
+
+  //for ipad dropdown menu
+  const MenuTaskDropdown = ({ id }) => (
+    <Menu
+      items={[
+        {
+          key: "1",
+          label: (
+            <img
+              src={require("../../../images/event.png")}
+              alt="event"
+              className="dropdown-icon"
+            />
+          ),
+          onClick: () => changeAndUpdateTaskTypeDropdown(id, 0),
+        },
+        {
+          key: "2",
+          label: (
+            <img
+              src={require("../../../images/assignment.png")}
+              alt="assignment"
+              className="dropdown-icon"
+            />
+          ),
+          onClick: () => changeAndUpdateTaskTypeDropdown(id, 1),
+        },
+        {
+          key: "3",
+          label: (
+            <img
+              src={require("../../../images/note.png")}
+              alt="note"
+              className="dropdown-icon"
+            />
+          ),
+          onClick: () => changeAndUpdateTaskTypeDropdown(id, 2),
+        },
+        {
+          key: "4",
+          label: <span>Strike</span>,
+          onClick: () => strikeTask(id),
+        },
+      ]}
+    />
+  );
+
   //Task type buttons
   const taskType = (type, id) => {
     if (type === 0) {
-      return (
+      return widthBool ? (
+        <Dropdown
+          overlay={<MenuTaskDropdown id={id} />}
+          trigger={["click"]}
+          autoFocus={true}
+        >
+          <input
+            type="image"
+            className="strikeBtn"
+            alt="event"
+            src={require("../../../images/event.png")}
+          />
+        </Dropdown>
+      ) : (
         <input
           type="image"
           className="strikeBtn"
@@ -96,7 +160,20 @@ function TableDaily({
         />
       );
     } else if (type === 1) {
-      return (
+      return widthBool ? (
+        <Dropdown
+          overlay={<MenuTaskDropdown id={id} />}
+          trigger={["click"]}
+          autoFocus={true}
+        >
+          <input
+            type="image"
+            className="strikeBtn"
+            alt="event"
+            src={require("../../../images/assignment.png")}
+          />
+        </Dropdown>
+      ) : (
         <input
           type="image"
           className="strikeBtn"
@@ -112,7 +189,20 @@ function TableDaily({
         />
       );
     } else if (type === 2) {
-      return (
+      return widthBool ? (
+        <Dropdown
+          overlay={<MenuTaskDropdown id={id} />}
+          trigger={["click"]}
+          autoFocus={true}
+        >
+          <input
+            type="image"
+            className="strikeBtn"
+            alt="note"
+            src={require("../../../images/note.png")}
+          />
+        </Dropdown>
+      ) : (
         <input
           type="image"
           className="strikeBtn"
@@ -167,8 +257,50 @@ function TableDaily({
     setFiltered([2]);
   };
 
+  //dropdown for priority
+  const MenuPriorityDropdown = ({ id }) => (
+    <Menu
+      items={[
+        {
+          key: "1",
+          label: (
+            <div
+              className={`row_info priority ${
+                isColourBlindFilter ? colourBlindPriorities[0] : priorities[0]
+              }`}
+            ></div>
+          ),
+          onClick: () => changeAndUpdateTaskPriorityDropdown(0, id),
+        },
+        {
+          key: "2",
+          label: (
+            <div
+              className={`row_info priority ${
+                isColourBlindFilter ? colourBlindPriorities[1] : priorities[1]
+              }`}
+            ></div>
+          ),
+          onClick: () => changeAndUpdateTaskPriorityDropdown(1, id),
+        },
+        {
+          key: "3",
+          label: (
+            <div
+              className={`row_info priority ${
+                isColourBlindFilter ? colourBlindPriorities[2] : priorities[2]
+              }`}
+            ></div>
+          ),
+          onClick: () => changeAndUpdateTaskPriorityDropdown(2, id),
+        },
+      ]}
+    />
+  );
+
   //useContext for rendering pomdoro
   const { isPomoButtonVisible } = usePomodoro();
+
   return (
     <div className="tableContainer">
       <table>
@@ -261,20 +393,37 @@ function TableDaily({
                 </div>
               </td>
               <td className="priorityContainer">
-                <div
-                  tabIndex="0"
-                  className={`row_info priority ${
-                    isColourBlindFilter
-                      ? colourBlindPriorities[task.priority]
-                      : priorities[task.priority]
-                  }`}
-                  onKeyDown={(e) => changeTaskPriority(task.id, e)}
-                  onBlur={() => {
-                    updateTaskPriorityEvent(task.priority, task.id);
-                    onUnselect("priority", task.id);
-                  }}
-                  onFocus={() => onSelect("priority", task.id)}
-                ></div>
+                {widthBool ? (
+                  <Dropdown
+                    overlay={<MenuPriorityDropdown id={task.id} />}
+                    trigger={["click"]}
+                    autoFocus={true}
+                  >
+                    <div
+                      tabIndex="0"
+                      className={`row_info priority ${
+                        isColourBlindFilter
+                          ? colourBlindPriorities[task.priority]
+                          : priorities[task.priority]
+                      }`}
+                    ></div>
+                  </Dropdown>
+                ) : (
+                  <div
+                    tabIndex="0"
+                    className={`row_info priority ${
+                      isColourBlindFilter
+                        ? colourBlindPriorities[task.priority]
+                        : priorities[task.priority]
+                    }`}
+                    onKeyDown={(e) => changeTaskPriority(task.id, e)}
+                    onBlur={() => {
+                      updateTaskPriorityEvent(task.priority, task.id);
+                      onUnselect("priority", task.id);
+                    }}
+                    onFocus={() => onSelect("priority", task.id)}
+                  ></div>
+                )}
               </td>
               <td>
                 <div

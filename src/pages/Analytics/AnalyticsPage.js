@@ -120,6 +120,8 @@ const AnalyticsPage = () => {
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
+  let widthBool = window.innerWidth <= 1024;
+
   return (
     <div className="overall-analytics-layout">
       <div className="site-card-wrapper">
@@ -149,7 +151,11 @@ const AnalyticsPage = () => {
           <Col span={8}>
             <Tooltip title="Average number of tasks striked in a day">
               <Card
-                title="Avg No. of Tasks Completed Per Day"
+                title={
+                  widthBool
+                    ? "Avg No. of Tasks/Day"
+                    : "Avg No. of Tasks Completed Per Day"
+                }
                 className="progress-card"
                 data-testid="productive-days"
                 style={{ height: "100%" }}

@@ -263,6 +263,7 @@ function DailyTasklist() {
         )
       );
     } else {
+      //TODO this should change for the keyboard shortcut
       alert("Use the up or down arrows to swap through task types!");
     }
   };
@@ -283,6 +284,28 @@ function DailyTasklist() {
     )
       .then((response) => console.log(response.json()))
       .catch((e) => console.log(e));
+  };
+
+  //Change and update Task Type Event via dropdown
+  const changeAndUpdateTaskTypeDropdown = (id, taskType) => {
+    //changing task type
+    setTasks(
+      tasks.map((task) =>
+        // eslint-disable-next-line
+        task.id == id
+          ? {
+              id: task.id,
+              type: taskType,
+              text: task.text,
+              priority: task.priority,
+              effort: task.effort,
+              striked: task.striked,
+            }
+          : task
+      )
+    );
+    //updating task type
+    updateTaskType(taskType, id);
   };
 
   //Change Task Text Event
@@ -380,6 +403,28 @@ function DailyTasklist() {
     )
       .then((response) => console.log(response.json()))
       .catch((e) => console.log(e));
+  };
+
+  //Change and update task priority for dropdown
+  const changeAndUpdateTaskPriorityDropdown = (taskPriority, id) => {
+    //changing the priority
+    setTasks(
+      tasks.map((task) =>
+        task.id === id
+          ? {
+              id: task.id,
+              type: task.type,
+              text: task.text,
+              priority: taskPriority,
+              effort: task.effort,
+              striked: task.striked,
+            }
+          : task
+      )
+    );
+
+    //updating the priority
+    updateTaskPriority(taskPriority, id);
   };
 
   //Change Task Effort Event
@@ -630,8 +675,14 @@ function DailyTasklist() {
           updateTaskPriorityEvent={updateTaskPriority}
           updateTaskEffortEvent={updateTaskEffort}
           togglePomo={togglePomo}
+          changeAndUpdateTaskTypeDropdown={changeAndUpdateTaskTypeDropdown}
+          changeAndUpdateTaskPriorityDropdown={
+            changeAndUpdateTaskPriorityDropdown
+          }
         />
-        <SideMenu monthlyTasks={monthlyTasks} transferTask={transferTask} />
+        {window.innerWidth > 1024 && (
+          <SideMenu monthlyTasks={monthlyTasks} transferTask={transferTask} />
+        )}
       </div>
     </Fragment>
   );

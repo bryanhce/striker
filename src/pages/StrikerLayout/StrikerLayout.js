@@ -8,7 +8,9 @@ import { Outlet } from "react-router-dom";
 const { Header, Content, Footer, Sider } = Layout;
 
 const StrikerLayout = () => {
-  const [isCollapse, setCollapse] = useState(false);
+  let widthBool = window.innerWidth <= 1024;
+
+  const [isCollapse, setCollapse] = useState(widthBool);
 
   const onCollapse = () => {
     setCollapse(!isCollapse);
@@ -26,7 +28,6 @@ const StrikerLayout = () => {
           padding: 0,
           fontWeight: "bold",
           textAlign: "center",
-          fontSize: "9vh",
         }}
       >
         <img

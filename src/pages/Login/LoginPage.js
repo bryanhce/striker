@@ -6,6 +6,7 @@ import { useState } from "react";
 import { format } from "date-fns";
 
 import "antd/dist/antd.min.css";
+import "./LoginPage.css";
 
 const { Content, Footer } = Layout;
 
@@ -73,6 +74,7 @@ const LoginPage = () => {
                 <img
                   src={require("../../images/striker-title.png")}
                   alt="striker title"
+                  className="login-stiker-logo"
                 />
               </span>
               <Form

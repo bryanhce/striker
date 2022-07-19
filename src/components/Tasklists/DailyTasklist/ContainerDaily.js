@@ -21,6 +21,8 @@ export const ContainerDaily = ({
   updateTaskPriorityEvent,
   updateTaskEffortEvent,
   togglePomo,
+  changeAndUpdateTaskTypeDropdown,
+  changeAndUpdateTaskPriorityDropdown,
 }) => {
   const daysOfWeek = [
     "monday",
@@ -34,7 +36,7 @@ export const ContainerDaily = ({
   const todayIndex = todayDate.getDay() - 1;
   let todayDay = daysOfWeek[todayIndex];
   if (todayIndex === -1) {
-    todayDay = "sunday"
+    todayDay = "sunday";
   }
   const todayDisplay =
     todayString.slice(8) +
@@ -65,6 +67,10 @@ export const ContainerDaily = ({
         updateTaskPriorityEvent={updateTaskPriorityEvent}
         updateTaskEffortEvent={updateTaskEffortEvent}
         togglePomo={togglePomo}
+        changeAndUpdateTaskTypeDropdown={changeAndUpdateTaskTypeDropdown}
+        changeAndUpdateTaskPriorityDropdown={
+          changeAndUpdateTaskPriorityDropdown
+        }
       />
       <AddTask addTask={addTask} />
       <ProgressBar tasks={tasks} />

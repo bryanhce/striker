@@ -22,6 +22,8 @@ export const Container = ({
   shownSubtasksState,
   showSubtasks,
   addSubtask,
+  changeAndUpdateProgressDropdown,
+  changeAndUpdateTaskTypeDropdown,
 }) => {
   const months = [
     "JANUARY",
@@ -61,6 +63,8 @@ export const Container = ({
         shownSubtasksState={shownSubtasksState}
         showSubtasks={showSubtasks}
         addSubtask={addSubtask}
+        changeAndUpdateProgressDropdown={changeAndUpdateProgressDropdown}
+        changeAndUpdateTaskTypeDropdown={changeAndUpdateTaskTypeDropdown}
       />
       <AddTask addTask={addTask} />
       <ProgressBar tasks={tasks} />
