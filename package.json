@@ -47,5 +47,5 @@
   "devDependencies": {
     "jest": "^28.1.1"
   },
-  "homepage": "."
+  "homepage": "https://striker-frontend.herokuapp.com/"
 }
