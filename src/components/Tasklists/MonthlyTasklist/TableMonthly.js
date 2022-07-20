@@ -418,13 +418,9 @@ function TableMonthly({
         <tbody>
           {tasks.map((task) => {
             let rowClass;
-            // eslint-disable-next-line
-            if (task.parent != "") {
-              if (
-                shownSubtasksState[tasks.indexOf(task)] &&
-                // eslint-disable-next-line
-                !(filtered == 1 && task.striked)
-              ) {
+            if (task.parent !== "") {
+              if (shownSubtasksState[tasks.indexOf(task)] &&
+                !(filtered === 1 && task.striked)) {
                 rowClass = "subtask";
               } else {
                 rowClass = "subtask hidden";

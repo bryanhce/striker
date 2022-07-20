@@ -9,7 +9,6 @@ function MonthlyTasklist() {
   console.log("User:");
   console.log(user);
   const userId = user.uid;
-  //const userId = "dVxGQxT8uKepfQLJxqnhBRWx6Dz1";
 
   //Today's date:
   let today = new Date();
@@ -567,11 +566,10 @@ function MonthlyTasklist() {
   //Add Subtask Event
   const addSubtask = (parentId) => {
     const taskId = uuidv4();
-    console.log("Adding Task of ID: " + taskId);
+    console.log("Adding Subtask of ID: " + taskId);
     const oldLength = tasks.length;
     const oldParentIndex = tasks.indexOf(
-      // eslint-disable-next-line
-      tasks.filter((task) => task.id == parentId)[0]
+      tasks.filter((task) => task.id === parentId)[0]
     );
     const newTask = {
       id: taskId,
@@ -584,8 +582,7 @@ function MonthlyTasklist() {
       hasChildren: false,
     };
     const newTasks = tasks.map((task) =>
-      // eslint-disable-next-line
-      task.id == parentId
+      task.id === parentId
         ? {
             id: task.id,
             type: task.type,
@@ -612,8 +609,7 @@ function MonthlyTasklist() {
       newSubtasksBtnState.push(subtasksBtnState[counter]);
       newShownSubtasksState.push(shownSubtasksState[counter]);
       counter++;
-      // eslint-disable-next-line
-      if (tasks[i].id == parentId) {
+      if (tasks[i].id === parentId) {
         newSubtasksBtnState.push(false);
         newShownSubtasksState.push(booleanValue);
       }
@@ -630,6 +626,7 @@ function MonthlyTasklist() {
       method: "POST",
       headers: { "Content-Type": "application/json" },
       body: JSON.stringify({
+        id: taskId,
         taskType: 0,
         description: "",
         progress: 0,
