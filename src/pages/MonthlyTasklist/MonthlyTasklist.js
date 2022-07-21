@@ -410,21 +410,17 @@ function MonthlyTasklist() {
     let newStriked;
     e.preventDefault();
     for (let i = 0; i < tasks.length; i++) {
-      // eslint-disable-next-line
-      if (tasks[i].id == id) {
+      if (tasks[i].id === id) {
         taskClicked = tasks[i];
         targetTasks.push(taskClicked);
-        // eslint-disable-next-line
-        if (e.keyCode == 40) {
+        if (e.keyCode === 38) {
           newProgress = tasks[i].progress - 1 >= 0 ? tasks[i].progress - 1 : 2;
-          // eslint-disable-next-line
-        } else if (e.keyCode == 38) {
+        } else if (e.keyCode === 40) {
           newProgress = tasks[i].progress + 1 <= 2 ? tasks[i].progress + 1 : 0;
         } else {
           alert("Use the up or down arrows to swap through task progress!");
         }
-        // eslint-disable-next-line
-      } else if (tasks[i].parent == id) {
+      } else if (tasks[i].parent === id) {
         targetTasks.push(tasks[i]);
       }
     }

@@ -99,12 +99,6 @@ def testcase2_fail():
     wait = WebDriverWait(driver, 3).until(EC.presence_of_element_located((By.CLASS_NAME, "border-day")))
 
 def testcase3():
-    #Wait for cancel button on yesterday tasks modal
-    wait = WebDriverWait(driver, 10).until(EC.presence_of_element_located((By.CLASS_NAME, "modal-close")))
-    cancel_button = driver.find_element(By.CLASS_NAME, "modal-close")
-    cancel_button.click()
-
-
     #Find AddTask button
     add_task_button = driver.find_element(By.CLASS_NAME, "addTask")
     add_task_button.click()
@@ -220,8 +214,105 @@ def testcase13():
     time.sleep(1)
 
     #Check if first task is new
-    wait = WebDriverWait(driver, 3).until(EC.presence_of_element_located((By.ID, "border-month")))
+    wait = WebDriverWait(driver, 3).until(EC.presence_of_element_located((By.CLASS_NAME, "border-month")))
 
+
+    #Find AddTask button
+    add_task_button = driver.find_element(By.CLASS_NAME, "addTask")
+    add_task_button.click()
+
+    #Check if new task exists
+    wait = WebDriverWait(driver, 3).until(EC.presence_of_element_located((By.CLASS_NAME, "task")))
+
+def testcase17():
+    #Find Task Priority field
+    deadline = driver.find_element(By.CLASS_NAME, "deadline")
+    deadline.click()
+    deadline.send_keys("01012000")
+    
+    other = driver.find_element(By.CLASS_NAME, "border-month")
+    other.click()
+
+    print(deadline.get_attribute("placeholder"))
+    if deadline.get_attribute("placeholder") != "01-01-2000":
+        raise Exception("Deadline did not change")
+
+def testcase18():
+    #Find Task Progress field
+    progress = driver.find_element(By.CLASS_NAME, "taskProgress")
+    progress.send_keys(Keys.DOWN)
+    print(progress.text)
+    if progress.text != "In Progress":
+        raise Exception("Progress did not change")
+
+def testcase19():
+    #Find Strike button
+    strike_button = driver.find_element(By.CLASS_NAME, "strikeBtn")
+    action.double_click(strike_button).perform()
+
+    wait = WebDriverWait(driver, 5).until(EC.presence_of_element_located((By.CLASS_NAME, "striked")))
+
+def testcase21():
+    #Find Add Task
+    add_task = driver.find_element(By.CLASS_NAME, "addTask")
+    add_task.click()
+
+    #Order by Deadline
+    priority_header = driver.find_element(By.CLASS_NAME, "deadlineHeader")
+    priority_header.click()
+    time.sleep(1)
+    priority_header.click()
+
+    #Check if first task is new
+    newest_task_priority = driver.find_element(By.CLASS_NAME, "deadline")
+    if newest_task_priority.text != "Haven't Started":
+        raise Exception("Tasks not ordered by Priority")
+
+def testcase22():
+    #Order by Effort
+    progress_header = driver.find_element(By.CLASS_NAME, "progressHeader")
+    progress_header.click()
+    time.sleep(1)
+    progress_header.click()
+
+    #Check if first task is new
+    newest_task_effort = driver.find_element(By.CLASS_NAME, "taskProgress")
+    if newest_task_effort.text != "In Progress":
+        raise Exception("Tasks not ordered by Effort")
+
+def testcase23():
+    #Delete tasks
+    delete_button = driver.find_element(By.CLASS_NAME, "deleteTask")
+    delete_button.click()
+    time.sleep(1)
+    delete_button = driver.find_element(By.CLASS_NAME, "deleteTask")
+    delete_button.click()
+    time.sleep(1)
+
+    #Check if first task is new
+    tasks = driver.find_elements(By.CLASS_NAME, "task")
+    if tasks:
+        raise Exception("Delete button doesn't delete tasks")
+
+def testcase24():
+    #Monthly tasklist tab
+    monthly_tab = driver.find_elements(By.CLASS_NAME, "ant-menu-title-content")[8]
+    monthly_tab.click()
+    time.sleep(1)
+
+    #Check if first task is new
+    wait = WebDriverWait(driver, 3).until(EC.presence_of_element_located((By.CLASS_NAME, "ant-tabs-tab")))
+    user_details_tab = driver.find_elements(By.CLASS_NAME, "ant-tabs-tab")[1]
+    user_details_tab.click()
+    
+    wait = WebDriverWait(driver, 3).until(EC.presence_of_element_located((By.CLASS_NAME, "ant-btn-danger")))
+    delete_account_btn = driver.find_element(By.CLASS_NAME, "ant-btn-danger")
+    delete_account_btn.click()
+
+    wait = WebDriverWait(driver, 3).until(EC.presence_of_element_located((By.CLASS_NAME, "ant-btn-dangerous")))
+    delete_account_confirm_btn = driver.find_element(By.CLASS_NAME, "ant-btn-dangerous")
+    delete_account_confirm_btn.click()
+    
 
 #Calling of Test Cases:
 testcase_template(1, testcase1, testcase1_fail)
@@ -237,8 +328,20 @@ testcase_template(10, testcase10, null_fail)
 testcase_template(11, testcase11, null_fail)
 testcase_template(12, testcase12, null_fail)
 testcase_template(13, testcase13, null_fail)
+testcase_template(14, testcase3, null_fail)
+testcase_template(15, testcase4, null_fail)
+testcase_template(16, testcase5, null_fail)
+testcase_template(17, testcase17, null_fail)
+testcase_template(18, testcase18, null_fail)
+testcase_template(19, testcase19, null_fail)
+testcase_template(20, testcase9, null_fail)
+testcase_template(21, testcase21, null_fail)
+testcase_template(22, testcase22, null_fail)
+testcase_template(23, testcase23, null_fail)
+testcase_template(24, testcase24, null_fail)
 
-
-time.sleep(100)
+print("------------------------------------------------------")
+print("Testing Complete!")
+time.sleep(5)
 
 driver.quit()
