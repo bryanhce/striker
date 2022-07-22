@@ -48,7 +48,7 @@ function TableMonthly({
   const [filtered, setFiltered] = useState([0]);
 
   //for ipad usage
-  let widthBool = window.innerWidth <= 1024;
+  let widthBool = window.innerWidth <= 1366;
 
   //for ipad dropdown menu
   const MenuTaskTypeDropdown = ({ id }) => (
@@ -419,8 +419,10 @@ function TableMonthly({
           {tasks.map((task) => {
             let rowClass;
             if (task.parent !== "") {
-              if (shownSubtasksState[tasks.indexOf(task)] &&
-                !(filtered === 1 && task.striked)) {
+              if (
+                shownSubtasksState[tasks.indexOf(task)] &&
+                !(filtered === 1 && task.striked)
+              ) {
                 rowClass = "subtask";
               } else {
                 rowClass = "subtask hidden";

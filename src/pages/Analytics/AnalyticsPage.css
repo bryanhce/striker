@@ -21,7 +21,7 @@
   justify-content: space-around;
 }
 
-@media screen and (max-width: 1024px) {
+@media screen and (max-width: 1366px) {
   .graph-div {
     justify-content: space-evenly;
   }

@@ -8,7 +8,7 @@ import { Outlet } from "react-router-dom";
 const { Header, Content, Footer, Sider } = Layout;
 
 const StrikerLayout = () => {
-  let widthBool = window.innerWidth <= 1024;
+  let widthBool = window.innerWidth <= 1366;
 
   const [isCollapse, setCollapse] = useState(widthBool);
 

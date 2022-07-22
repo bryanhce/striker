@@ -80,7 +80,7 @@ function TableDaily({
   };
 
   //for ipad usage
-  let widthBool = window.innerWidth <= 1024;
+  let widthBool = window.innerWidth <= 1366;
 
   //for ipad dropdown menu
   const MenuTaskDropdown = ({ id }) => (
