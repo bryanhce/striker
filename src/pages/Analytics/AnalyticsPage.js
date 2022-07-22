@@ -120,7 +120,7 @@ const AnalyticsPage = () => {
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
-  let widthBool = window.innerWidth <= 1024;
+  let widthBool = window.innerWidth <= 1366;
 
   return (
     <div className="overall-analytics-layout">
