@@ -17,3 +17,22 @@
 .notes-month section {
   font-size: 28px;
 }
+
+.calendarTaskContainer {
+  display: flex;
+  flex-direction: row;
+  justify-content: start;
+  align-items: start;
+}
+
+.calendarStrikeBtn {
+  height: 10px;
+  width: 10px;
+  margin-top: 6px;
+}
+.calendarTaskText {
+  font-size: 0.75rem;
+  padding-left: 10px;
+  border-top: 0px;
+  padding-top: 0px;
+}
