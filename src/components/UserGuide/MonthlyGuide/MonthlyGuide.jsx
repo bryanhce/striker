@@ -71,9 +71,9 @@ const MonthlyGuide = () => {
         <Panel header="Filter Task" key="7">
           <p>
             Click on the header "Task" of the task list table. On first click,
-            the task list will filter to show only the uncompleted task. On a
+            the task list will filter to show only the uncompleted tasks. On a
             subsequent click, the task list will filter to show only completed
-            task. And finally on the last click, the task list will return to
+            tasks. And finally on the last click, the task list will return to
             its original state.
           </p>
         </Panel>

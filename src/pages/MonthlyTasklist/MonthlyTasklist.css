@@ -361,8 +361,13 @@ td {
   font-size: 1.4em;
 }
 
-@media screen and (max-width: 1024px) {
+@media screen and (max-width: 1366px) {
   .border-month {
     font-size: 3vh;
+  }
+
+  .progressContainer {
+    font-size: 1.5vh;
+    margin-top: -2%;
   }
 }

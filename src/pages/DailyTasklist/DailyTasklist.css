@@ -394,7 +394,7 @@ td {
   height: auto;
 }
 
-@media screen and (max-width: 1024px) {
+@media screen and (max-width: 1366px) {
   .tableContainer {
     font-size: 1.4vh;
   }
