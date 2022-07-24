@@ -84,7 +84,13 @@ const YesterdayCard = (props) => {
           })
         )
         .then((filteredData) => setYesterdayTasks(filteredData))
-        .then((d) => (d.length === 0 ? props.closeYesterdayModal() : null));
+        .then((d) => (d.length === 0 ? props.closeYesterdayModal() : null))
+        .catch((err) => {
+          console.log(err);
+          //not best practice but when error because of null in yesterdayTasks
+          //state and cannot use filter method, then close modal
+          props.closeYesterdayModal();
+        });
     };
 
     checkYesterdayTasks();
