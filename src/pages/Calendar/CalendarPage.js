@@ -13,9 +13,7 @@ function CalendarPage() {
   const userId = user.uid;
 
   function getMonthData(value) {
-    if (value.month() === 8) {
-      return 1394;
-    }
+
   }
   
   function monthCellRender(value) {
@@ -106,12 +104,11 @@ function CalendarPage() {
     .catch((e) => console.log(e));
 
     //Update Calendar Tasks State:
-    const newCalendarTasks = calendarTasks.map((task) => task.id === taskId ? {id: task.id, dailyLogDate: dropLocationDate, taskType: task.taskType, description: task.description, isCompleted: task.isCompleted, effort: task.effort, priority: task.priority, userId: task.userId, hasChildren: task.hasChildren} : task);
-
-    setCalendarTasks(newCalendarTasks);
+    setCalendarTasks(calendarTasks.map((task) => task.id === taskId ? {id: task.id, dailyLogDate: dropLocationDate, taskType: task.taskType, description: task.description, isCompleted: task.isCompleted, effort: task.effort, priority: task.priority, userId: task.userId, hasChildren: task.hasChildren} : task));
   };
 
   function dragOver(e) {
+    console.log(calendarTasks);
     e.preventDefault();
     if (!this.className.includes("calendarHovered")) {
       this.className += " calendarHovered";

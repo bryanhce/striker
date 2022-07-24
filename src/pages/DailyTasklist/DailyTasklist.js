@@ -210,6 +210,7 @@ function DailyTasklist() {
       console.log("Adding task response: ");
       console.log(response.json());
     });
+    return taskId;
   };
 
   //Callback for Add Task Event
@@ -642,6 +643,52 @@ function DailyTasklist() {
       check135Condition();
     }
   }, [tasks, is135Active]);
+
+  const addTaskShortcut = (event) => {
+    if (event.defaultPrevented) return  // Exits here if event has been handled
+    event.preventDefault()
+    if (event.key === "Enter") {
+      console.log(`SHORTCUT TRIGGERED! PRESSED ${event.key}`);    
+      console.log(tasks);
+
+      const taskId = uuidv4();
+      console.log("Adding Task of ID: " + taskId);
+      const newTask = {
+        id: taskId,
+        type: 0,
+        text: "",
+        priority: 0,
+        effort: 0,
+        striked: false,
+      };  
+      //Send to Backend:
+      const requestOptions = {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({
+          id: taskId,
+          taskType: 0,
+          description: "",
+          effort: 0,
+          priority: 0,
+          userId: userId,
+          hasChildren: false,
+        }),
+      };
+      fetch(
+        `https://striker-backend.herokuapp.com/task-list/single-task?date=${dateString}`,
+        requestOptions
+      ).then((response) => {
+        console.log("Adding task response: ");
+        console.log(response.json());
+      }).then((response) => GetDailyTasks());
+    } else {
+      console.log("NO!");
+    }
+  }
+
+  // attach the event listener
+  document.addEventListener('keyup', addTaskShortcut);
 
   return (
     <Fragment>
