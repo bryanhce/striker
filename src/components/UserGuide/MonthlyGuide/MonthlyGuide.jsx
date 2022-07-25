@@ -86,9 +86,10 @@ const MonthlyGuide = () => {
             will be reversed.
           </p>
         </Panel>
-        <Panel header="Shortcut for Creating Task" key="9">
+        <Panel header="Shortcuts" key="9">
           <p>
-            You can alternatively press the Enter key to create a new task.
+            You can alternatively press the Enter key to create a new task. While selecting a task, use tab and alt+tab to switch fields.
+            You can also use number keys to pick a specific task in the task list (E.g. clicking number 1 chooses the first task).
           </p>
         </Panel>
       </Collapse>

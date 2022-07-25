@@ -355,8 +355,7 @@ function MonthlyTasklist() {
     //change
     setTasks(
       tasks.map((task) =>
-        // eslint-disable-next-line
-        task.id == id
+        task.id === id
           ? {
               id: task.id,
               type: taskType,
@@ -378,8 +377,7 @@ function MonthlyTasklist() {
   const updateTaskProgress = (taskProgress, id) => {
     //Send to Backend:
     const bodyJson =
-      // eslint-disable-next-line
-      taskProgress == 2
+      taskProgress === 2
         ? {
             progress: taskProgress,
             isCompleted: true,
@@ -745,18 +743,13 @@ function MonthlyTasklist() {
             newestTaskTypeElement.focus();
           }))
         } else if (event.keyCode > 48 && event.keyCode < 58 && !document.activeElement.classList.contains("deadline")) {
-          const taskBtns = document.querySelectorAll(".task:not(.hidden)");
+          const tasks = document.querySelectorAll(".task");
+          console.log(tasks);
           const index = event.keyCode - 49;
-          const focusElement = taskBtns[index].getElementsByClassName("strikeBtn")[0];
+          const focusElement = tasks[index].getElementsByClassName("strikeBtn")[0];
 
           focusElement.setAttribute('tabindex', '0');
           focusElement.focus();
-        } else if (event.keyCode === 79) {
-          console.log("Open Subtask Shortcut");
-          const targetElement = document.activeElement;
-          const targetTask = targetElement.parentElement;
-          const targetId = targetTask.getAttribute("id");
-          showSubtasks(targetId);
         }
     }
 
