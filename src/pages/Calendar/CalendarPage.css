@@ -39,5 +39,29 @@
 
 .calendarHovered {
   transition-duration: 0.4s;
-  background-color: #F0F0F0	!important;
+  background-color: #f0f0f0 !important;
+}
+
+.calendar-0- {
+  background-color: #b7eb8f;
+}
+
+.calendar-1- {
+  background-color: #ffd591;
+}
+
+.calendar-2- {
+  background-color: #ffa39e;
+}
+
+.calendar-0-cb {
+  background-color: #f5783ab7;
+}
+
+.calendar-1-cb {
+  background-color: #a95aa1c5;
+}
+
+.calendar-2-cb {
+  background-color: #0f2080aa;
 }

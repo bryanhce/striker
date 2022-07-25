@@ -3,8 +3,7 @@ import "./CalendarPage.css";
 import "antd/dist/antd.min.css";
 import { CalendarTask } from "../../components/Calendar/CalendarTask";
 import { useState, useEffect } from "react";
-
-
+import { useColourBlind } from "../../context/ColourBlindContext";
 
 function CalendarPage() {
   let user = JSON.parse(localStorage.getItem("currentUser"));
@@ -12,10 +11,10 @@ function CalendarPage() {
   console.log(user);
   const userId = user.uid;
 
-  function getMonthData(value) {
+  const { isColourBlindFilter } = useColourBlind();
 
-  }
-  
+  function getMonthData(value) {}
+
   function monthCellRender(value) {
     const num = getMonthData(value);
     return num ? (
@@ -24,7 +23,7 @@ function CalendarPage() {
       </div>
     ) : null;
   }
-  
+
   function onDateSelected(value) {
     const string = value.format("YYYY-MM");
     setDateSelected(string);
@@ -33,14 +32,13 @@ function CalendarPage() {
   //State for date selected
   function formatDate(date) {
     var d = new Date(date),
-        month = '' + (d.getMonth() + 1),
-        year = d.getFullYear();
+      month = "" + (d.getMonth() + 1),
+      year = d.getFullYear();
 
-    if (month.length < 2) 
-        month = '0' + month;
+    if (month.length < 2) month = "0" + month;
 
-    return [year, month].join('-');
-}
+    return [year, month].join("-");
+  }
   const todayString = formatDate(new Date());
   const [dateSelected, setDateSelected] = useState([todayString]);
 
@@ -49,46 +47,47 @@ function CalendarPage() {
 
   useEffect(() => {
     //Fetch data
-    fetch(`https://striker-backend.herokuapp.com/calendar/${userId}?year-month=${dateSelected}`)
-    .then((response) => response.json())
-    .then((jsonData) => setCalendarTasks(jsonData))
+    fetch(
+      `https://striker-backend.herokuapp.com/calendar/${userId}?year-month=${dateSelected}`
+    )
+      .then((response) => response.json())
+      .then((jsonData) => setCalendarTasks(jsonData));
 
     //Make cells drop targets
-    const calendarCells = document.getElementsByClassName("ant-picker-cell ant-picker-cell-in-view");
+    const calendarCells = document.getElementsByClassName(
+      "ant-picker-cell ant-picker-cell-in-view"
+    );
 
-    
-    for (let i=0; i < calendarCells.length; i++) {
-      calendarCells[i].addEventListener('dragover', dragOver);
-      calendarCells[i].addEventListener('dragenter', dragEnter);
-      calendarCells[i].addEventListener('dragleave', dragLeave);
-      calendarCells[i].addEventListener('dragdrop', dragDrop);
+    for (let i = 0; i < calendarCells.length; i++) {
+      calendarCells[i].addEventListener("dragover", dragOver);
+      calendarCells[i].addEventListener("dragenter", dragEnter);
+      calendarCells[i].addEventListener("dragleave", dragLeave);
+      calendarCells[i].addEventListener("drop", drop);
+      calendarCells[i].addEventListener("dragDrop", dragDrop);
 
-      calendarCells[i].addEventListener('drop', drop);
-
-      calendarCells[i].addEventListener('click', () => {
-        const dateString = calendarCells[i].getAttribute('title');
-        console.log(dateString);
-        window.location.href = "https://striker-frontend.herokuapp.com/daily-task-list/" + dateString;
-      })
+      calendarCells[i].addEventListener("click", () => {
+        const dateString = calendarCells[i].getAttribute("title");
+        window.location.href =
+          "https://striker-frontend.herokuapp.com/daily-task-list/" +
+          dateString;
+      });
     }
-  // eslint-disable-next-line react-hooks/exhaustive-deps
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
   function dragStart(e) {
     console.log("START!");
-    console.log(calendarTasks);
 
-    e.dataTransfer.setData('text/plain', e.target.id);
+    e.dataTransfer.setData("text/plain", e.target.id);
   }
 
   function drop(e) {
     e.preventDefault();
     console.log("DROPPED!");
-    console.log(calendarTasks);
 
-    const taskId = e.dataTransfer.getData('text/plain');
+    const taskId = e.dataTransfer.getData("text/plain");
     const dropLocationDate = e.target.parentElement.parentElement.title;
-    
+
     //Update Backend:
     const requestOptions = {
       method: "PUT",
@@ -101,15 +100,30 @@ function CalendarPage() {
       `https://striker-backend.herokuapp.com/task-list/single-task/${taskId}`,
       requestOptions
     )
-    .then((response) => console.log(response.json()))
-    .catch((e) => console.log(e));
+      .then((response) => console.log(response.json()))
+      .catch((e) => console.log(e));
 
     //Update Calendar Tasks State:
-    setCalendarTasks(calendarTasks.map((task) => task.id === taskId ? {id: task.id, dailyLogDate: dropLocationDate, taskType: task.taskType, description: task.description, isCompleted: task.isCompleted, effort: task.effort, priority: task.priority, userId: task.userId, hasChildren: task.hasChildren} : task));
-  };
+    setCalendarTasks((tasks) =>
+      tasks.map((task) =>
+        task.id === taskId
+          ? {
+              id: task.id,
+              dailyLogDate: dropLocationDate,
+              taskType: task.taskType,
+              description: task.description,
+              isCompleted: task.isCompleted,
+              effort: task.effort,
+              priority: task.priority,
+              userId: task.userId,
+              hasChildren: task.hasChildren,
+            }
+          : task
+      )
+    );
+  }
 
   function dragOver(e) {
-    console.log(calendarTasks);
     e.preventDefault();
     if (!this.className.includes("calendarHovered")) {
       this.className += " calendarHovered";
@@ -120,7 +134,7 @@ function CalendarPage() {
     e.preventDefault();
     this.className += " calendarHovered";
   }
-    
+
   function dragLeave(e) {
     e.preventDefault();
     this.className = "ant-picker-cell ant-picker-cell-in-view";
@@ -134,23 +148,37 @@ function CalendarPage() {
     let listData = [];
     const dateString = value.format("YYYY-MM-DD");
     if (calendarTasks) {
-      for (let i=0; i < calendarTasks.length; i++) {
-        if (calendarTasks[i].dailyLogDate === dateString && calendarTasks[i].priority.Valid) {
-          listData.push(calendarTasks[i])
+      for (let i = 0; i < calendarTasks.length; i++) {
+        if (
+          calendarTasks[i].dailyLogDate === dateString &&
+          calendarTasks[i].priority.Valid
+        ) {
+          listData.push(calendarTasks[i]);
         }
       }
     }
     return (
       <ul className="events">
         {listData.map((task) => (
-          <li key={task.id} id={task.id} draggable="true" onDrop={drop} onDragStart={dragStart}>
+          <li
+            key={task.id}
+            id={task.id}
+            draggable="true"
+            onDrop={drop}
+            onDragStart={dragStart}
+            className={`calendar-${task.priority.Int64}-${
+              isColourBlindFilter ? "cb" : ""
+            }
+              
+            }`}
+          >
             <CalendarTask type={task.taskType} text={task.description} />
           </li>
         ))}
       </ul>
     );
   }
-  
+
   return (
     <Calendar
       dateCellRender={dateCellRender}
@@ -158,6 +186,6 @@ function CalendarPage() {
       onSelect={onDateSelected}
     />
   );
-};
+}
 
 export default CalendarPage;
