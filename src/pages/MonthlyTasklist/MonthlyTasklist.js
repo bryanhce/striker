@@ -289,13 +289,11 @@ function MonthlyTasklist() {
 
   //Change Task Type Event
   const changeTaskType = (id, e) => {
-    e.preventDefault();
-    // eslint-disable-next-line
-    if (e.keyCode == 40) {
+    if (e.keyCode === 40) {
+      e.preventDefault();
       setTasks(
         tasks.map((task) =>
-          // eslint-disable-next-line
-          task.id == id
+          task.id === id
             ? {
                 id: task.id,
                 type: task.type + 1 <= 2 ? task.type + 1 : 0,
@@ -309,12 +307,11 @@ function MonthlyTasklist() {
             : task
         )
       );
-      // eslint-disable-next-line
-    } else if (e.keyCode == 38) {
+    } else if (e.keyCode === 38) {
+      e.preventDefault();
       setTasks(
         tasks.map((task) =>
-          // eslint-disable-next-line
-          task.id == id
+          task.id === id
             ? {
                 id: task.id,
                 type: task.type - 1 >= 0 ? task.type - 1 : 2,
@@ -328,6 +325,8 @@ function MonthlyTasklist() {
             : task
         )
       );
+    } else if (e.keyCode === 9 || e.key === "Shift" || e.keyCode === 79 || e.key === "Enter") {
+      
     } else {
       alert("Use the up or down arrows to swap through task types!");
     }
@@ -408,15 +407,18 @@ function MonthlyTasklist() {
     const targetTasks = [];
     let newProgress;
     let newStriked;
-    e.preventDefault();
     for (let i = 0; i < tasks.length; i++) {
       if (tasks[i].id === id) {
         taskClicked = tasks[i];
         targetTasks.push(taskClicked);
         if (e.keyCode === 38) {
+          e.preventDefault();
           newProgress = tasks[i].progress - 1 >= 0 ? tasks[i].progress - 1 : 2;
         } else if (e.keyCode === 40) {
+          e.preventDefault();
           newProgress = tasks[i].progress + 1 <= 2 ? tasks[i].progress + 1 : 0;
+        } else if (e.keyCode === 9 || e.key === "Shift" || e.keyCode === 79 || e.key === "Enter") {
+
         } else {
           alert("Use the up or down arrows to swap through task progress!");
         }
@@ -451,13 +453,11 @@ function MonthlyTasklist() {
     let newProgress;
     let newStriked;
     for (let i = 0; i < tasks.length; i++) {
-      // eslint-disable-next-line
-      if (tasks[i].id == id) {
+      if (tasks[i].id === id) {
         taskClicked = tasks[i];
         targetTasks.push(taskClicked);
         newProgress = taskProgress;
-        // eslint-disable-next-line
-      } else if (tasks[i].parent == id) {
+      } else if (tasks[i].parent === id) {
         targetTasks.push(tasks[i]);
       }
     }
@@ -544,12 +544,10 @@ function MonthlyTasklist() {
     const newShownSubtaskState = [...shownSubtasksState];
     let taskIndex = 0;
     for (let i = 0; i < tasks.length; i++) {
-      // eslint-disable-next-line
-      if (tasks[i].parent == id) {
+      if (tasks[i].parent === id) {
         newShownSubtaskState[i] = !newShownSubtaskState[i];
       }
-      // eslint-disable-next-line
-      if (tasks[i].id == id) {
+      if (tasks[i].id === id) {
         taskIndex = i;
       }
     }
@@ -659,6 +657,111 @@ function MonthlyTasklist() {
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [lastParent]);
+
+    const addTaskShortcut = (event) => {
+      if (event.defaultPrevented) return  // Exits here if event has been handled
+      event.preventDefault()
+      if (document.activeElement.classList.contains("taskText")) {return}
+      if (event.key === "Enter" && !event.key === "Shift") {
+        console.log(`SHORTCUT TRIGGERED! PRESSED ${event.key}`);    
+        console.log(tasks);
+        const taskId = uuidv4();
+        console.log("Adding Task of ID: " + taskId);
+        const newTask = {
+          id: taskId,
+          type: 0,
+          text: "",
+          deadline: "",
+          progress: 0,
+          striked: false,
+          parent: "",
+          hasChildren: false,
+        };
+        setTasks(sortTasks([...tasks, newTask]));
+        setSubtasksBtnState([...subtasksBtnState, false]);
+        setShownSubtasksState([...shownSubtasksState, false]);
+    
+        const newAddedTasks = addedTasks[0] + 1;
+        setAddedTasks([newAddedTasks]);
+    
+        //Send to Backend:
+        const requestOptions = {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({
+            id: taskId,
+            taskType: 0,
+            description: "",
+            progress: 0,
+            userId: userId,
+            hasChildren: false,
+          }),
+        };
+        fetch(
+          `https://striker-backend.herokuapp.com/task-list/single-task?date=${dateString}`,
+          requestOptions
+        )
+        .then((response) => console.log(response.json()))
+        .then(
+          fetch(
+            `https://striker-backend.herokuapp.com/task-list/single-task?date=${dateString}`,
+            requestOptions)
+          .then((response) => {
+            console.log("Adding task response: ");
+            console.log(response.json());})
+          .then((response) => {
+            fetch(
+              `https://striker-backend.herokuapp.com/calendar/${userId}?year-month=${monthString}`
+            )
+            .then((response) => response.json())
+            .then((data) => data.filter((task) => task.progress.Valid))
+            .then((dailyData) =>
+              dailyData.map((task) => {
+                return {
+                  id: task.id,
+                  type: task.taskType,
+                  text: task.description,
+                  deadline: task.deadline.String,
+                  progress: task.progress.Int64,
+                  striked: task.isCompleted.Bool,
+                  parent: task.parentId.String,
+                  hasChildren: task.hasChildren,
+                };
+              })
+            )
+            .then((log) => {
+              console.log("Data: ");
+              console.log(log);
+              return log;
+            })
+            .then((filteredData) => {
+              setTasks(sortTasks(filteredData));
+              return filteredData;
+            })
+          })
+          .then((response) => {
+            const newestTaskElement = document.getElementsByClassName("task")[document.getElementsByClassName("task").length];
+            const newestTaskTypeElement = newestTaskElement.getElementsByClassName("strikeBtn")[0]
+            newestTaskTypeElement.focus();
+          }))
+        } else if (event.keyCode > 48 && event.keyCode < 58 && !document.activeElement.classList.contains("deadline")) {
+          const taskBtns = document.querySelectorAll(".task:not(.hidden)");
+          const index = event.keyCode - 49;
+          const focusElement = taskBtns[index].getElementsByClassName("strikeBtn")[0];
+
+          focusElement.setAttribute('tabindex', '0');
+          focusElement.focus();
+        } else if (event.keyCode === 79) {
+          console.log("Open Subtask Shortcut");
+          const targetElement = document.activeElement;
+          const targetTask = targetElement.parentElement;
+          const targetId = targetTask.getAttribute("id");
+          showSubtasks(targetId);
+        }
+    }
+
+  // attach the event listener
+  document.addEventListener('keyup', addTaskShortcut);
 
   return (
     <div className="container">

@@ -42,16 +42,13 @@ function TableDaily({
   };
 
   const onlyNumbers = (e) => {
-    if (
-      !(
-        e.keyCode === 8 ||
+    if (!(e.keyCode === 8 ||
         e.keyCode === 46 ||
         e.keyCode === 37 ||
         e.keyCode === 39 ||
-        (e.keyCode >= 48 && e.keyCode <= 57)
-      ) ||
-      e.shiftKey
-    ) {
+        (e.keyCode >= 48 && e.keyCode <= 57) ||
+        e.keyCode === 9 ||
+        e.key === "Shift")) {
       error("Only input numbers into the Effort field!");
       e.preventDefault();
     } else {
@@ -388,6 +385,7 @@ function TableDaily({
                   className={"taskText " + task.id + "text"}
                   contentEditable="true"
                   onBlur={() => updateTaskTextState(task.id)}
+                  onKeyDown={(e) => e.key === "Enter" ? e.preventDefault : e}
                 >
                   {task.text}
                 </div>

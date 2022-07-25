@@ -86,6 +86,11 @@ const MonthlyGuide = () => {
             will be reversed.
           </p>
         </Panel>
+        <Panel header="Shortcut for Creating Task" key="9">
+          <p>
+            You can alternatively press the Enter key to create a new task.
+          </p>
+        </Panel>
       </Collapse>
     </Fragment>
   );

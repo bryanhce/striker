@@ -228,13 +228,11 @@ function DailyTasklist() {
 
   //Change Task Type Event
   const changeTaskType = (id, e) => {
-    e.preventDefault();
-    // eslint-disable-next-line
-    if (e.keyCode == 40) {
+    if (e.keyCode === 40) {
+      e.preventDefault();
       setTasks(
         tasks.map((task) =>
-          // eslint-disable-next-line
-          task.id == id
+          task.id === id
             ? {
                 id: task.id,
                 type: task.type + 1 <= 2 ? task.type + 1 : 0,
@@ -246,12 +244,10 @@ function DailyTasklist() {
             : task
         )
       );
-      // eslint-disable-next-line
-    } else if (e.keyCode == 38) {
+    } else if (e.keyCode === 38) {
       setTasks(
         tasks.map((task) =>
-          // eslint-disable-next-line
-          task.id == id
+          task.id === id
             ? {
                 id: task.id,
                 type: task.type - 1 >= 0 ? task.type - 1 : 2,
@@ -263,7 +259,10 @@ function DailyTasklist() {
             : task
         )
       );
+    } else if (e.keyCode === 9 || e.keyCode === 16) {
+      console.log("Nothing!");
     } else {
+      e.preventDefault();
       //TODO this should change for the keyboard shortcut
       alert("Use the up or down arrows to swap through task types!");
     }
@@ -351,9 +350,8 @@ function DailyTasklist() {
 
   //Change Task Priority Event
   const changeTaskPriority = (id, e) => {
-    e.preventDefault();
-    // eslint-disable-next-line
-    if (e.keyCode == 40) {
+    if (e.keyCode === 40) {
+      e.preventDefault();
       setTasks(
         tasks.map((task) =>
           task.id === id
@@ -369,6 +367,7 @@ function DailyTasklist() {
         )
       );
     } else if (e.keyCode === 38) {
+      e.preventDefault();
       setTasks(
         tasks.map((task) =>
           task.id === id
@@ -383,6 +382,8 @@ function DailyTasklist() {
             : task
         )
       );
+    } else if (e.keyCode === 9 || e.keyCode === 16) {
+      console.log("Nothing!");
     } else {
       alert("Use the up or down arrows to swap through task priorities!");
     }
@@ -436,8 +437,7 @@ function DailyTasklist() {
     console.log(updatedEffort);
     setTasks(
       tasks.map((task) =>
-        // eslint-disable-next-line
-        task.id == id
+        task.id === id
           ? {
               id: task.id,
               type: task.type,
@@ -647,6 +647,7 @@ function DailyTasklist() {
   const addTaskShortcut = (event) => {
     if (event.defaultPrevented) return  // Exits here if event has been handled
     event.preventDefault()
+    if (document.activeElement.classList.contains("taskText")) {return}
     if (event.key === "Enter") {
       console.log(`SHORTCUT TRIGGERED! PRESSED ${event.key}`);    
       console.log(tasks);
@@ -677,13 +678,23 @@ function DailyTasklist() {
       };
       fetch(
         `https://striker-backend.herokuapp.com/task-list/single-task?date=${dateString}`,
-        requestOptions
-      ).then((response) => {
+        requestOptions)
+      .then((response) => {
         console.log("Adding task response: ");
-        console.log(response.json());
-      }).then((response) => GetDailyTasks());
-    } else {
-      console.log("NO!");
+        console.log(response.json());})
+      .then((response) => GetDailyTasks())
+      .then((response) => {
+        const newestTaskElement = document.getElementsByClassName("task")[document.getElementsByClassName("task").length];
+        const newestTaskTypeElement = newestTaskElement.getElementsByClassName("strikeBtn")[0]
+        newestTaskTypeElement.focus();
+      });
+    } else if (event.keyCode > 48 && event.keyCode < 58) {
+      const taskBtns = document.getElementsByClassName("strikeBtn");
+      console.log(taskBtns);
+      console.log(taskBtns[event.keyCode - 49]);
+      const focusElement = taskBtns[event.keyCode - 49];
+      focusElement.setAttribute('tabindex', '0');
+      focusElement.focus();
     }
   }
 

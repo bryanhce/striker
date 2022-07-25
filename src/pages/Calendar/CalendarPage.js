@@ -21,7 +21,6 @@ function CalendarPage() {
     return num ? (
       <div className="notes-month">
         <section>{num}</section>  
-        <span>Backlog number</span>
       </div>
     ) : null;
   }
@@ -62,6 +61,8 @@ function CalendarPage() {
       calendarCells[i].addEventListener('dragover', dragOver);
       calendarCells[i].addEventListener('dragenter', dragEnter);
       calendarCells[i].addEventListener('dragleave', dragLeave);
+      calendarCells[i].addEventListener('dragdrop', dragDrop);
+
       calendarCells[i].addEventListener('drop', drop);
 
       calendarCells[i].addEventListener('click', () => {
